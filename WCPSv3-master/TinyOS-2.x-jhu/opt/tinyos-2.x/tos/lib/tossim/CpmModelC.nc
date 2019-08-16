@@ -152,7 +152,7 @@ implementation {
     printf("**********From Sensor: %u, and the extracted power is: %u\n", TOS_NODE_ID, signalStr);
 
     printf("**********From Sensor: %u, to find out where is the extracted power\n", TOS_NODE_ID);
-
+    //dbg("receive","msg->power:%f\n",msg->power);
     return (signalStr - noise);
   }
 
@@ -292,6 +292,7 @@ implementation {
     noise = 10.0 * log(noise) / log(10.0);
     dbg("CpmModelC", "checkReceive: outstanding count %d noise %lf at %lf\n", count, noise, (double) sim_time() / sim_ticks_per_sec());
     msg->lqi = sim_lqi_generate(msg->power - noise);// what is this used for?
+    dbg("receive_power","received msg->power:%f\n",msg->power);
 
     //printf("********** In checkReceive, From Sensor: %u, and the power is: %f, and noise: %f\n", TOS_NODE_ID, msg->power, noise);
 

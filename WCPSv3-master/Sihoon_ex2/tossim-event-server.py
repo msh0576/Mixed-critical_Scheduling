@@ -41,6 +41,9 @@ t.addChannel("transmission", sys.stdout)
 #t.addChannel("TossimPacketModelC", sys.stdout)
 
 #t.addChannel("Gain", sys.stdout)
+t.addChannel("receive_power", sys.stdout)
+#t.addChannel("SimMote_power", sys.stdout)
+
 #t.addChannel("AM", sys.stdout)
 
 
@@ -63,14 +66,14 @@ for channel_1 in [22, 23, 24, 25, 26]:
 
 	for sensor in [1, 2, 10]:		# Set network topology
 		if sensor == 1:
-			r.add(sensor, 0, sync_rssi_strength, channel_1)	#add(source, destination, gain)
-			r.add(0, sensor, sync_rssi_strength, channel_1)
+			r.add(sensor, 100, sync_rssi_strength, channel_1)	#add(source, destination, gain)
+			r.add(100, sensor, sync_rssi_strength, channel_1)
 		elif sensor == 2:
-			r.add(sensor, 0, sync_rssi_strength_2, channel_1)	#add(source, destination, gain)
-			r.add(0, sensor, sync_rssi_strength_2, channel_1)
+			r.add(sensor, 100, sync_rssi_strength_2, channel_1)	#add(source, destination, gain)
+			r.add(100, sensor, sync_rssi_strength_2, channel_1)
 		elif sensor == 10:
-			r.add(sensor, 0, sync_rssi_strength_2, channel_1)	#add(source, destination, gain)
-			r.add(0, sensor, sync_rssi_strength_2, channel_1)
+			r.add(sensor, 100, sync_rssi_strength_2, channel_1)	#add(source, destination, gain)
+			r.add(100, sensor, sync_rssi_strength_2, channel_1)
 
 
 
@@ -89,7 +92,7 @@ for line in f:
 		r.add(int(s[0]), int(s[1]), float(s[2]) - 4, 23)##It seems that the r.add is modified by Bo--yh
 
 
-for node in [0, 10, 1, 2]:
+for node in [100, 10, 1, 2]:
 	m = t.getNode(node);
 	for channel in [22, 23, 24, 25, 26]:
 		if channel==22:

@@ -7,13 +7,13 @@
  * agreement is hereby granted, provided that the above copyright
  * notice, the following two paragraphs and the author appear in all
  * copies of this software.
- * 
+ *
  * IN NO EVENT SHALL STANFORD UNIVERSITY BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
  * ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN
  * IF STANFORD UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
- * 
+ *
  * STANFORD UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE
@@ -35,7 +35,7 @@
 
 module TossimActiveMessageC {
   provides {
-    
+
     interface AMSend[am_id_t id];
     interface Receive[am_id_t id];
     interface Receive as Snoop[am_id_t id];
@@ -53,7 +53,7 @@ implementation {
 
   message_t buffer;
   message_t* bufferPointer = &buffer;
-  
+
   tossim_header_t* getHeader(message_t* amsg) {
     return (tossim_header_t*)(amsg->data - sizeof(tossim_header_t));
   }
@@ -61,7 +61,7 @@ implementation {
   tossim_metadata_t* getMetadata(message_t* amsg) {
     return (tossim_metadata_t*)(&amsg->metadata);
   }
-  
+
   command error_t AMSend.send[am_id_t id](am_addr_t addr,
 					  message_t* amsg,
 					  uint8_t len) {
@@ -79,7 +79,7 @@ implementation {
   command error_t AMSend.cancel[am_id_t id](message_t* msg) {
     return call Model.cancel(msg);
   }
-  
+
   command uint8_t AMSend.maxPayloadLength[am_id_t id]() {
     return call Packet.maxPayloadLength();
   }
@@ -91,7 +91,7 @@ implementation {
   command int8_t TossimPacket.strength(message_t* msg) {
     return getMetadata(msg)->strength;
   }
-  
+
   event void Model.sendDone(message_t* msg, error_t result) {
     signal AMSend.sendDone[call AMPacket.type(msg)](msg, result);
   }
@@ -124,11 +124,11 @@ implementation {
     }
     return FALSE;
   }
-  
+
   command am_addr_t AMPacket.address() {
     return call amAddress();
   }
- 
+
   command am_addr_t AMPacket.destination(message_t* amsg) {
     tossim_header_t* header = getHeader(amsg);
     return header->dest;
@@ -148,7 +148,7 @@ implementation {
     tossim_header_t* header = getHeader(amsg);
     header->src = addr;
   }
-  
+
   command bool AMPacket.isForMe(message_t* amsg) {
     return (call AMPacket.destination(amsg) == call AMPacket.address() ||
 	    call AMPacket.destination(amsg) == AM_BROADCAST_ADDR);
@@ -163,21 +163,21 @@ implementation {
     tossim_header_t* header = getHeader(amsg);
     header->type = t;
   }
- 
+
   command void Packet.clear(message_t* msg) {}
-  
+
   command uint8_t Packet.payloadLength(message_t* msg) {
     return getHeader(msg)->length;
   }
-  
+
   command void Packet.setPayloadLength(message_t* msg, uint8_t len) {
     getHeader(msg)->length = len;
   }
-  
+
   command uint8_t Packet.maxPayloadLength() {
     return TOSH_DATA_LENGTH;
   }
-  
+
   command void* Packet.getPayload(message_t* msg, uint8_t len) {
     if (len <= TOSH_DATA_LENGTH) {
       return msg->data;
@@ -191,7 +191,7 @@ implementation {
     tossim_header_t* header = getHeader(amsg);
     return header->group;
   }
-  
+
   command void AMPacket.setGroup(message_t* msg, am_group_t group) {
     tossim_header_t* header = getHeader(msg);
     header->group = group;
@@ -204,7 +204,7 @@ implementation {
  default event message_t* Receive.receive[am_id_t id](message_t* msg, void* payload, uint8_t len) {
     return msg;
   }
-  
+
   default event message_t* Snoop.receive[am_id_t id](message_t* msg, void* payload, uint8_t len) {
     return msg;
   }
@@ -224,13 +224,13 @@ implementation {
  default command am_addr_t amAddress() {
    return 0;
  }
-  
+
  void active_message_deliver_handle(sim_event_t* evt) {
    message_t* m = (message_t*)evt->data;
    dbg("Packet", "Delivering packet to %i at %s\n", (int)sim_node(), sim_time_string());
    signal Model.receive(m);
  }
- 
+
  sim_event_t* allocate_deliver_event(int node, message_t* msg, sim_time_t t) {
    sim_event_t* evt = (sim_event_t*)malloc(sizeof(sim_event_t));
    evt->mote = node;
@@ -242,10 +242,10 @@ implementation {
    evt->data = msg;
    return evt;
  }
- 
+
  void active_message_deliver(int node, message_t* msg, sim_time_t t) @C() @spontaneous() {
    sim_event_t* evt = allocate_deliver_event(node, msg, t);
    sim_queue_insert(evt);
  }
- 
+
 }

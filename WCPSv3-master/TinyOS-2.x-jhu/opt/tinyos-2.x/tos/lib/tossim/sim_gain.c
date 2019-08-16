@@ -18,7 +18,7 @@ gain_entry_t* sim_gain_first(int src, int channel_id) __attribute__ ((C, spontan
 
   if (src > TOSSIM_MAX_NODES) {
     return connectivity[TOSSIM_MAX_NODES][channel_id];
-  } 
+  }
   return connectivity[src][channel_id];
 }
 
@@ -26,6 +26,7 @@ gain_entry_t* sim_gain_next(gain_entry_t* currentLink) __attribute__ ((C, sponta
   return currentLink->next; // we will have add the channel condition here, ???
 }
 
+//Modified by sihoon for radio power configuration
 void sim_gain_add(int src, int dest, double gain, int channel_id) __attribute__ ((C, spontaneous))  {
   gain_entry_t* current;
   int temp = sim_node(); // return current_node, added by Bo
@@ -87,11 +88,11 @@ bool sim_gain_connected(int src, int dest, int channel_id) __attribute__ ((C, sp
   sim_set_node(temp);
   return FALSE;
 }
-  
+
 void sim_gain_remove(int src, int dest, int channel_id) __attribute__ ((C, spontaneous))  {// tricky, if it is just removing a link, fine, if a node, careful
   gain_entry_t* current;
   gain_entry_t* prevLink;
-  
+
   int temp = sim_node();
   if (src > TOSSIM_MAX_NODES) {
     src = TOSSIM_MAX_NODES;
@@ -99,7 +100,7 @@ void sim_gain_remove(int src, int dest, int channel_id) __attribute__ ((C, spont
   sim_set_node(src);
   current = sim_gain_first(src, channel_id); //added by Bo
   prevLink = NULL;
-      
+
   while (current != NULL) {//this is to go through the link list and remove one of the link
     gain_entry_t* tmp;
     if (current->mote == dest) {
@@ -150,7 +151,7 @@ double sim_gain_sample_noise(int node, int channel_id)  __attribute__ ((C, spont
   double val, adjust;
   if (node > TOSSIM_MAX_NODES) {
     node = TOSSIM_MAX_NODES;
-  } 
+  }
   val = localNoise[node][channel_id].mean;
   adjust = (sim_random() % 2000000);
   adjust /= 1000000.0;

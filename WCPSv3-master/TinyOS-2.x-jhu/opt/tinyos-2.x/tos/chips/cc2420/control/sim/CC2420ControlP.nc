@@ -12,6 +12,7 @@ implementation
   uint8_t channel;
   uint16_t address;
   uint16_t panAddress;
+  uint8_t power; //added by Sihoon
   bool addressRecognition;
   bool hwAddressRecognition;
   bool autoAck;
@@ -19,12 +20,13 @@ implementation
   command error_t Init.init()
   {
     channel = CC2420_DEF_CHANNEL;
+    power = 0;
 #if defined(CC2420_NO_ACKNOWLEDGEMENTS)
     autoAck = FALSE;
 #else
     autoAck = TRUE;
 #endif
-  
+
 #if defined(CC2420_HW_ACKNOWLEDGEMENTS)
     hwAutoAck = TRUE;
 #else
@@ -40,17 +42,24 @@ implementation
   command error_t CC2420Config.sync(){
     dbg("CC2420Config", "CC2420Config: sync: autoAck %d, hwAutoAck %d\n", autoAck, hwAutoAck);
     sim_mote_set_radio_channel(sim_node(), channel);
+    sim_mote_setPower(sim_node(), power);   //Added by sihoon
     post syncDoneTask();
     return SUCCESS;
   }
 
   command uint8_t CC2420Config.getChannel() { return sim_mote_get_radio_channel(sim_node()); }
-  command void CC2420Config.setChannel(uint8_t ch) { 
+  command void CC2420Config.setChannel(uint8_t ch) {
   	channel = ch;
   	//sim_mote_set_radio_channel(sim_node(), channel);
   	//printf("On sensor %u, I think I have set the wireless channel to %u at time: %s\n", TOS_NODE_ID, ch, sim_time_string());
   }
-  
+
+  //added by Sihoon
+  command uint8_t CC2420Config.getPower() { return sim_mote_getPower(sim_node()); }
+  command void CC2420Config.setPower(uint8_t pw) {
+    power = pw;
+  }
+
   async command uint16_t CC2420Config.getShortAddr() { return address; }
   command void CC2420Config.setShortAddr(uint16_t addr) { address = addr; }
   async command uint16_t CC2420Config.getPanAddr() { return panAddress; }
@@ -60,7 +69,7 @@ implementation
     addressRecognition = enableAddressRecognition;
     hwAddressRecognition = useHwAddressRecognition;
   }
-  
+
   async command bool CC2420Config.isHwAddressRecognitionDefault() { return hwAddressRecognition; }
   async command bool CC2420Config.isAddressRecognitionEnabled() { return addressRecognition; }
 
@@ -69,7 +78,7 @@ implementation
     hwAutoAck = enableHwAutoAck;
     dbg("CC2420Config", "CC2420Config: setAutoAck: autoAck %d, hwAutoAck %d\n", autoAck, hwAutoAck);
   }
-  
+
   async command bool CC2420Config.isHwAutoAckDefault() { return hwAutoAck; }
   async command bool CC2420Config.isAutoAckEnabled() { return autoAck; }
   default event void CC2420Config.syncDone( error_t error ) { }

@@ -45,7 +45,7 @@ module PureTDMASchedulerP {
 implementation {
 	enum {
 		SIMPLE_TDMA_SYNC = 123,
-		FRAME_LENGTH = 3
+		FRAME_LENGTH = 3,
 	};
 	bool init;
 	uint32_t slotSize;
@@ -85,7 +85,7 @@ implementation {
 
 uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, retrans twice, baseline.
 	//flow 170, flow sensor
-	{1, 1, 0, 22, 0, 1, 1, 1, 0, 0, 1},
+	{1, 1, 100, 22, 0, 1, 1, 1, 0, 0, 1},
 	{2, 2, 10, 22, 0, 1, 2, 2, 0, 0, 1}
 	};
 
@@ -107,7 +107,7 @@ uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, r
 		//rcv_count = 0;//added by sihoon
 		trans_count = 0;
 
-		coordinatorId = 0;
+		coordinatorId = 100;
 		init = FALSE;
 		toSend = NULL;
 		toSendLen = 0;
@@ -169,12 +169,6 @@ uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, r
  		uint8_t tmpToSendLen;
  		uint8_t i;
 
- 		// if (TOS_NODE_ID == 169){
- 		// 		//printf("SENSOR:%u, ABSOLUTE TIME: %s at SLOT:%u.\n", TOS_NODE_ID, sim_time_string(), slot);
- 		// }
-		//printf("TOS_NODE_ID:%d	Slot:\n",TOS_NODE_ID);
-		//dbg("radio_send","Rada\n");
-
 		atomic slot_ = slot;
 
  		if (slot == 0 ) {
@@ -193,17 +187,6 @@ uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, r
  		}
 
  		if (slot >= sd+1) {
- 			/* //sleep
- 			if (slot == sd+1) {
- 				call RadioPowerControl.stop();
- 				//call Pin.clr();
- 			}
- 			//wakeup
- 			if (slot == bi) {
- 				call RadioPowerControl.start();
- 				//call Pin.set();
- 				//call Leds.led0On();
- 			}*/
  			return;
  		}
  		if (slot < cap) {
@@ -274,7 +257,7 @@ uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, r
 		set_current_hop_status(call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID);
 		flow_id_rcv=get_flow_id(call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID);
 		if(flow_id_rcv != 0) {
-			if(TOS_NODE_ID==0){
+			if(TOS_NODE_ID== 100){
 			//if(TOS_NODE_ID==161 || TOS_NODE_ID==169 || TOS_NODE_ID==170 || TOS_NODE_ID==160){
 				//printf("FLOW:%u RECEIVED: %u->%u, SLOT:%u (time: %s), channel: %u\n", flow_id_rcv, src, TOS_NODE_ID, call SlotterControl.getSlot(), sim_time_string(), call CC2420Config.getChannel());
 				//Flow ID, Delay(Slot when received), sender, receiver, channel, physical time.
@@ -294,7 +277,7 @@ uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, r
 
 			}else if(TOS_NODE_ID == 10) {
 				dbg("receive","flow_id:%u, SLOT: %u, src:%u, myID:%u, channel:%u   rcv_count[%d]:%d\n", flow_id_rcv, call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID, call CC2420Config.getChannel(), flow_id_rcv-1,++rcv_count[flow_id_rcv-1]);
-				
+
 				//dbg("printf","RSSI:%d\n",call CC2420Packet.getRssi(msg));
 
 			}
@@ -491,6 +474,7 @@ uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, r
   						if(TOS_NODE_ID == schedule[i][1] && schedule[i][8]==0){
 
   			  			call CC2420Config.setChannel(schedule[i][3]);
+								call CC2420Config.setPower(TOS_NODE_ID);
   							call CC2420Config.sync();
   							call AMPacket.setDestination(&packet, schedule[i][2]);
   							call PacketAcknowledgements.requestAck(&packet);
@@ -499,8 +483,8 @@ uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, r
 									if(TOS_NODE_ID != 0) {
 										//dbg("printf","%d send at %d\n",TOS_NODE_ID, call SlotterControl.getSlot());
 										//dbg("power","getPower:%d\n", call CC2420Packet.getPower(&packet));
-										//call CC2420Packet.setPower(&packet, 10);
 										dbg("transmission","trans_count:%d\n", ++trans_count);
+										//call SimMote.set_power(2);
 									}
 								}
 

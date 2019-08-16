@@ -6,13 +6,13 @@
  * agreement is hereby granted, provided that the above copyright
  * notice, the following two paragraphs and the author appear in all
  * copies of this software.
- * 
+ *
  * IN NO EVENT SHALL STANFORD UNIVERSITY BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
  * ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN
  * IF STANFORD UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
- * 
+ *
  * STANFORD UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE
@@ -56,18 +56,22 @@ int sim_mote_get_variable_info(int mote, char* name, void** addr, size_t* len);
 void sim_mote_enqueue_boot_event(int mote);
 
 bool sim_mote_set_radio_channel(int mote, uint8_t newRadioChannel);   // MIKE_LIANG, Bo
-uint8_t sim_mote_get_radio_channel(int mote);   // MIKE_LIANG, Bo																			
+uint8_t sim_mote_get_radio_channel(int mote);   // MIKE_LIANG, Bo
 
 
-//Added by Bo, we have two real metods in SimMoteP, and the following encapsulations are 
+//Added by Bo, we have two real metods in SimMoteP, and the following encapsulations are
 //for use in sim_tossim.c
-int* sim_mote_getTcpMsg(int mote); 
+int* sim_mote_getTcpMsg(int mote);
 void sim_mote_setTcpMsg(int mote, int flow_id, int slot_id, int source_id, int node_id, int channel_id);
 
 //added by Bo for forcing a sensor to do nothing if idle.
 bool sim_mote_is_idle(int mote);
 void sim_mote_enable_idle(int mote);
 void sim_mote_disable_idle(int mote);
+
+//added by Sihoon
+uint8_t sim_mote_getPower(int mote);
+bool sim_mote_setPower(int mote, uint8_t power);
 
 #ifdef __cplusplus
 }
