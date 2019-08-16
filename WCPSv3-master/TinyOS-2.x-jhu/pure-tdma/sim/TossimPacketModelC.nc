@@ -7,13 +7,13 @@
  * agreement is hereby granted, provided that the above copyright
  * notice, the following two paragraphs and the author appear in all
  * copies of this software.
- * 
+ *
  * IN NO EVENT SHALL STANFORD UNIVERSITY BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
  * ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN
  * IF STANFORD UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
- * 
+ *
  * STANFORD UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE
@@ -49,13 +49,13 @@
 #include <TossimRadioMsg.h>
 #include <sim_csma.h>
 
-module TossimPacketModelC { 
+module TossimPacketModelC {
   provides {
     interface Init;
     interface SplitControl as Control;
     interface PacketAcknowledgements;
     interface TossimPacketModel as Packet;
-    
+
     interface TossimPacketModelCCA;
   }
   uses interface GainRadioModel;
@@ -71,15 +71,15 @@ implementation {
   uint8_t sendingLength = 0;
   int destNode;
   sim_event_t sendEvent;
-  
+
   uint8_t cca_enable_flag;
-  
+
   message_t receiveBuffer;
-  
+
   tossim_metadata_t* getMetadata(message_t* msg) {
     return (tossim_metadata_t*)(&msg->metadata);
   }
-  
+
   command error_t Init.init() {
     dbg("TossimPacketModelC", "TossimPacketModelC: Init.init() called\n");
     initialized = TRUE;
@@ -99,7 +99,7 @@ implementation {
     running = FALSE;
     signal Control.stopDone(SUCCESS);
   }
-  
+
   command error_t Control.start() {
     if (!initialized) {
       dbgerror("TossimPacketModelC", "TossimPacketModelC: Control.start() called before initialization!\n");
@@ -109,7 +109,7 @@ implementation {
     post startDoneTask();
     return SUCCESS;
   }
-  
+
   command error_t Control.stop() {
     if (!initialized) {
       dbgerror("TossimPacketModelC", "TossimPacketModelC: Control.stop() called before initialization!\n");
@@ -120,7 +120,7 @@ implementation {
     post stopDoneTask();
     return SUCCESS;
   }
-  
+
   async command error_t PacketAcknowledgements.requestAck(message_t* msg) {
     tossim_metadata_t* meta = getMetadata(msg);
     //printf("This is sensor:%u, and we are going to set the ACK true!\n", TOS_NODE_ID);
@@ -139,7 +139,7 @@ implementation {
     //printf("This is sensor:%u, and we are going to RETURN the ACK status, which is:%u!\n", TOS_NODE_ID, meta->ack);
     return meta->ack;
   }
-      
+
   task void sendDoneTask() {
     message_t* msg = sending;
     tossim_metadata_t* meta = getMetadata(msg);
@@ -170,7 +170,7 @@ implementation {
     if (sending != NULL) {
       return EBUSY;
     }
-    sendingLength = len; 
+    sendingLength = len;
     sending = msg;
     destNode = dest;
     backoffCount = 0;
@@ -183,10 +183,10 @@ implementation {
   void send_backoff(sim_event_t* evt);
   void send_backoff_cancel_packet(sim_event_t* evt);
   void send_transmit(sim_event_t* evt);
-  void send_transmit_done(sim_event_t* evt);  
-  
+  void send_transmit_done(sim_event_t* evt);
+
   void send_transmit_with_cca_fake(sim_event_t* evt);
-  
+
   void start_csma() {
     sim_time_t delay;
     delay = sim_csma_rxtx_delay();
@@ -205,16 +205,16 @@ implementation {
 		backoff %= 100;
     	//backoff += sim_csma_init_low();
     	backoff *= (sim_ticks_per_sec() / sim_csma_symbols_per_sec());
-    	//printf("Sensor:%u, backoff_random:%u, backoff:%u, sim_csma_init_high:%u, sim_csma_init_low:%u\n", TOS_NODE_ID, backoff_random, backoff, sim_csma_init_high(), sim_csma_init_low()); 
+    	//printf("Sensor:%u, backoff_random:%u, backoff:%u, sim_csma_init_high:%u, sim_csma_init_low:%u\n", TOS_NODE_ID, backoff_random, backoff, sim_csma_init_high(), sim_csma_init_low());
     	sendEvent.time = sim_time() + backoff;
 		sendEvent.handle = send_backoff;
 	}else if(cca_enable_flag == 2){
     	//sendEvent.time = sim_time() + 10000000;
-    	sendEvent.time = sim_time() + 2000000;// to offset CSMA send from TDMA send; otherwise, TOSSIM clock is too accurate and CCA will not detect TDMA.    	    	
+    	sendEvent.time = sim_time() + 2000000;// to offset CSMA send from TDMA send; otherwise, TOSSIM clock is too accurate and CCA will not detect TDMA.
  		sendEvent.handle = send_backoff_cancel_packet;
  		//printf("Sensor:%u, STEALING on the way, going for send_backoff_cancel_packet, Time:%s\n", TOS_NODE_ID, sim_time_string());
 	}
-	
+
     sendEvent.cleanup = sim_queue_cleanup_none;
     transmitting = TRUE;
     //call GainRadioModel.setPendingTransmission();
@@ -224,7 +224,7 @@ implementation {
   int sim_packet_header_length() {
     return sizeof(tossim_header_t);
   }
-  
+
   void send_transmit(sim_event_t* evt) {
     sim_time_t duration;
     tossim_metadata_t* metadata = getMetadata(sending);
@@ -239,13 +239,15 @@ implementation {
     evt->handle = send_transmit_done;
 	//printf("***Sensor: %u, TDMA SEND reached, flag:%u, Time:%s\n", TOS_NODE_ID, cca_enable_flag, sim_time_string());
     dbg("TossimPacketModelC", "PACKET: Broadcasting packet to everyone.\n");
-    call GainRadioModel.putOnAirTo(destNode, sending, metadata->ack, evt->time, 0.0, 0.0, sim_mote_get_radio_channel(sim_node()));
+
+    //call GainRadioModel.putOnAirTo(destNode, sending, metadata->ack, evt->time, 0.0, 0.0, sim_mote_get_radio_channel(sim_node()));
+    call GainRadioModel.putOnAirTo(destNode, sending, metadata->ack, evt->time, sim_mote_getPower(sim_node()), 0.0, sim_mote_get_radio_channel(sim_node()));    //Changed by sihoon for configuration of radio power
     metadata->ack = 0;
     evt->time += (sim_csma_rxtx_delay() *  (sim_ticks_per_sec() / sim_csma_symbols_per_sec()));
     dbg("TossimPacketModelC", "PACKET: Send done at %llu.\n", evt->time);
     sim_queue_insert(evt);
   }
-  
+
   void send_transmit_with_cca(sim_event_t* evt) {
     sim_time_t duration;
     tossim_metadata_t* metadata = getMetadata(sending);
@@ -259,14 +261,14 @@ implementation {
     evt->time += duration;
     evt->handle = send_transmit_done;
     //printf("###Sensor: %u, send_transmit_with_cca reached, flag:%u, Time:%s\n", TOS_NODE_ID, cca_enable_flag, sim_time_string());
-    dbg("TossimPacketModelC", "PACKET: Broadcasting packet to everyone.\n");	    
+    dbg("TossimPacketModelC", "PACKET: Broadcasting packet to everyone.\n");
     call GainRadioModel.putOnAirTo(destNode, sending, metadata->ack, evt->time, 0.0, 0.0, sim_mote_get_radio_channel(sim_node()));// changed by Bo, during make after changed putOnAirTo in CpmModelC.nc
     metadata->ack = 0;
     evt->time += (sim_csma_rxtx_delay() *  (sim_ticks_per_sec() / sim_csma_symbols_per_sec()));
     dbg("TossimPacketModelC", "PACKET: Send done at %llu.\n", evt->time);
     sim_queue_insert(evt);
   }
-  
+
     void send_transmit_with_cca_fake(sim_event_t* evt) {
     sim_time_t duration;
     tossim_metadata_t* metadata = getMetadata(sending);
@@ -285,7 +287,7 @@ implementation {
     evt->time += (sim_csma_rxtx_delay() *  (sim_ticks_per_sec() / sim_csma_symbols_per_sec()));
     sim_queue_insert(evt);
   }
-  
+
 
   void send_transmit_done(sim_event_t* evt) {
     message_t* rval = sending;
@@ -302,7 +304,7 @@ implementation {
   }
 
   uint8_t error = 0;
-  
+
   event void GainRadioModel.acked(message_t* msg) {
     if (running) {
       tossim_metadata_t* metadata = getMetadata(sending);
@@ -322,9 +324,9 @@ implementation {
       return FALSE;
     }
   }
-  
+
 void send_backoff(sim_event_t* evt) {//for shared slot contending, if clear, backoff; else, send out.
-    backoffCount++;    
+    backoffCount++;
     //printf("Sensor: %u, CHANNEL CCAing, sim_csma_max_iterations():%u, Time:%s\n", TOS_NODE_ID, sim_csma_max_iterations(), sim_time_string());
     if (call GainRadioModel.clearChannel()) {//make this crystal clear
       neededFreeSamples--;
@@ -348,7 +350,7 @@ void send_backoff(sim_event_t* evt) {//for shared slot contending, if clear, bac
       sim_time_t backoff = sim_random();
       sim_time_t modulo = sim_csma_high() - sim_csma_low();
       modulo *= pow(sim_csma_exponent_base(), backoffCount);
-      backoff %= modulo;			
+      backoff %= modulo;
       backoff += sim_csma_init_low();
       backoff *= (sim_ticks_per_sec() / sim_csma_symbols_per_sec());
       evt->time += backoff;
@@ -393,4 +395,3 @@ void send_backoff_cancel_packet(sim_event_t* evt) {//for CHANNEL STEALING: if ch
   	cca_enable_flag = enable;
   }
 }
-

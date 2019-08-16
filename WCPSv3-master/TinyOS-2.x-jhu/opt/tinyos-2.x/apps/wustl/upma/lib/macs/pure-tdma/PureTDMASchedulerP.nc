@@ -46,6 +46,8 @@ implementation {
 	enum {
 		SIMPLE_TDMA_SYNC = 123,
 		FRAME_LENGTH = 3,
+		RADIO_DEF_POWER = 0,
+		RADIO_MAX_POWER = 31,
 	};
 	bool init;
 	uint32_t slotSize;
@@ -474,7 +476,7 @@ uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, r
   						if(TOS_NODE_ID == schedule[i][1] && schedule[i][8]==0){
 
   			  			call CC2420Config.setChannel(schedule[i][3]);
-								call CC2420Config.setPower(TOS_NODE_ID);
+								call CC2420Config.setPower(RADIO_DEF_POWER);
   							call CC2420Config.sync();
   							call AMPacket.setDestination(&packet, schedule[i][2]);
   							call PacketAcknowledgements.requestAck(&packet);
