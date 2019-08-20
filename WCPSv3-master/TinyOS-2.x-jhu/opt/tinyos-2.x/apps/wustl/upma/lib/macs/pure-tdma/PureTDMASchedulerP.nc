@@ -534,6 +534,7 @@ uint8_t COEXISTANCE = 3;
 
 								transmission(i,0); 	//i: schedule_idx, 0:ReTx_flag
 
+
 	  					}
   						if(TOS_NODE_ID == schedule[i][2] && schedule[i][8]==0){
 	  						//printf("RECEIVER, HOP =1: %u, slot: %u, channel: %u, time: %s\n", TOS_NODE_ID, slot_norm, schedule[i][3], sim_time_string());
