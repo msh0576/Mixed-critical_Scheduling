@@ -4,18 +4,18 @@
 # message type.
 #
 
-import Message
+import tinyos.message.Message
 
 # The default size of this message type in bytes.
-DEFAULT_MESSAGE_SIZE = 125
+DEFAULT_MESSAGE_SIZE = 124
 
 # The Active Message type associated with this message.
 AM_TYPE = 5
 
-class TestNetworkMsg(Message.Message):
-    # Create a new TestNetworkMsg of size 125.
-    def __init__(self, data="", addr=None, gid=None, base_offset=0, data_length=125):
-        Message.Message.__init__(self, data, addr, gid, base_offset, data_length)
+class TestNetworkMsg(tinyos.message.Message.Message):
+    # Create a new TestNetworkMsg of size 124.
+    def __init__(self, data="", addr=None, gid=None, base_offset=0, data_length=124):
+        tinyos.message.Message.Message.__init__(self, data, addr, gid, base_offset, data_length)
         self.amTypeSet(AM_TYPE)
     
     # Get AM_TYPE
@@ -44,6 +44,10 @@ class TestNetworkMsg(Message.Message):
             pass
         try:
             s += "  [metric=0x%x]\n" % (self.get_metric())
+        except:
+            pass
+        try:
+            s += "  [flowid=0x%x]\n" % (self.get_flowid())
         except:
             pass
         try:
@@ -487,14 +491,6 @@ class TestNetworkMsg(Message.Message):
         except:
             pass
         try:
-            s += "  [data111=0x%x]\n" % (self.get_data111())
-        except:
-            pass
-        try:
-            s += "  [data112=0x%x]\n" % (self.get_data112())
-        except:
-            pass
-        try:
             s += "  [hopcount=0x%x]\n" % (self.get_hopcount())
         except:
             pass
@@ -731,9 +727,64 @@ class TestNetworkMsg(Message.Message):
         return 16
     
     #
-    # Accessor methods for field: data1
+    # Accessor methods for field: flowid
     #   Field type: short
     #   Offset (bits): 64
+    #   Size (bits): 8
+    #
+
+    #
+    # Return whether the field 'flowid' is signed (False).
+    #
+    def isSigned_flowid(self):
+        return False
+    
+    #
+    # Return whether the field 'flowid' is an array (False).
+    #
+    def isArray_flowid(self):
+        return False
+    
+    #
+    # Return the offset (in bytes) of the field 'flowid'
+    #
+    def offset_flowid(self):
+        return (64 / 8)
+    
+    #
+    # Return the offset (in bits) of the field 'flowid'
+    #
+    def offsetBits_flowid(self):
+        return 64
+    
+    #
+    # Return the value (as a short) of the field 'flowid'
+    #
+    def get_flowid(self):
+        return self.getUIntElement(self.offsetBits_flowid(), 8, 1)
+    
+    #
+    # Set the value of the field 'flowid'
+    #
+    def set_flowid(self, value):
+        self.setUIntElement(self.offsetBits_flowid(), 8, value, 1)
+    
+    #
+    # Return the size, in bytes, of the field 'flowid'
+    #
+    def size_flowid(self):
+        return (8 / 8)
+    
+    #
+    # Return the size, in bits, of the field 'flowid'
+    #
+    def sizeBits_flowid(self):
+        return 8
+    
+    #
+    # Accessor methods for field: data1
+    #   Field type: short
+    #   Offset (bits): 72
     #   Size (bits): 8
     #
 
@@ -753,13 +804,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data1'
     #
     def offset_data1(self):
-        return (64 / 8)
+        return (72 / 8)
     
     #
     # Return the offset (in bits) of the field 'data1'
     #
     def offsetBits_data1(self):
-        return 64
+        return 72
     
     #
     # Return the value (as a short) of the field 'data1'
@@ -788,7 +839,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data2
     #   Field type: short
-    #   Offset (bits): 72
+    #   Offset (bits): 80
     #   Size (bits): 8
     #
 
@@ -808,13 +859,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data2'
     #
     def offset_data2(self):
-        return (72 / 8)
+        return (80 / 8)
     
     #
     # Return the offset (in bits) of the field 'data2'
     #
     def offsetBits_data2(self):
-        return 72
+        return 80
     
     #
     # Return the value (as a short) of the field 'data2'
@@ -843,7 +894,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data3
     #   Field type: short
-    #   Offset (bits): 80
+    #   Offset (bits): 88
     #   Size (bits): 8
     #
 
@@ -863,13 +914,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data3'
     #
     def offset_data3(self):
-        return (80 / 8)
+        return (88 / 8)
     
     #
     # Return the offset (in bits) of the field 'data3'
     #
     def offsetBits_data3(self):
-        return 80
+        return 88
     
     #
     # Return the value (as a short) of the field 'data3'
@@ -898,7 +949,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data4
     #   Field type: short
-    #   Offset (bits): 88
+    #   Offset (bits): 96
     #   Size (bits): 8
     #
 
@@ -918,13 +969,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data4'
     #
     def offset_data4(self):
-        return (88 / 8)
+        return (96 / 8)
     
     #
     # Return the offset (in bits) of the field 'data4'
     #
     def offsetBits_data4(self):
-        return 88
+        return 96
     
     #
     # Return the value (as a short) of the field 'data4'
@@ -953,7 +1004,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data5
     #   Field type: short
-    #   Offset (bits): 96
+    #   Offset (bits): 104
     #   Size (bits): 8
     #
 
@@ -973,13 +1024,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data5'
     #
     def offset_data5(self):
-        return (96 / 8)
+        return (104 / 8)
     
     #
     # Return the offset (in bits) of the field 'data5'
     #
     def offsetBits_data5(self):
-        return 96
+        return 104
     
     #
     # Return the value (as a short) of the field 'data5'
@@ -1008,7 +1059,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data6
     #   Field type: short
-    #   Offset (bits): 104
+    #   Offset (bits): 112
     #   Size (bits): 8
     #
 
@@ -1028,13 +1079,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data6'
     #
     def offset_data6(self):
-        return (104 / 8)
+        return (112 / 8)
     
     #
     # Return the offset (in bits) of the field 'data6'
     #
     def offsetBits_data6(self):
-        return 104
+        return 112
     
     #
     # Return the value (as a short) of the field 'data6'
@@ -1063,7 +1114,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data7
     #   Field type: short
-    #   Offset (bits): 112
+    #   Offset (bits): 120
     #   Size (bits): 8
     #
 
@@ -1083,13 +1134,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data7'
     #
     def offset_data7(self):
-        return (112 / 8)
+        return (120 / 8)
     
     #
     # Return the offset (in bits) of the field 'data7'
     #
     def offsetBits_data7(self):
-        return 112
+        return 120
     
     #
     # Return the value (as a short) of the field 'data7'
@@ -1118,7 +1169,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data8
     #   Field type: short
-    #   Offset (bits): 120
+    #   Offset (bits): 128
     #   Size (bits): 8
     #
 
@@ -1138,13 +1189,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data8'
     #
     def offset_data8(self):
-        return (120 / 8)
+        return (128 / 8)
     
     #
     # Return the offset (in bits) of the field 'data8'
     #
     def offsetBits_data8(self):
-        return 120
+        return 128
     
     #
     # Return the value (as a short) of the field 'data8'
@@ -1173,7 +1224,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data9
     #   Field type: short
-    #   Offset (bits): 128
+    #   Offset (bits): 136
     #   Size (bits): 8
     #
 
@@ -1193,13 +1244,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data9'
     #
     def offset_data9(self):
-        return (128 / 8)
+        return (136 / 8)
     
     #
     # Return the offset (in bits) of the field 'data9'
     #
     def offsetBits_data9(self):
-        return 128
+        return 136
     
     #
     # Return the value (as a short) of the field 'data9'
@@ -1228,7 +1279,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data10
     #   Field type: short
-    #   Offset (bits): 136
+    #   Offset (bits): 144
     #   Size (bits): 8
     #
 
@@ -1248,13 +1299,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data10'
     #
     def offset_data10(self):
-        return (136 / 8)
+        return (144 / 8)
     
     #
     # Return the offset (in bits) of the field 'data10'
     #
     def offsetBits_data10(self):
-        return 136
+        return 144
     
     #
     # Return the value (as a short) of the field 'data10'
@@ -1283,7 +1334,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data11
     #   Field type: short
-    #   Offset (bits): 144
+    #   Offset (bits): 152
     #   Size (bits): 8
     #
 
@@ -1303,13 +1354,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data11'
     #
     def offset_data11(self):
-        return (144 / 8)
+        return (152 / 8)
     
     #
     # Return the offset (in bits) of the field 'data11'
     #
     def offsetBits_data11(self):
-        return 144
+        return 152
     
     #
     # Return the value (as a short) of the field 'data11'
@@ -1338,7 +1389,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data12
     #   Field type: short
-    #   Offset (bits): 152
+    #   Offset (bits): 160
     #   Size (bits): 8
     #
 
@@ -1358,13 +1409,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data12'
     #
     def offset_data12(self):
-        return (152 / 8)
+        return (160 / 8)
     
     #
     # Return the offset (in bits) of the field 'data12'
     #
     def offsetBits_data12(self):
-        return 152
+        return 160
     
     #
     # Return the value (as a short) of the field 'data12'
@@ -1393,7 +1444,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data13
     #   Field type: short
-    #   Offset (bits): 160
+    #   Offset (bits): 168
     #   Size (bits): 8
     #
 
@@ -1413,13 +1464,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data13'
     #
     def offset_data13(self):
-        return (160 / 8)
+        return (168 / 8)
     
     #
     # Return the offset (in bits) of the field 'data13'
     #
     def offsetBits_data13(self):
-        return 160
+        return 168
     
     #
     # Return the value (as a short) of the field 'data13'
@@ -1448,7 +1499,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data14
     #   Field type: short
-    #   Offset (bits): 168
+    #   Offset (bits): 176
     #   Size (bits): 8
     #
 
@@ -1468,13 +1519,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data14'
     #
     def offset_data14(self):
-        return (168 / 8)
+        return (176 / 8)
     
     #
     # Return the offset (in bits) of the field 'data14'
     #
     def offsetBits_data14(self):
-        return 168
+        return 176
     
     #
     # Return the value (as a short) of the field 'data14'
@@ -1503,7 +1554,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data15
     #   Field type: short
-    #   Offset (bits): 176
+    #   Offset (bits): 184
     #   Size (bits): 8
     #
 
@@ -1523,13 +1574,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data15'
     #
     def offset_data15(self):
-        return (176 / 8)
+        return (184 / 8)
     
     #
     # Return the offset (in bits) of the field 'data15'
     #
     def offsetBits_data15(self):
-        return 176
+        return 184
     
     #
     # Return the value (as a short) of the field 'data15'
@@ -1558,7 +1609,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data16
     #   Field type: short
-    #   Offset (bits): 184
+    #   Offset (bits): 192
     #   Size (bits): 8
     #
 
@@ -1578,13 +1629,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data16'
     #
     def offset_data16(self):
-        return (184 / 8)
+        return (192 / 8)
     
     #
     # Return the offset (in bits) of the field 'data16'
     #
     def offsetBits_data16(self):
-        return 184
+        return 192
     
     #
     # Return the value (as a short) of the field 'data16'
@@ -1613,7 +1664,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data17
     #   Field type: short
-    #   Offset (bits): 192
+    #   Offset (bits): 200
     #   Size (bits): 8
     #
 
@@ -1633,13 +1684,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data17'
     #
     def offset_data17(self):
-        return (192 / 8)
+        return (200 / 8)
     
     #
     # Return the offset (in bits) of the field 'data17'
     #
     def offsetBits_data17(self):
-        return 192
+        return 200
     
     #
     # Return the value (as a short) of the field 'data17'
@@ -1668,7 +1719,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data18
     #   Field type: short
-    #   Offset (bits): 200
+    #   Offset (bits): 208
     #   Size (bits): 8
     #
 
@@ -1688,13 +1739,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data18'
     #
     def offset_data18(self):
-        return (200 / 8)
+        return (208 / 8)
     
     #
     # Return the offset (in bits) of the field 'data18'
     #
     def offsetBits_data18(self):
-        return 200
+        return 208
     
     #
     # Return the value (as a short) of the field 'data18'
@@ -1723,7 +1774,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data19
     #   Field type: short
-    #   Offset (bits): 208
+    #   Offset (bits): 216
     #   Size (bits): 8
     #
 
@@ -1743,13 +1794,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data19'
     #
     def offset_data19(self):
-        return (208 / 8)
+        return (216 / 8)
     
     #
     # Return the offset (in bits) of the field 'data19'
     #
     def offsetBits_data19(self):
-        return 208
+        return 216
     
     #
     # Return the value (as a short) of the field 'data19'
@@ -1778,7 +1829,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data20
     #   Field type: short
-    #   Offset (bits): 216
+    #   Offset (bits): 224
     #   Size (bits): 8
     #
 
@@ -1798,13 +1849,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data20'
     #
     def offset_data20(self):
-        return (216 / 8)
+        return (224 / 8)
     
     #
     # Return the offset (in bits) of the field 'data20'
     #
     def offsetBits_data20(self):
-        return 216
+        return 224
     
     #
     # Return the value (as a short) of the field 'data20'
@@ -1833,7 +1884,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data21
     #   Field type: short
-    #   Offset (bits): 224
+    #   Offset (bits): 232
     #   Size (bits): 8
     #
 
@@ -1853,13 +1904,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data21'
     #
     def offset_data21(self):
-        return (224 / 8)
+        return (232 / 8)
     
     #
     # Return the offset (in bits) of the field 'data21'
     #
     def offsetBits_data21(self):
-        return 224
+        return 232
     
     #
     # Return the value (as a short) of the field 'data21'
@@ -1888,7 +1939,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data22
     #   Field type: short
-    #   Offset (bits): 232
+    #   Offset (bits): 240
     #   Size (bits): 8
     #
 
@@ -1908,13 +1959,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data22'
     #
     def offset_data22(self):
-        return (232 / 8)
+        return (240 / 8)
     
     #
     # Return the offset (in bits) of the field 'data22'
     #
     def offsetBits_data22(self):
-        return 232
+        return 240
     
     #
     # Return the value (as a short) of the field 'data22'
@@ -1943,7 +1994,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data23
     #   Field type: short
-    #   Offset (bits): 240
+    #   Offset (bits): 248
     #   Size (bits): 8
     #
 
@@ -1963,13 +2014,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data23'
     #
     def offset_data23(self):
-        return (240 / 8)
+        return (248 / 8)
     
     #
     # Return the offset (in bits) of the field 'data23'
     #
     def offsetBits_data23(self):
-        return 240
+        return 248
     
     #
     # Return the value (as a short) of the field 'data23'
@@ -1998,7 +2049,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data24
     #   Field type: short
-    #   Offset (bits): 248
+    #   Offset (bits): 256
     #   Size (bits): 8
     #
 
@@ -2018,13 +2069,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data24'
     #
     def offset_data24(self):
-        return (248 / 8)
+        return (256 / 8)
     
     #
     # Return the offset (in bits) of the field 'data24'
     #
     def offsetBits_data24(self):
-        return 248
+        return 256
     
     #
     # Return the value (as a short) of the field 'data24'
@@ -2053,7 +2104,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data25
     #   Field type: short
-    #   Offset (bits): 256
+    #   Offset (bits): 264
     #   Size (bits): 8
     #
 
@@ -2073,13 +2124,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data25'
     #
     def offset_data25(self):
-        return (256 / 8)
+        return (264 / 8)
     
     #
     # Return the offset (in bits) of the field 'data25'
     #
     def offsetBits_data25(self):
-        return 256
+        return 264
     
     #
     # Return the value (as a short) of the field 'data25'
@@ -2108,7 +2159,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data26
     #   Field type: short
-    #   Offset (bits): 264
+    #   Offset (bits): 272
     #   Size (bits): 8
     #
 
@@ -2128,13 +2179,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data26'
     #
     def offset_data26(self):
-        return (264 / 8)
+        return (272 / 8)
     
     #
     # Return the offset (in bits) of the field 'data26'
     #
     def offsetBits_data26(self):
-        return 264
+        return 272
     
     #
     # Return the value (as a short) of the field 'data26'
@@ -2163,7 +2214,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data27
     #   Field type: short
-    #   Offset (bits): 272
+    #   Offset (bits): 280
     #   Size (bits): 8
     #
 
@@ -2183,13 +2234,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data27'
     #
     def offset_data27(self):
-        return (272 / 8)
+        return (280 / 8)
     
     #
     # Return the offset (in bits) of the field 'data27'
     #
     def offsetBits_data27(self):
-        return 272
+        return 280
     
     #
     # Return the value (as a short) of the field 'data27'
@@ -2218,7 +2269,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data28
     #   Field type: short
-    #   Offset (bits): 280
+    #   Offset (bits): 288
     #   Size (bits): 8
     #
 
@@ -2238,13 +2289,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data28'
     #
     def offset_data28(self):
-        return (280 / 8)
+        return (288 / 8)
     
     #
     # Return the offset (in bits) of the field 'data28'
     #
     def offsetBits_data28(self):
-        return 280
+        return 288
     
     #
     # Return the value (as a short) of the field 'data28'
@@ -2273,7 +2324,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data29
     #   Field type: short
-    #   Offset (bits): 288
+    #   Offset (bits): 296
     #   Size (bits): 8
     #
 
@@ -2293,13 +2344,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data29'
     #
     def offset_data29(self):
-        return (288 / 8)
+        return (296 / 8)
     
     #
     # Return the offset (in bits) of the field 'data29'
     #
     def offsetBits_data29(self):
-        return 288
+        return 296
     
     #
     # Return the value (as a short) of the field 'data29'
@@ -2328,7 +2379,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data30
     #   Field type: short
-    #   Offset (bits): 296
+    #   Offset (bits): 304
     #   Size (bits): 8
     #
 
@@ -2348,13 +2399,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data30'
     #
     def offset_data30(self):
-        return (296 / 8)
+        return (304 / 8)
     
     #
     # Return the offset (in bits) of the field 'data30'
     #
     def offsetBits_data30(self):
-        return 296
+        return 304
     
     #
     # Return the value (as a short) of the field 'data30'
@@ -2383,7 +2434,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data31
     #   Field type: short
-    #   Offset (bits): 304
+    #   Offset (bits): 312
     #   Size (bits): 8
     #
 
@@ -2403,13 +2454,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data31'
     #
     def offset_data31(self):
-        return (304 / 8)
+        return (312 / 8)
     
     #
     # Return the offset (in bits) of the field 'data31'
     #
     def offsetBits_data31(self):
-        return 304
+        return 312
     
     #
     # Return the value (as a short) of the field 'data31'
@@ -2438,7 +2489,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data32
     #   Field type: short
-    #   Offset (bits): 312
+    #   Offset (bits): 320
     #   Size (bits): 8
     #
 
@@ -2458,13 +2509,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data32'
     #
     def offset_data32(self):
-        return (312 / 8)
+        return (320 / 8)
     
     #
     # Return the offset (in bits) of the field 'data32'
     #
     def offsetBits_data32(self):
-        return 312
+        return 320
     
     #
     # Return the value (as a short) of the field 'data32'
@@ -2493,7 +2544,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data33
     #   Field type: short
-    #   Offset (bits): 320
+    #   Offset (bits): 328
     #   Size (bits): 8
     #
 
@@ -2513,13 +2564,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data33'
     #
     def offset_data33(self):
-        return (320 / 8)
+        return (328 / 8)
     
     #
     # Return the offset (in bits) of the field 'data33'
     #
     def offsetBits_data33(self):
-        return 320
+        return 328
     
     #
     # Return the value (as a short) of the field 'data33'
@@ -2548,7 +2599,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data34
     #   Field type: short
-    #   Offset (bits): 328
+    #   Offset (bits): 336
     #   Size (bits): 8
     #
 
@@ -2568,13 +2619,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data34'
     #
     def offset_data34(self):
-        return (328 / 8)
+        return (336 / 8)
     
     #
     # Return the offset (in bits) of the field 'data34'
     #
     def offsetBits_data34(self):
-        return 328
+        return 336
     
     #
     # Return the value (as a short) of the field 'data34'
@@ -2603,7 +2654,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data35
     #   Field type: short
-    #   Offset (bits): 336
+    #   Offset (bits): 344
     #   Size (bits): 8
     #
 
@@ -2623,13 +2674,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data35'
     #
     def offset_data35(self):
-        return (336 / 8)
+        return (344 / 8)
     
     #
     # Return the offset (in bits) of the field 'data35'
     #
     def offsetBits_data35(self):
-        return 336
+        return 344
     
     #
     # Return the value (as a short) of the field 'data35'
@@ -2658,7 +2709,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data36
     #   Field type: short
-    #   Offset (bits): 344
+    #   Offset (bits): 352
     #   Size (bits): 8
     #
 
@@ -2678,13 +2729,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data36'
     #
     def offset_data36(self):
-        return (344 / 8)
+        return (352 / 8)
     
     #
     # Return the offset (in bits) of the field 'data36'
     #
     def offsetBits_data36(self):
-        return 344
+        return 352
     
     #
     # Return the value (as a short) of the field 'data36'
@@ -2713,7 +2764,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data37
     #   Field type: short
-    #   Offset (bits): 352
+    #   Offset (bits): 360
     #   Size (bits): 8
     #
 
@@ -2733,13 +2784,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data37'
     #
     def offset_data37(self):
-        return (352 / 8)
+        return (360 / 8)
     
     #
     # Return the offset (in bits) of the field 'data37'
     #
     def offsetBits_data37(self):
-        return 352
+        return 360
     
     #
     # Return the value (as a short) of the field 'data37'
@@ -2768,7 +2819,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data38
     #   Field type: short
-    #   Offset (bits): 360
+    #   Offset (bits): 368
     #   Size (bits): 8
     #
 
@@ -2788,13 +2839,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data38'
     #
     def offset_data38(self):
-        return (360 / 8)
+        return (368 / 8)
     
     #
     # Return the offset (in bits) of the field 'data38'
     #
     def offsetBits_data38(self):
-        return 360
+        return 368
     
     #
     # Return the value (as a short) of the field 'data38'
@@ -2823,7 +2874,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data39
     #   Field type: short
-    #   Offset (bits): 368
+    #   Offset (bits): 376
     #   Size (bits): 8
     #
 
@@ -2843,13 +2894,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data39'
     #
     def offset_data39(self):
-        return (368 / 8)
+        return (376 / 8)
     
     #
     # Return the offset (in bits) of the field 'data39'
     #
     def offsetBits_data39(self):
-        return 368
+        return 376
     
     #
     # Return the value (as a short) of the field 'data39'
@@ -2878,7 +2929,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data40
     #   Field type: short
-    #   Offset (bits): 376
+    #   Offset (bits): 384
     #   Size (bits): 8
     #
 
@@ -2898,13 +2949,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data40'
     #
     def offset_data40(self):
-        return (376 / 8)
+        return (384 / 8)
     
     #
     # Return the offset (in bits) of the field 'data40'
     #
     def offsetBits_data40(self):
-        return 376
+        return 384
     
     #
     # Return the value (as a short) of the field 'data40'
@@ -2933,7 +2984,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data41
     #   Field type: short
-    #   Offset (bits): 384
+    #   Offset (bits): 392
     #   Size (bits): 8
     #
 
@@ -2953,13 +3004,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data41'
     #
     def offset_data41(self):
-        return (384 / 8)
+        return (392 / 8)
     
     #
     # Return the offset (in bits) of the field 'data41'
     #
     def offsetBits_data41(self):
-        return 384
+        return 392
     
     #
     # Return the value (as a short) of the field 'data41'
@@ -2988,7 +3039,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data42
     #   Field type: short
-    #   Offset (bits): 392
+    #   Offset (bits): 400
     #   Size (bits): 8
     #
 
@@ -3008,13 +3059,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data42'
     #
     def offset_data42(self):
-        return (392 / 8)
+        return (400 / 8)
     
     #
     # Return the offset (in bits) of the field 'data42'
     #
     def offsetBits_data42(self):
-        return 392
+        return 400
     
     #
     # Return the value (as a short) of the field 'data42'
@@ -3043,7 +3094,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data43
     #   Field type: short
-    #   Offset (bits): 400
+    #   Offset (bits): 408
     #   Size (bits): 8
     #
 
@@ -3063,13 +3114,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data43'
     #
     def offset_data43(self):
-        return (400 / 8)
+        return (408 / 8)
     
     #
     # Return the offset (in bits) of the field 'data43'
     #
     def offsetBits_data43(self):
-        return 400
+        return 408
     
     #
     # Return the value (as a short) of the field 'data43'
@@ -3098,7 +3149,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data44
     #   Field type: short
-    #   Offset (bits): 408
+    #   Offset (bits): 416
     #   Size (bits): 8
     #
 
@@ -3118,13 +3169,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data44'
     #
     def offset_data44(self):
-        return (408 / 8)
+        return (416 / 8)
     
     #
     # Return the offset (in bits) of the field 'data44'
     #
     def offsetBits_data44(self):
-        return 408
+        return 416
     
     #
     # Return the value (as a short) of the field 'data44'
@@ -3153,7 +3204,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data45
     #   Field type: short
-    #   Offset (bits): 416
+    #   Offset (bits): 424
     #   Size (bits): 8
     #
 
@@ -3173,13 +3224,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data45'
     #
     def offset_data45(self):
-        return (416 / 8)
+        return (424 / 8)
     
     #
     # Return the offset (in bits) of the field 'data45'
     #
     def offsetBits_data45(self):
-        return 416
+        return 424
     
     #
     # Return the value (as a short) of the field 'data45'
@@ -3208,7 +3259,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data46
     #   Field type: short
-    #   Offset (bits): 424
+    #   Offset (bits): 432
     #   Size (bits): 8
     #
 
@@ -3228,13 +3279,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data46'
     #
     def offset_data46(self):
-        return (424 / 8)
+        return (432 / 8)
     
     #
     # Return the offset (in bits) of the field 'data46'
     #
     def offsetBits_data46(self):
-        return 424
+        return 432
     
     #
     # Return the value (as a short) of the field 'data46'
@@ -3263,7 +3314,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data47
     #   Field type: short
-    #   Offset (bits): 432
+    #   Offset (bits): 440
     #   Size (bits): 8
     #
 
@@ -3283,13 +3334,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data47'
     #
     def offset_data47(self):
-        return (432 / 8)
+        return (440 / 8)
     
     #
     # Return the offset (in bits) of the field 'data47'
     #
     def offsetBits_data47(self):
-        return 432
+        return 440
     
     #
     # Return the value (as a short) of the field 'data47'
@@ -3318,7 +3369,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data48
     #   Field type: short
-    #   Offset (bits): 440
+    #   Offset (bits): 448
     #   Size (bits): 8
     #
 
@@ -3338,13 +3389,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data48'
     #
     def offset_data48(self):
-        return (440 / 8)
+        return (448 / 8)
     
     #
     # Return the offset (in bits) of the field 'data48'
     #
     def offsetBits_data48(self):
-        return 440
+        return 448
     
     #
     # Return the value (as a short) of the field 'data48'
@@ -3373,7 +3424,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data49
     #   Field type: short
-    #   Offset (bits): 448
+    #   Offset (bits): 456
     #   Size (bits): 8
     #
 
@@ -3393,13 +3444,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data49'
     #
     def offset_data49(self):
-        return (448 / 8)
+        return (456 / 8)
     
     #
     # Return the offset (in bits) of the field 'data49'
     #
     def offsetBits_data49(self):
-        return 448
+        return 456
     
     #
     # Return the value (as a short) of the field 'data49'
@@ -3428,7 +3479,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data50
     #   Field type: short
-    #   Offset (bits): 456
+    #   Offset (bits): 464
     #   Size (bits): 8
     #
 
@@ -3448,13 +3499,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data50'
     #
     def offset_data50(self):
-        return (456 / 8)
+        return (464 / 8)
     
     #
     # Return the offset (in bits) of the field 'data50'
     #
     def offsetBits_data50(self):
-        return 456
+        return 464
     
     #
     # Return the value (as a short) of the field 'data50'
@@ -3483,7 +3534,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data51
     #   Field type: short
-    #   Offset (bits): 464
+    #   Offset (bits): 472
     #   Size (bits): 8
     #
 
@@ -3503,13 +3554,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data51'
     #
     def offset_data51(self):
-        return (464 / 8)
+        return (472 / 8)
     
     #
     # Return the offset (in bits) of the field 'data51'
     #
     def offsetBits_data51(self):
-        return 464
+        return 472
     
     #
     # Return the value (as a short) of the field 'data51'
@@ -3538,7 +3589,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data52
     #   Field type: short
-    #   Offset (bits): 472
+    #   Offset (bits): 480
     #   Size (bits): 8
     #
 
@@ -3558,13 +3609,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data52'
     #
     def offset_data52(self):
-        return (472 / 8)
+        return (480 / 8)
     
     #
     # Return the offset (in bits) of the field 'data52'
     #
     def offsetBits_data52(self):
-        return 472
+        return 480
     
     #
     # Return the value (as a short) of the field 'data52'
@@ -3593,7 +3644,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data53
     #   Field type: short
-    #   Offset (bits): 480
+    #   Offset (bits): 488
     #   Size (bits): 8
     #
 
@@ -3613,13 +3664,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data53'
     #
     def offset_data53(self):
-        return (480 / 8)
+        return (488 / 8)
     
     #
     # Return the offset (in bits) of the field 'data53'
     #
     def offsetBits_data53(self):
-        return 480
+        return 488
     
     #
     # Return the value (as a short) of the field 'data53'
@@ -3648,7 +3699,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data54
     #   Field type: short
-    #   Offset (bits): 488
+    #   Offset (bits): 496
     #   Size (bits): 8
     #
 
@@ -3668,13 +3719,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data54'
     #
     def offset_data54(self):
-        return (488 / 8)
+        return (496 / 8)
     
     #
     # Return the offset (in bits) of the field 'data54'
     #
     def offsetBits_data54(self):
-        return 488
+        return 496
     
     #
     # Return the value (as a short) of the field 'data54'
@@ -3703,7 +3754,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data55
     #   Field type: short
-    #   Offset (bits): 496
+    #   Offset (bits): 504
     #   Size (bits): 8
     #
 
@@ -3723,13 +3774,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data55'
     #
     def offset_data55(self):
-        return (496 / 8)
+        return (504 / 8)
     
     #
     # Return the offset (in bits) of the field 'data55'
     #
     def offsetBits_data55(self):
-        return 496
+        return 504
     
     #
     # Return the value (as a short) of the field 'data55'
@@ -3758,7 +3809,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data56
     #   Field type: short
-    #   Offset (bits): 504
+    #   Offset (bits): 512
     #   Size (bits): 8
     #
 
@@ -3778,13 +3829,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data56'
     #
     def offset_data56(self):
-        return (504 / 8)
+        return (512 / 8)
     
     #
     # Return the offset (in bits) of the field 'data56'
     #
     def offsetBits_data56(self):
-        return 504
+        return 512
     
     #
     # Return the value (as a short) of the field 'data56'
@@ -3813,7 +3864,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data57
     #   Field type: short
-    #   Offset (bits): 512
+    #   Offset (bits): 520
     #   Size (bits): 8
     #
 
@@ -3833,13 +3884,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data57'
     #
     def offset_data57(self):
-        return (512 / 8)
+        return (520 / 8)
     
     #
     # Return the offset (in bits) of the field 'data57'
     #
     def offsetBits_data57(self):
-        return 512
+        return 520
     
     #
     # Return the value (as a short) of the field 'data57'
@@ -3868,7 +3919,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data58
     #   Field type: short
-    #   Offset (bits): 520
+    #   Offset (bits): 528
     #   Size (bits): 8
     #
 
@@ -3888,13 +3939,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data58'
     #
     def offset_data58(self):
-        return (520 / 8)
+        return (528 / 8)
     
     #
     # Return the offset (in bits) of the field 'data58'
     #
     def offsetBits_data58(self):
-        return 520
+        return 528
     
     #
     # Return the value (as a short) of the field 'data58'
@@ -3923,7 +3974,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data59
     #   Field type: short
-    #   Offset (bits): 528
+    #   Offset (bits): 536
     #   Size (bits): 8
     #
 
@@ -3943,13 +3994,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data59'
     #
     def offset_data59(self):
-        return (528 / 8)
+        return (536 / 8)
     
     #
     # Return the offset (in bits) of the field 'data59'
     #
     def offsetBits_data59(self):
-        return 528
+        return 536
     
     #
     # Return the value (as a short) of the field 'data59'
@@ -3978,7 +4029,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data60
     #   Field type: short
-    #   Offset (bits): 536
+    #   Offset (bits): 544
     #   Size (bits): 8
     #
 
@@ -3998,13 +4049,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data60'
     #
     def offset_data60(self):
-        return (536 / 8)
+        return (544 / 8)
     
     #
     # Return the offset (in bits) of the field 'data60'
     #
     def offsetBits_data60(self):
-        return 536
+        return 544
     
     #
     # Return the value (as a short) of the field 'data60'
@@ -4033,7 +4084,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data61
     #   Field type: short
-    #   Offset (bits): 544
+    #   Offset (bits): 552
     #   Size (bits): 8
     #
 
@@ -4053,13 +4104,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data61'
     #
     def offset_data61(self):
-        return (544 / 8)
+        return (552 / 8)
     
     #
     # Return the offset (in bits) of the field 'data61'
     #
     def offsetBits_data61(self):
-        return 544
+        return 552
     
     #
     # Return the value (as a short) of the field 'data61'
@@ -4088,7 +4139,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data62
     #   Field type: short
-    #   Offset (bits): 552
+    #   Offset (bits): 560
     #   Size (bits): 8
     #
 
@@ -4108,13 +4159,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data62'
     #
     def offset_data62(self):
-        return (552 / 8)
+        return (560 / 8)
     
     #
     # Return the offset (in bits) of the field 'data62'
     #
     def offsetBits_data62(self):
-        return 552
+        return 560
     
     #
     # Return the value (as a short) of the field 'data62'
@@ -4143,7 +4194,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data63
     #   Field type: short
-    #   Offset (bits): 560
+    #   Offset (bits): 568
     #   Size (bits): 8
     #
 
@@ -4163,13 +4214,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data63'
     #
     def offset_data63(self):
-        return (560 / 8)
+        return (568 / 8)
     
     #
     # Return the offset (in bits) of the field 'data63'
     #
     def offsetBits_data63(self):
-        return 560
+        return 568
     
     #
     # Return the value (as a short) of the field 'data63'
@@ -4198,7 +4249,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data64
     #   Field type: short
-    #   Offset (bits): 568
+    #   Offset (bits): 576
     #   Size (bits): 8
     #
 
@@ -4218,13 +4269,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data64'
     #
     def offset_data64(self):
-        return (568 / 8)
+        return (576 / 8)
     
     #
     # Return the offset (in bits) of the field 'data64'
     #
     def offsetBits_data64(self):
-        return 568
+        return 576
     
     #
     # Return the value (as a short) of the field 'data64'
@@ -4253,7 +4304,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data65
     #   Field type: short
-    #   Offset (bits): 576
+    #   Offset (bits): 584
     #   Size (bits): 8
     #
 
@@ -4273,13 +4324,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data65'
     #
     def offset_data65(self):
-        return (576 / 8)
+        return (584 / 8)
     
     #
     # Return the offset (in bits) of the field 'data65'
     #
     def offsetBits_data65(self):
-        return 576
+        return 584
     
     #
     # Return the value (as a short) of the field 'data65'
@@ -4308,7 +4359,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data66
     #   Field type: short
-    #   Offset (bits): 584
+    #   Offset (bits): 592
     #   Size (bits): 8
     #
 
@@ -4328,13 +4379,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data66'
     #
     def offset_data66(self):
-        return (584 / 8)
+        return (592 / 8)
     
     #
     # Return the offset (in bits) of the field 'data66'
     #
     def offsetBits_data66(self):
-        return 584
+        return 592
     
     #
     # Return the value (as a short) of the field 'data66'
@@ -4363,7 +4414,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data67
     #   Field type: short
-    #   Offset (bits): 592
+    #   Offset (bits): 600
     #   Size (bits): 8
     #
 
@@ -4383,13 +4434,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data67'
     #
     def offset_data67(self):
-        return (592 / 8)
+        return (600 / 8)
     
     #
     # Return the offset (in bits) of the field 'data67'
     #
     def offsetBits_data67(self):
-        return 592
+        return 600
     
     #
     # Return the value (as a short) of the field 'data67'
@@ -4418,7 +4469,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data68
     #   Field type: short
-    #   Offset (bits): 600
+    #   Offset (bits): 608
     #   Size (bits): 8
     #
 
@@ -4438,13 +4489,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data68'
     #
     def offset_data68(self):
-        return (600 / 8)
+        return (608 / 8)
     
     #
     # Return the offset (in bits) of the field 'data68'
     #
     def offsetBits_data68(self):
-        return 600
+        return 608
     
     #
     # Return the value (as a short) of the field 'data68'
@@ -4473,7 +4524,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data69
     #   Field type: short
-    #   Offset (bits): 608
+    #   Offset (bits): 616
     #   Size (bits): 8
     #
 
@@ -4493,13 +4544,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data69'
     #
     def offset_data69(self):
-        return (608 / 8)
+        return (616 / 8)
     
     #
     # Return the offset (in bits) of the field 'data69'
     #
     def offsetBits_data69(self):
-        return 608
+        return 616
     
     #
     # Return the value (as a short) of the field 'data69'
@@ -4528,7 +4579,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data70
     #   Field type: short
-    #   Offset (bits): 616
+    #   Offset (bits): 624
     #   Size (bits): 8
     #
 
@@ -4548,13 +4599,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data70'
     #
     def offset_data70(self):
-        return (616 / 8)
+        return (624 / 8)
     
     #
     # Return the offset (in bits) of the field 'data70'
     #
     def offsetBits_data70(self):
-        return 616
+        return 624
     
     #
     # Return the value (as a short) of the field 'data70'
@@ -4583,7 +4634,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data71
     #   Field type: short
-    #   Offset (bits): 624
+    #   Offset (bits): 632
     #   Size (bits): 8
     #
 
@@ -4603,13 +4654,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data71'
     #
     def offset_data71(self):
-        return (624 / 8)
+        return (632 / 8)
     
     #
     # Return the offset (in bits) of the field 'data71'
     #
     def offsetBits_data71(self):
-        return 624
+        return 632
     
     #
     # Return the value (as a short) of the field 'data71'
@@ -4638,7 +4689,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data72
     #   Field type: short
-    #   Offset (bits): 632
+    #   Offset (bits): 640
     #   Size (bits): 8
     #
 
@@ -4658,13 +4709,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data72'
     #
     def offset_data72(self):
-        return (632 / 8)
+        return (640 / 8)
     
     #
     # Return the offset (in bits) of the field 'data72'
     #
     def offsetBits_data72(self):
-        return 632
+        return 640
     
     #
     # Return the value (as a short) of the field 'data72'
@@ -4693,7 +4744,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data73
     #   Field type: short
-    #   Offset (bits): 640
+    #   Offset (bits): 648
     #   Size (bits): 8
     #
 
@@ -4713,13 +4764,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data73'
     #
     def offset_data73(self):
-        return (640 / 8)
+        return (648 / 8)
     
     #
     # Return the offset (in bits) of the field 'data73'
     #
     def offsetBits_data73(self):
-        return 640
+        return 648
     
     #
     # Return the value (as a short) of the field 'data73'
@@ -4748,7 +4799,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data74
     #   Field type: short
-    #   Offset (bits): 648
+    #   Offset (bits): 656
     #   Size (bits): 8
     #
 
@@ -4768,13 +4819,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data74'
     #
     def offset_data74(self):
-        return (648 / 8)
+        return (656 / 8)
     
     #
     # Return the offset (in bits) of the field 'data74'
     #
     def offsetBits_data74(self):
-        return 648
+        return 656
     
     #
     # Return the value (as a short) of the field 'data74'
@@ -4803,7 +4854,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data75
     #   Field type: short
-    #   Offset (bits): 656
+    #   Offset (bits): 664
     #   Size (bits): 8
     #
 
@@ -4823,13 +4874,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data75'
     #
     def offset_data75(self):
-        return (656 / 8)
+        return (664 / 8)
     
     #
     # Return the offset (in bits) of the field 'data75'
     #
     def offsetBits_data75(self):
-        return 656
+        return 664
     
     #
     # Return the value (as a short) of the field 'data75'
@@ -4858,7 +4909,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data76
     #   Field type: short
-    #   Offset (bits): 664
+    #   Offset (bits): 672
     #   Size (bits): 8
     #
 
@@ -4878,13 +4929,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data76'
     #
     def offset_data76(self):
-        return (664 / 8)
+        return (672 / 8)
     
     #
     # Return the offset (in bits) of the field 'data76'
     #
     def offsetBits_data76(self):
-        return 664
+        return 672
     
     #
     # Return the value (as a short) of the field 'data76'
@@ -4913,7 +4964,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data77
     #   Field type: short
-    #   Offset (bits): 672
+    #   Offset (bits): 680
     #   Size (bits): 8
     #
 
@@ -4933,13 +4984,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data77'
     #
     def offset_data77(self):
-        return (672 / 8)
+        return (680 / 8)
     
     #
     # Return the offset (in bits) of the field 'data77'
     #
     def offsetBits_data77(self):
-        return 672
+        return 680
     
     #
     # Return the value (as a short) of the field 'data77'
@@ -4968,7 +5019,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data78
     #   Field type: short
-    #   Offset (bits): 680
+    #   Offset (bits): 688
     #   Size (bits): 8
     #
 
@@ -4988,13 +5039,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data78'
     #
     def offset_data78(self):
-        return (680 / 8)
+        return (688 / 8)
     
     #
     # Return the offset (in bits) of the field 'data78'
     #
     def offsetBits_data78(self):
-        return 680
+        return 688
     
     #
     # Return the value (as a short) of the field 'data78'
@@ -5023,7 +5074,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data79
     #   Field type: short
-    #   Offset (bits): 688
+    #   Offset (bits): 696
     #   Size (bits): 8
     #
 
@@ -5043,13 +5094,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data79'
     #
     def offset_data79(self):
-        return (688 / 8)
+        return (696 / 8)
     
     #
     # Return the offset (in bits) of the field 'data79'
     #
     def offsetBits_data79(self):
-        return 688
+        return 696
     
     #
     # Return the value (as a short) of the field 'data79'
@@ -5078,7 +5129,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data80
     #   Field type: short
-    #   Offset (bits): 696
+    #   Offset (bits): 704
     #   Size (bits): 8
     #
 
@@ -5098,13 +5149,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data80'
     #
     def offset_data80(self):
-        return (696 / 8)
+        return (704 / 8)
     
     #
     # Return the offset (in bits) of the field 'data80'
     #
     def offsetBits_data80(self):
-        return 696
+        return 704
     
     #
     # Return the value (as a short) of the field 'data80'
@@ -5133,7 +5184,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data81
     #   Field type: short
-    #   Offset (bits): 704
+    #   Offset (bits): 712
     #   Size (bits): 8
     #
 
@@ -5153,13 +5204,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data81'
     #
     def offset_data81(self):
-        return (704 / 8)
+        return (712 / 8)
     
     #
     # Return the offset (in bits) of the field 'data81'
     #
     def offsetBits_data81(self):
-        return 704
+        return 712
     
     #
     # Return the value (as a short) of the field 'data81'
@@ -5188,7 +5239,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data82
     #   Field type: short
-    #   Offset (bits): 712
+    #   Offset (bits): 720
     #   Size (bits): 8
     #
 
@@ -5208,13 +5259,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data82'
     #
     def offset_data82(self):
-        return (712 / 8)
+        return (720 / 8)
     
     #
     # Return the offset (in bits) of the field 'data82'
     #
     def offsetBits_data82(self):
-        return 712
+        return 720
     
     #
     # Return the value (as a short) of the field 'data82'
@@ -5243,7 +5294,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data83
     #   Field type: short
-    #   Offset (bits): 720
+    #   Offset (bits): 728
     #   Size (bits): 8
     #
 
@@ -5263,13 +5314,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data83'
     #
     def offset_data83(self):
-        return (720 / 8)
+        return (728 / 8)
     
     #
     # Return the offset (in bits) of the field 'data83'
     #
     def offsetBits_data83(self):
-        return 720
+        return 728
     
     #
     # Return the value (as a short) of the field 'data83'
@@ -5298,7 +5349,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data84
     #   Field type: short
-    #   Offset (bits): 728
+    #   Offset (bits): 736
     #   Size (bits): 8
     #
 
@@ -5318,13 +5369,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data84'
     #
     def offset_data84(self):
-        return (728 / 8)
+        return (736 / 8)
     
     #
     # Return the offset (in bits) of the field 'data84'
     #
     def offsetBits_data84(self):
-        return 728
+        return 736
     
     #
     # Return the value (as a short) of the field 'data84'
@@ -5353,7 +5404,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data85
     #   Field type: short
-    #   Offset (bits): 736
+    #   Offset (bits): 744
     #   Size (bits): 8
     #
 
@@ -5373,13 +5424,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data85'
     #
     def offset_data85(self):
-        return (736 / 8)
+        return (744 / 8)
     
     #
     # Return the offset (in bits) of the field 'data85'
     #
     def offsetBits_data85(self):
-        return 736
+        return 744
     
     #
     # Return the value (as a short) of the field 'data85'
@@ -5408,7 +5459,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data86
     #   Field type: short
-    #   Offset (bits): 744
+    #   Offset (bits): 752
     #   Size (bits): 8
     #
 
@@ -5428,13 +5479,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data86'
     #
     def offset_data86(self):
-        return (744 / 8)
+        return (752 / 8)
     
     #
     # Return the offset (in bits) of the field 'data86'
     #
     def offsetBits_data86(self):
-        return 744
+        return 752
     
     #
     # Return the value (as a short) of the field 'data86'
@@ -5463,7 +5514,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data87
     #   Field type: short
-    #   Offset (bits): 752
+    #   Offset (bits): 760
     #   Size (bits): 8
     #
 
@@ -5483,13 +5534,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data87'
     #
     def offset_data87(self):
-        return (752 / 8)
+        return (760 / 8)
     
     #
     # Return the offset (in bits) of the field 'data87'
     #
     def offsetBits_data87(self):
-        return 752
+        return 760
     
     #
     # Return the value (as a short) of the field 'data87'
@@ -5518,7 +5569,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data88
     #   Field type: short
-    #   Offset (bits): 760
+    #   Offset (bits): 768
     #   Size (bits): 8
     #
 
@@ -5538,13 +5589,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data88'
     #
     def offset_data88(self):
-        return (760 / 8)
+        return (768 / 8)
     
     #
     # Return the offset (in bits) of the field 'data88'
     #
     def offsetBits_data88(self):
-        return 760
+        return 768
     
     #
     # Return the value (as a short) of the field 'data88'
@@ -5573,7 +5624,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data89
     #   Field type: short
-    #   Offset (bits): 768
+    #   Offset (bits): 776
     #   Size (bits): 8
     #
 
@@ -5593,13 +5644,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data89'
     #
     def offset_data89(self):
-        return (768 / 8)
+        return (776 / 8)
     
     #
     # Return the offset (in bits) of the field 'data89'
     #
     def offsetBits_data89(self):
-        return 768
+        return 776
     
     #
     # Return the value (as a short) of the field 'data89'
@@ -5628,7 +5679,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data90
     #   Field type: short
-    #   Offset (bits): 776
+    #   Offset (bits): 784
     #   Size (bits): 8
     #
 
@@ -5648,13 +5699,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data90'
     #
     def offset_data90(self):
-        return (776 / 8)
+        return (784 / 8)
     
     #
     # Return the offset (in bits) of the field 'data90'
     #
     def offsetBits_data90(self):
-        return 776
+        return 784
     
     #
     # Return the value (as a short) of the field 'data90'
@@ -5683,7 +5734,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data91
     #   Field type: short
-    #   Offset (bits): 784
+    #   Offset (bits): 792
     #   Size (bits): 8
     #
 
@@ -5703,13 +5754,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data91'
     #
     def offset_data91(self):
-        return (784 / 8)
+        return (792 / 8)
     
     #
     # Return the offset (in bits) of the field 'data91'
     #
     def offsetBits_data91(self):
-        return 784
+        return 792
     
     #
     # Return the value (as a short) of the field 'data91'
@@ -5738,7 +5789,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data92
     #   Field type: short
-    #   Offset (bits): 792
+    #   Offset (bits): 800
     #   Size (bits): 8
     #
 
@@ -5758,13 +5809,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data92'
     #
     def offset_data92(self):
-        return (792 / 8)
+        return (800 / 8)
     
     #
     # Return the offset (in bits) of the field 'data92'
     #
     def offsetBits_data92(self):
-        return 792
+        return 800
     
     #
     # Return the value (as a short) of the field 'data92'
@@ -5793,7 +5844,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data93
     #   Field type: short
-    #   Offset (bits): 800
+    #   Offset (bits): 808
     #   Size (bits): 8
     #
 
@@ -5813,13 +5864,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data93'
     #
     def offset_data93(self):
-        return (800 / 8)
+        return (808 / 8)
     
     #
     # Return the offset (in bits) of the field 'data93'
     #
     def offsetBits_data93(self):
-        return 800
+        return 808
     
     #
     # Return the value (as a short) of the field 'data93'
@@ -5848,7 +5899,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data94
     #   Field type: short
-    #   Offset (bits): 808
+    #   Offset (bits): 816
     #   Size (bits): 8
     #
 
@@ -5868,13 +5919,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data94'
     #
     def offset_data94(self):
-        return (808 / 8)
+        return (816 / 8)
     
     #
     # Return the offset (in bits) of the field 'data94'
     #
     def offsetBits_data94(self):
-        return 808
+        return 816
     
     #
     # Return the value (as a short) of the field 'data94'
@@ -5903,7 +5954,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data95
     #   Field type: short
-    #   Offset (bits): 816
+    #   Offset (bits): 824
     #   Size (bits): 8
     #
 
@@ -5923,13 +5974,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data95'
     #
     def offset_data95(self):
-        return (816 / 8)
+        return (824 / 8)
     
     #
     # Return the offset (in bits) of the field 'data95'
     #
     def offsetBits_data95(self):
-        return 816
+        return 824
     
     #
     # Return the value (as a short) of the field 'data95'
@@ -5958,7 +6009,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data96
     #   Field type: short
-    #   Offset (bits): 824
+    #   Offset (bits): 832
     #   Size (bits): 8
     #
 
@@ -5978,13 +6029,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data96'
     #
     def offset_data96(self):
-        return (824 / 8)
+        return (832 / 8)
     
     #
     # Return the offset (in bits) of the field 'data96'
     #
     def offsetBits_data96(self):
-        return 824
+        return 832
     
     #
     # Return the value (as a short) of the field 'data96'
@@ -6013,7 +6064,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data97
     #   Field type: short
-    #   Offset (bits): 832
+    #   Offset (bits): 840
     #   Size (bits): 8
     #
 
@@ -6033,13 +6084,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data97'
     #
     def offset_data97(self):
-        return (832 / 8)
+        return (840 / 8)
     
     #
     # Return the offset (in bits) of the field 'data97'
     #
     def offsetBits_data97(self):
-        return 832
+        return 840
     
     #
     # Return the value (as a short) of the field 'data97'
@@ -6068,7 +6119,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data98
     #   Field type: short
-    #   Offset (bits): 840
+    #   Offset (bits): 848
     #   Size (bits): 8
     #
 
@@ -6088,13 +6139,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data98'
     #
     def offset_data98(self):
-        return (840 / 8)
+        return (848 / 8)
     
     #
     # Return the offset (in bits) of the field 'data98'
     #
     def offsetBits_data98(self):
-        return 840
+        return 848
     
     #
     # Return the value (as a short) of the field 'data98'
@@ -6123,7 +6174,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data99
     #   Field type: short
-    #   Offset (bits): 848
+    #   Offset (bits): 856
     #   Size (bits): 8
     #
 
@@ -6143,13 +6194,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data99'
     #
     def offset_data99(self):
-        return (848 / 8)
+        return (856 / 8)
     
     #
     # Return the offset (in bits) of the field 'data99'
     #
     def offsetBits_data99(self):
-        return 848
+        return 856
     
     #
     # Return the value (as a short) of the field 'data99'
@@ -6178,7 +6229,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data100
     #   Field type: short
-    #   Offset (bits): 856
+    #   Offset (bits): 864
     #   Size (bits): 8
     #
 
@@ -6198,13 +6249,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data100'
     #
     def offset_data100(self):
-        return (856 / 8)
+        return (864 / 8)
     
     #
     # Return the offset (in bits) of the field 'data100'
     #
     def offsetBits_data100(self):
-        return 856
+        return 864
     
     #
     # Return the value (as a short) of the field 'data100'
@@ -6233,7 +6284,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data101
     #   Field type: short
-    #   Offset (bits): 864
+    #   Offset (bits): 872
     #   Size (bits): 8
     #
 
@@ -6253,13 +6304,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data101'
     #
     def offset_data101(self):
-        return (864 / 8)
+        return (872 / 8)
     
     #
     # Return the offset (in bits) of the field 'data101'
     #
     def offsetBits_data101(self):
-        return 864
+        return 872
     
     #
     # Return the value (as a short) of the field 'data101'
@@ -6288,7 +6339,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data102
     #   Field type: short
-    #   Offset (bits): 872
+    #   Offset (bits): 880
     #   Size (bits): 8
     #
 
@@ -6308,13 +6359,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data102'
     #
     def offset_data102(self):
-        return (872 / 8)
+        return (880 / 8)
     
     #
     # Return the offset (in bits) of the field 'data102'
     #
     def offsetBits_data102(self):
-        return 872
+        return 880
     
     #
     # Return the value (as a short) of the field 'data102'
@@ -6343,7 +6394,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data103
     #   Field type: short
-    #   Offset (bits): 880
+    #   Offset (bits): 888
     #   Size (bits): 8
     #
 
@@ -6363,13 +6414,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data103'
     #
     def offset_data103(self):
-        return (880 / 8)
+        return (888 / 8)
     
     #
     # Return the offset (in bits) of the field 'data103'
     #
     def offsetBits_data103(self):
-        return 880
+        return 888
     
     #
     # Return the value (as a short) of the field 'data103'
@@ -6398,7 +6449,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data104
     #   Field type: short
-    #   Offset (bits): 888
+    #   Offset (bits): 896
     #   Size (bits): 8
     #
 
@@ -6418,13 +6469,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data104'
     #
     def offset_data104(self):
-        return (888 / 8)
+        return (896 / 8)
     
     #
     # Return the offset (in bits) of the field 'data104'
     #
     def offsetBits_data104(self):
-        return 888
+        return 896
     
     #
     # Return the value (as a short) of the field 'data104'
@@ -6453,7 +6504,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data105
     #   Field type: short
-    #   Offset (bits): 896
+    #   Offset (bits): 904
     #   Size (bits): 8
     #
 
@@ -6473,13 +6524,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data105'
     #
     def offset_data105(self):
-        return (896 / 8)
+        return (904 / 8)
     
     #
     # Return the offset (in bits) of the field 'data105'
     #
     def offsetBits_data105(self):
-        return 896
+        return 904
     
     #
     # Return the value (as a short) of the field 'data105'
@@ -6508,7 +6559,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data106
     #   Field type: short
-    #   Offset (bits): 904
+    #   Offset (bits): 912
     #   Size (bits): 8
     #
 
@@ -6528,13 +6579,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data106'
     #
     def offset_data106(self):
-        return (904 / 8)
+        return (912 / 8)
     
     #
     # Return the offset (in bits) of the field 'data106'
     #
     def offsetBits_data106(self):
-        return 904
+        return 912
     
     #
     # Return the value (as a short) of the field 'data106'
@@ -6563,7 +6614,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data107
     #   Field type: short
-    #   Offset (bits): 912
+    #   Offset (bits): 920
     #   Size (bits): 8
     #
 
@@ -6583,13 +6634,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data107'
     #
     def offset_data107(self):
-        return (912 / 8)
+        return (920 / 8)
     
     #
     # Return the offset (in bits) of the field 'data107'
     #
     def offsetBits_data107(self):
-        return 912
+        return 920
     
     #
     # Return the value (as a short) of the field 'data107'
@@ -6618,7 +6669,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data108
     #   Field type: short
-    #   Offset (bits): 920
+    #   Offset (bits): 928
     #   Size (bits): 8
     #
 
@@ -6638,13 +6689,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data108'
     #
     def offset_data108(self):
-        return (920 / 8)
+        return (928 / 8)
     
     #
     # Return the offset (in bits) of the field 'data108'
     #
     def offsetBits_data108(self):
-        return 920
+        return 928
     
     #
     # Return the value (as a short) of the field 'data108'
@@ -6673,7 +6724,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data109
     #   Field type: short
-    #   Offset (bits): 928
+    #   Offset (bits): 936
     #   Size (bits): 8
     #
 
@@ -6693,13 +6744,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data109'
     #
     def offset_data109(self):
-        return (928 / 8)
+        return (936 / 8)
     
     #
     # Return the offset (in bits) of the field 'data109'
     #
     def offsetBits_data109(self):
-        return 928
+        return 936
     
     #
     # Return the value (as a short) of the field 'data109'
@@ -6728,7 +6779,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: data110
     #   Field type: short
-    #   Offset (bits): 936
+    #   Offset (bits): 944
     #   Size (bits): 8
     #
 
@@ -6748,13 +6799,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'data110'
     #
     def offset_data110(self):
-        return (936 / 8)
+        return (944 / 8)
     
     #
     # Return the offset (in bits) of the field 'data110'
     #
     def offsetBits_data110(self):
-        return 936
+        return 944
     
     #
     # Return the value (as a short) of the field 'data110'
@@ -6781,119 +6832,9 @@ class TestNetworkMsg(Message.Message):
         return 8
     
     #
-    # Accessor methods for field: data111
-    #   Field type: short
-    #   Offset (bits): 944
-    #   Size (bits): 8
-    #
-
-    #
-    # Return whether the field 'data111' is signed (False).
-    #
-    def isSigned_data111(self):
-        return False
-    
-    #
-    # Return whether the field 'data111' is an array (False).
-    #
-    def isArray_data111(self):
-        return False
-    
-    #
-    # Return the offset (in bytes) of the field 'data111'
-    #
-    def offset_data111(self):
-        return (944 / 8)
-    
-    #
-    # Return the offset (in bits) of the field 'data111'
-    #
-    def offsetBits_data111(self):
-        return 944
-    
-    #
-    # Return the value (as a short) of the field 'data111'
-    #
-    def get_data111(self):
-        return self.getUIntElement(self.offsetBits_data111(), 8, 1)
-    
-    #
-    # Set the value of the field 'data111'
-    #
-    def set_data111(self, value):
-        self.setUIntElement(self.offsetBits_data111(), 8, value, 1)
-    
-    #
-    # Return the size, in bytes, of the field 'data111'
-    #
-    def size_data111(self):
-        return (8 / 8)
-    
-    #
-    # Return the size, in bits, of the field 'data111'
-    #
-    def sizeBits_data111(self):
-        return 8
-    
-    #
-    # Accessor methods for field: data112
-    #   Field type: short
-    #   Offset (bits): 952
-    #   Size (bits): 8
-    #
-
-    #
-    # Return whether the field 'data112' is signed (False).
-    #
-    def isSigned_data112(self):
-        return False
-    
-    #
-    # Return whether the field 'data112' is an array (False).
-    #
-    def isArray_data112(self):
-        return False
-    
-    #
-    # Return the offset (in bytes) of the field 'data112'
-    #
-    def offset_data112(self):
-        return (952 / 8)
-    
-    #
-    # Return the offset (in bits) of the field 'data112'
-    #
-    def offsetBits_data112(self):
-        return 952
-    
-    #
-    # Return the value (as a short) of the field 'data112'
-    #
-    def get_data112(self):
-        return self.getUIntElement(self.offsetBits_data112(), 8, 1)
-    
-    #
-    # Set the value of the field 'data112'
-    #
-    def set_data112(self, value):
-        self.setUIntElement(self.offsetBits_data112(), 8, value, 1)
-    
-    #
-    # Return the size, in bytes, of the field 'data112'
-    #
-    def size_data112(self):
-        return (8 / 8)
-    
-    #
-    # Return the size, in bits, of the field 'data112'
-    #
-    def sizeBits_data112(self):
-        return 8
-    
-    #
     # Accessor methods for field: hopcount
     #   Field type: short
-    #   Offset (bits): 960
+    #   Offset (bits): 952
     #   Size (bits): 8
     #
 
@@ -6913,13 +6854,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'hopcount'
     #
     def offset_hopcount(self):
-        return (960 / 8)
+        return (952 / 8)
     
     #
     # Return the offset (in bits) of the field 'hopcount'
     #
     def offsetBits_hopcount(self):
-        return 960
+        return 952
     
     #
     # Return the value (as a short) of the field 'hopcount'
@@ -6948,7 +6889,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: sendCount
     #   Field type: int
-    #   Offset (bits): 968
+    #   Offset (bits): 960
     #   Size (bits): 16
     #
 
@@ -6968,13 +6909,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'sendCount'
     #
     def offset_sendCount(self):
-        return (968 / 8)
+        return (960 / 8)
     
     #
     # Return the offset (in bits) of the field 'sendCount'
     #
     def offsetBits_sendCount(self):
-        return 968
+        return 960
     
     #
     # Return the value (as a int) of the field 'sendCount'
@@ -7003,7 +6944,7 @@ class TestNetworkMsg(Message.Message):
     #
     # Accessor methods for field: sendSuccessCount
     #   Field type: int
-    #   Offset (bits): 984
+    #   Offset (bits): 976
     #   Size (bits): 16
     #
 
@@ -7023,13 +6964,13 @@ class TestNetworkMsg(Message.Message):
     # Return the offset (in bytes) of the field 'sendSuccessCount'
     #
     def offset_sendSuccessCount(self):
-        return (984 / 8)
+        return (976 / 8)
     
     #
     # Return the offset (in bits) of the field 'sendSuccessCount'
     #
     def offsetBits_sendSuccessCount(self):
-        return 984
+        return 976
     
     #
     # Return the value (as a int) of the field 'sendSuccessCount'

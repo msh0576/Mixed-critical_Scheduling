@@ -72,7 +72,7 @@ implementation {
 
 	components SimMoteP; //added by bo, implement the component that has set/get tcp msg methods
 
-	//components CC2420PacketC; //Added by sihoon
+	components ScheduleConfigC; //Added by sihoon
 
 	//provides
 	Init = PureTDMASchedulerP.Init;
@@ -133,5 +133,5 @@ implementation {
 
   //Added by Sihoon
   PureTDMASchedulerP.Alarm -> Alarm32khz16C;
-	//PureTDMASchedulerP.CC2420Packet -> CC2420PacketC;
+	PureTDMASchedulerP.ScheduleConfig -> ScheduleConfigC;
 }

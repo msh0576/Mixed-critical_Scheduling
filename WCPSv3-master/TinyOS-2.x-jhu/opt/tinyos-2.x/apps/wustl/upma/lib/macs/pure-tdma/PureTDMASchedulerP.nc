@@ -36,9 +36,7 @@ module PureTDMASchedulerP {
 		interface SimMote;
 
 		interface Alarm<T32khz, uint16_t>;
-
-		//Radio power control
-		//interface CC2420Packet; //Added by Sihoon
+		interface ScheduleConfig;					//Added by Sihoon
 
 	}
 }
@@ -63,13 +61,24 @@ implementation {
 	//Added by sihoon
 	uint32_t slot_;
 	uint16_t rcv_count[2] = {0,0};
+	uint16_t ReTx_rcv;
 	uint16_t trans_count;
+	uint16_t first_Retrans_count;
+	uint16_t second_Retrans_count;
+	uint32_t first_NoAck_count;
+	uint32_t second_NoAck_count;
+	bool Loss_flag;
+	uint16_t Loss_count;
+
 
 	uint8_t get_last_hop_status(uint8_t flow_id_t, uint8_t access_type_t, uint8_t hop_count_t);
 	void set_current_hop_status(uint32_t slot_t, uint8_t sender, uint8_t receiver);
 	void set_send_status(uint32_t slot_at_send_done, uint8_t ack_t);
 	void set_send (uint32_t slot_t);
 	uint8_t get_flow_id(uint32_t slot_t, uint8_t sender, uint8_t receiver);
+
+	//added by Sihoon
+	void transmission(uint8_t schedule_idx, uint8_t ReTx_flag);
 
   	//0 Slot
   	//1 Sender
@@ -83,13 +92,21 @@ implementation {
   	//9 Last Hop Status:
   	//10 Hop count in the flow
 
-
-
 uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, retrans twice, baseline.
 	//flow 170, flow sensor
-	{1, 1, 100, 22, 0, 1, 1, 1, 0, 0, 1},
-	{2, 2, 10, 22, 0, 1, 2, 2, 0, 0, 1}
+	{1, 1, 51, 22, 0, 1, 1, 1, 0, 0, 1},
+	{2, 2, 52, 22, 0, 1, 2, 2, 0, 0, 1}
 	};
+
+		//0 backup node
+		//1 # of packet loss
+		//2 criticality:		0:Lo-criti flow,	1:Hi-criti flow
+		//3 Coexistance:		1: Lo-criti flow has Hi-criti packets
+uint8_t backup_schedule[4]={0, 0, 0, 0};
+uint8_t BACKUPNODE = 0;
+uint8_t PKTLOSS = 1;
+uint8_t CRITICALITY = 2;
+uint8_t COEXISTANCE = 3;
 
 	uint8_t schedule_len=32;
 	uint32_t superframe_length = 11; //5Hz at most
@@ -101,6 +118,8 @@ uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, r
 	event void Boot.booted(){}
 
 	command error_t Init.init() {
+		uint8_t i;
+
 		slotSize = 10 * 32;     //10ms
 		bi = 40000; //# of slots in the supersuperframe with only one slot 0 doing sync
 		sd = 40000; //last active slot
@@ -108,6 +127,21 @@ uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, r
 
 		//rcv_count = 0;//added by sihoon
 		trans_count = 0;
+		ReTx_rcv = 0;
+		first_Retrans_count = 0;
+		second_Retrans_count = 0;
+		first_NoAck_count = 0;
+		second_NoAck_count = 0;
+		Loss_flag = 0;
+		Loss_count = 0;
+		backup_schedule[BACKUPNODE] = call ScheduleConfig.backupNode(TOS_NODE_ID);
+		//dbg("transmission","backup_schedule[0]:%d\n", backup_schedule[0]);
+		for(i=0; i<schedule_len; i++) {
+			if(schedule[i][1] == TOS_NODE_ID) {
+				backup_schedule[CRITICALITY] = call ScheduleConfig.criticality(schedule[i][6]);		//Assume: primary flows are not inter-cross at some nodes
+			}
+		}
+		//dbg("transmission","backup_schedule[1]:%d\n", backup_schedule[CRITICALITY]);
 
 		coordinatorId = 100;
 		init = FALSE;
@@ -182,11 +216,23 @@ uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, r
  		}
 
   		if ((slot % superframe_length) == 0 ) {
- 			for (i=0; i<schedule_len; i++){
-  				schedule[i][8]=0; //re-enable transmission by set the flag bit to 0, implying this transmission is unfinished and to be conducted.
-  				schedule[i][9]=0; //reset "last hop status" to 0 to avoid future confusions, especially in .
-  			}
- 		}
+	 			for (i=0; i<schedule_len; i++){
+	  				schedule[i][8]=0; //re-enable transmission by set the flag bit to 0, implying this transmission is unfinished and to be conducted.
+	  				schedule[i][9]=0; //reset "last hop status" to 0 to avoid future confusions, especially in .
+						backup_schedule[PKTLOSS] = 0;
+		  	}
+
+				//Count Pkt loss in a superframe
+				if(Loss_flag == 1){
+					Loss_flag = 0;
+				}else {
+					Loss_count = Loss_count + 1;
+				}
+
+				if(TOS_NODE_ID == 51 || TOS_NODE_ID == 52){
+					dbg("receive","Loss_count:%d\n", Loss_count);
+				}
+	 		}
 
  		if (slot >= sd+1) {
  			return;
@@ -194,17 +240,6 @@ uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, r
  		if (slot < cap) {
  		} else {
  			set_send (slot % superframe_length); //heart beat control
-
-			//Added by sihoon
-			/*
-			if(TOS_NODE_ID != 0) {
-				if(TOS_NODE_ID == 1)
-					call Alarm.start(0);
-				else
-					call Alarm.start(32*8);
-			}
-			*/
-
 
  		}
  	}
@@ -226,8 +261,17 @@ uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, r
 		slot_at_send_done = call SlotterControl.getSlot() % superframe_length;
 		ack_at_send_done = call PacketAcknowledgements.wasAcked(msg)?1:0;
 		//link failure statistics
-		if(ack_at_send_done==0){
-			//printf("%u, %u, %u, %u, %u, %u\n", 1, TOS_NODE_ID, call AMPacket.destination(msg), call SlotterControl.getSlot(), call CC2420Config.getChannel(), 0);
+		if(ack_at_send_done==0 && backup_schedule[CRITICALITY] == 1){
+			backup_schedule[PKTLOSS] = backup_schedule[PKTLOSS] + 1;
+
+			if(backup_schedule[PKTLOSS] == 1) {
+				dbg("receive_ack","No Ack --- slot:%d, ack:%d, dest:%d, first_NoAck_count:%d\n", call SlotterControl.getSlot(), ack_at_send_done, call AMPacket.destination(msg), ++first_NoAck_count );
+				dbg("receive_ack","backup_schedule[PKTLOSS]:%d\n",backup_schedule[PKTLOSS]);
+			}else if (backup_schedule[PKTLOSS] == 2) {
+				dbg("receive_ack","No Ack --- slot:%d, ack:%d, dest:%d, second_NoAck_count:%d\n", call SlotterControl.getSlot(), ack_at_send_done, call AMPacket.destination(msg), ++second_NoAck_count );
+				dbg("receive_ack","backup_schedule[PKTLOSS]:%d\n",backup_schedule[PKTLOSS]);
+			}
+
 		}
 		set_send_status(slot_at_send_done, ack_at_send_done);
 		//printf("Slot: %u, SENSOR:%u, Sent to: %u with %s @ %s\n", call SlotterControl.getSlot(), TOS_NODE_ID, call AMPacket.destination(msg), call PacketAcknowledgements.wasAcked(msg)? "ACK":"NOACK", sim_time_string());
@@ -255,29 +299,38 @@ uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, r
 		am_addr_t src = call AMPacket.source(msg);
 		uint8_t i;
 		uint8_t flow_id_rcv;
+		uint8_t current_slot;
+		TestNetworkMsg* tmp_payload;
 		char * printfResults;
+
+		current_slot = call SlotterControl.getSlot() % superframe_length;
+		tmp_payload = (TestNetworkMsg*)payload;
 		set_current_hop_status(call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID);
-		flow_id_rcv=get_flow_id(call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID);
+		//flow_id_rcv=get_flow_id(call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID);
+		flow_id_rcv = tmp_payload->flowid; //changed by sihoon
+
 		if(flow_id_rcv != 0) {
-			if(TOS_NODE_ID== 100){
-			//if(TOS_NODE_ID==161 || TOS_NODE_ID==169 || TOS_NODE_ID==170 || TOS_NODE_ID==160){
-				//printf("FLOW:%u RECEIVED: %u->%u, SLOT:%u (time: %s), channel: %u\n", flow_id_rcv, src, TOS_NODE_ID, call SlotterControl.getSlot(), sim_time_string(), call CC2420Config.getChannel());
-				//Flow ID, Delay(Slot when received), sender, receiver, channel, physical time.
+			if(TOS_NODE_ID == 51){
+				for(i=0; i<schedule_len; i++) {	//for counting receive of 1ReTx
+					if(schedule[i][2] == TOS_NODE_ID && schedule[i][6] == flow_id_rcv && schedule[i][0] == current_slot) {
+						//original transmission
+						Loss_flag = 1;
+						dbg("receive","flow_id:%u, SLOT: %u, src:%u, myID:%u, channel:%u   rcv_count[%d]:%d\n", flow_id_rcv, current_slot, src, TOS_NODE_ID, call CC2420Config.getChannel(), flow_id_rcv-1,++rcv_count[flow_id_rcv-1]);
 
-				//printf("%u, SLOT: %u, %u, %u, %u, with GETSLOT:%u and absolute TIME:%s\n", flow_id_rcv, call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID, call CC2420Config.getChannel(), call SlotterControl.getSlot(), sim_time_string());
-				dbg("receive","flow_id:%u, SLOT: %u, src:%u, myID:%u, channel:%u   rcv_count[%d]:%d\n", flow_id_rcv, call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID, call CC2420Config.getChannel(), flow_id_rcv-1,++rcv_count[flow_id_rcv-1]);
-				//printf("flow_id:%u, SLOT: %u, src:%u, %u, %u   at time:%s\n", flow_id_rcv, call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID, call CC2420Config.getChannel(), sim_time_string());
+					}else if(schedule[i][2] == TOS_NODE_ID && schedule[i][6] == flow_id_rcv && schedule[i][0] == current_slot - 1) {
+						//1 ReTx transmission
+						Loss_flag = 1;
+						dbg("receive","flow_id:%u, SLOT: %u, src:%u, myID:%u, channel:%u   ReTx_rcv:%d\n", flow_id_rcv, current_slot, src, TOS_NODE_ID, call CC2420Config.getChannel(), ++ReTx_rcv);
+					}
+				}
 
-				//fflush(stdout);
-				//call TossimComPrintfWrite.printfWrite(flow_id_rcv, call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID, call CC2420Config.getChannel()); //writing results to file, differentiated by file name
-				//printf("This is Sensor: %u, and we have just called TossimComPrintfWrite.printfWrite, at Slot: %u\n", TOS_NODE_ID, call SlotterControl.getSlot() % superframe_length);
-
-				//dbg("printf","RSSI:%d\n",call CC2420Packet.getRssi(msg));
 
 				//below is the tcp approach based on a global variable on each sensor, tcp_msg, defined in SimMoteP.nc added by Bo
 				call SimMote.setTcpMsg(flow_id_rcv, call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID, call CC2420Config.getChannel());
 
-			}else if(TOS_NODE_ID == 10) {
+			}else if(TOS_NODE_ID == 52) {
+				Loss_flag = 1;
+
 				dbg("receive","flow_id:%u, SLOT: %u, src:%u, myID:%u, channel:%u   rcv_count[%d]:%d\n", flow_id_rcv, call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID, call CC2420Config.getChannel(), flow_id_rcv-1,++rcv_count[flow_id_rcv-1]);
 
 				//dbg("printf","RSSI:%d\n",call CC2420Packet.getRssi(msg));
@@ -399,6 +452,7 @@ uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, r
    		uint8_t root_id_at_send_done;
    		uint8_t access_type_at_send_done;
 
+
 		for (k=0; k<schedule_len; k++){
 			if(schedule[k][0] == slot_at_send_done && schedule[k][1] ==TOS_NODE_ID){
 				flow_id_at_send_done=schedule[k][6];
@@ -423,7 +477,8 @@ uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, r
 					}
 				}
 			}
-			else{
+			else{ //Retransmit at next slot
+
 			}
 		}else if(access_type_at_send_done==1){//if this is a shared slot
 			//printf("SHARED: SENSOR: %u, DISABLING: Slot:%u, %u, %u, %u, %u, %u , %u, %u, %u.\n", TOS_NODE_ID, schedule[i][0], schedule[i][1], schedule[i][2], schedule[i][3], schedule[i][4], schedule[i][5], schedule[i][6], schedule[i][7], schedule[i][8]);
@@ -442,8 +497,9 @@ uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, r
    }// end of set_send_status
 
    	void set_send (uint32_t slot_t){
-		uint8_t i;
+		uint8_t i,j;
 		uint32_t slot_norm = slot_t; //Here slot_norm is the real time slot normalized by superframe length
+		TestNetworkMsg* tmp_payload;
 		// bool idleStatus;
 		for (i=0; i<schedule_len; i++){
   			if (slot_norm == schedule[i][0]){//check slot
@@ -451,20 +507,21 @@ uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, r
   					if(schedule[i][10]>1){ //check if this is on a multi-hop path
   						if(TOS_NODE_ID == schedule[i][1] && schedule[i][8]==0){//No. 8 in the schedule is Send status in sendDone
   			  				if (get_last_hop_status(schedule[i][6], schedule[i][4], schedule[i][10])){// if above so, check delivery status of last hop
-								call CC2420Config.setChannel(schedule[i][3]);
-  								call CC2420Config.sync();
+										/*
+									tmp_payload = call SubSend.getPayload(&packet, sizeof(TestNetworkMsg));
+									tmp_payload->flowid = schedule[i][6];
+
+									call CC2420Config.setChannel(schedule[i][3]);
+									call CC2420Config.setPower(RADIO_DEF_POWER);
+									call CC2420Config.sync();
   								call AMPacket.setDestination(&packet, schedule[i][2]);
   								call PacketAcknowledgements.requestAck(&packet);
 
   								call TossimPacketModelCCA.set_cca(schedule[i][4]); //schedule[i][4]: 0, TDMA; 1, CSMA contending; 2, CSMA steal;
 	  							call SubSend.send(&packet, sizeof(TestNetworkMsg));
+									*/
+										transmission(i,0);
 
-	  							//sequence, sender, receiver, access type, slot, channel
-	  							//printf("Node: %u, Link Failure detection.\n");
-	  							//printf("%u, %u, %u, %u, %u, %u, %u, %u\n", 0, TOS_NODE_ID, schedule[i][2], schedule[i][4], slot_norm, call CC2420Config.getChannel(), schedule[i][5], schedule[i][6]);
-
-	  							// print out multihop send status
-	  							//printf("SENDER, HOP >1: %u->%u, Flow:%u, AccessType:%u, slot: %u, channel: %u, time: %s\n", TOS_NODE_ID, call AMPacket.destination(&packet), schedule[i][6], schedule[i][4], slot_norm, schedule[i][3], sim_time_string());
   			  				}// end check last hop
   			  			}// end sender check
   			  			if(TOS_NODE_ID == schedule[i][2] && schedule[i][8]==0){
@@ -475,20 +532,7 @@ uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, r
   					}else{
   						if(TOS_NODE_ID == schedule[i][1] && schedule[i][8]==0){
 
-  			  			call CC2420Config.setChannel(schedule[i][3]);
-								call CC2420Config.setPower(RADIO_DEF_POWER);
-  							call CC2420Config.sync();
-  							call AMPacket.setDestination(&packet, schedule[i][2]);
-  							call PacketAcknowledgements.requestAck(&packet);
-	  						call TossimPacketModelCCA.set_cca(schedule[i][4]); //schedule[i][4]: 0, TDMA; 1, CSMA contending; 2, CSMA steal;
-	  						if( call SubSend.send(&packet, sizeof(TestNetworkMsg)) == SUCCESS) {
-									if(TOS_NODE_ID != 0) {
-										//dbg("printf","%d send at %d\n",TOS_NODE_ID, call SlotterControl.getSlot());
-										//dbg("power","getPower:%d\n", call CC2420Packet.getPower(&packet));
-										dbg("transmission","trans_count:%d\n", ++trans_count);
-										//call SimMote.set_power(2);
-									}
-								}
+								transmission(i,0); 	//i: schedule_idx, 0:ReTx_flag
 
 	  					}
   						if(TOS_NODE_ID == schedule[i][2] && schedule[i][8]==0){
@@ -498,7 +542,73 @@ uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, r
   						}
   					}//end else
   				}//end slot check
-  			}//end sender || receiver check
+  			}else if(slot_norm-1 == schedule[i][0]) {					//check previous transmission slot
+					if(schedule[i][1] == TOS_NODE_ID) {					//check sender
+						if(backup_schedule[CRITICALITY] == 1) {			//check Hi-cirtical flow
+							if(schedule[i][8] == 0) {									//check no-ack
+								if(backup_schedule[PKTLOSS] == 1) {	//check retransmission count
+										transmission(i,1);		//First Retransmission
+								}//end retransmission count
+							}//end no-ack
+						}//end Hi-cirtical flow
+					}//end sender
+				}else if(slot_norm-2 == schedule[i][0]) {		//check 2 slot previous slot
+					if(TOS_NODE_ID == 52) {	//Test 2nd retransmission receive
+						call CC2420Config.setChannel(schedule[i][3]);
+						call CC2420Config.sync();
+					}
+					if(schedule[i][1] == TOS_NODE_ID) {		//check sender
+							if(backup_schedule[CRITICALITY] == 1) {		//check Hi-critical flow
+								if(schedule[i][8] == 0) {		//check no-ack
+									if(backup_schedule[PKTLOSS] == 2) {		//check retransmission count
+										//transmission(i,2);		//Second Retransmission
+									}//end retransmission count
+								}//end no-ack
+							}//end Hi-cirtical flow
+					}//end sender
+				}//end 2slot previous slot
+
   		}//end for
    	}//end set_send
+
+		void transmission(uint8_t schedule_idx, uint8_t ReTx_flag) {
+			TestNetworkMsg* tmp_payload;
+			uint8_t i;
+
+			i = schedule_idx;
+
+			tmp_payload = call SubSend.getPayload(&packet, sizeof(TestNetworkMsg));
+			tmp_payload->flowid = schedule[i][6];
+
+			if(ReTx_flag == 2) {	// Second retransmission change their destination
+				call CC2420Config.setChannel(schedule[i][3]);
+				call CC2420Config.setPower(RADIO_DEF_POWER);		//changed by sihoon
+				call CC2420Config.sync();
+				call AMPacket.setDestination(&packet, backup_schedule[BACKUPNODE]);
+				dbg("transmission","!!!!!!!!!!!!!!!!!backupnode:%d\n", backup_schedule[BACKUPNODE]);
+			}else if(ReTx_flag == 1) {
+				call CC2420Config.setChannel(schedule[i][3]);
+				call CC2420Config.setPower(RADIO_DEF_POWER);		//changed by sihoon
+				call CC2420Config.sync();
+				call AMPacket.setDestination(&packet, schedule[i][2]);
+			}else if(ReTx_flag == 0) {
+				call CC2420Config.setChannel(schedule[i][3]);
+				call CC2420Config.setPower(RADIO_DEF_POWER);		//changed by sihoon
+				call CC2420Config.sync();
+				call AMPacket.setDestination(&packet, schedule[i][2]);
+			}
+
+			call PacketAcknowledgements.requestAck(&packet);
+			call TossimPacketModelCCA.set_cca(schedule[i][4]); //schedule[i][4]: 0, TDMA; 1, CSMA contending; 2, CSMA steal;
+			if( call SubSend.send(&packet, sizeof(TestNetworkMsg)) == SUCCESS) {
+				if(ReTx_flag == 0)
+					dbg("transmission","trans_count:%d\n", ++trans_count);
+				else if(ReTx_flag == 1)
+					dbg("transmission","first_Retrans_count:%d\n", ++first_Retrans_count);
+				else if(ReTx_flag == 2)
+					dbg("transmission","second_Retrans_count:%d\n", ++second_Retrans_count);
+
+			}else {}
+		}
+
 }
