@@ -19,28 +19,32 @@
  * OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
  * MODIFICATIONS."
  */
- 
+
 /**
  * This component transmits packets in pure tdma slot
  * It should solve the clock drift issues
- * 
+ *
  * @author Octav Chipara
  * @version $Revision: 1.1 $
  * @date $Date: 2007/11/06 23:59:00 $
  */
 
 configuration TDMASlotSenderC {
-	provides interface AsyncSend as Send; 
-	
+	provides interface AsyncSend as Send;
+
 	uses interface AsyncSend as SubSend;
 	uses interface AMPacket;
-	uses interface CcaControl as SubCcaControl;	
+	uses interface CcaControl as SubCcaControl;
 } implementation {
 	components new GenericSlotSenderC(0, 0, FALSE) as TDMASlotSender;
 	components MainC;
-	
+  //components TossimPacketModelC;  //added by sihoon
+
+
 	TDMASlotSender.SubSend = SubSend;
 	TDMASlotSender.AMPacket = AMPacket;
 	TDMASlotSender.SubCcaControl = SubCcaControl;
 	TDMASlotSender.Send = Send;
+  //TDMASlotSender.SignalSend -> TossimPacketModelC.Packet; //added by sihoon
+
 }

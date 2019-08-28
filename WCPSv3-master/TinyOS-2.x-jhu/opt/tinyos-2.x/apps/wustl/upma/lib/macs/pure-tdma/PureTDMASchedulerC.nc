@@ -134,4 +134,5 @@ implementation {
   //Added by Sihoon
   PureTDMASchedulerP.Alarm -> Alarm32khz16C;
 	PureTDMASchedulerP.ScheduleConfig -> ScheduleConfigC;
+	PureTDMASchedulerP.TossimPacketModel -> TossimPacketModelC.Packet;
 }

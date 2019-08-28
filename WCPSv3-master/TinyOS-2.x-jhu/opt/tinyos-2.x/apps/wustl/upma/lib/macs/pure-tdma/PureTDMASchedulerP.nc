@@ -36,7 +36,10 @@ module PureTDMASchedulerP {
 		interface SimMote;
 
 		interface Alarm<T32khz, uint16_t>;
-		interface ScheduleConfig;					//Added by Sihoon
+
+		//Added by Sihoon
+		interface ScheduleConfig;
+		interface TossimPacketModel;
 
 	}
 }
@@ -57,6 +60,7 @@ implementation {
 
 	//Below added by Bo
 	message_t packet;
+	message_t test_signal_pkt;
 
 	//Added by sihoon
 	uint32_t slot_;
@@ -94,8 +98,8 @@ implementation {
 
 uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, retrans twice, baseline.
 	//flow 170, flow sensor
-	{1, 1, 51, 22, 0, 1, 1, 1, 0, 0, 1},
-	{2, 2, 52, 22, 0, 1, 2, 2, 0, 0, 1}
+	{1, 1, 51, 22, 0, 1, 1, 1, 0, 0, 1}
+	//{2, 2, 52, 22, 0, 1, 2, 2, 0, 0, 1}
 	};
 
 		//0 backup node
@@ -150,6 +154,7 @@ uint8_t COEXISTANCE = 3;
 		sync = FALSE;
 		requestStop = FALSE;
 		call SimMote.setTcpMsg(0, 0, 0, 0, 0); //reset TcpMsg
+
 		return SUCCESS;
 	}
 
@@ -215,6 +220,7 @@ uint8_t COEXISTANCE = 3;
  			return;
  		}
 
+
   		if ((slot % superframe_length) == 0 ) {
 	 			for (i=0; i<schedule_len; i++){
 	  				schedule[i][8]=0; //re-enable transmission by set the flag bit to 0, implying this transmission is unfinished and to be conducted.
@@ -241,8 +247,40 @@ uint8_t COEXISTANCE = 3;
  		} else {
  			set_send (slot % superframe_length); //heart beat control
 
+			/*
+			//Test signals
+			if(slot % superframe_length == 9) {
+
+				if(TOS_NODE_ID == 1){		//sender
+					call SubSend.getPayload(&test_signal_pkt, sizeof(TestNetworkMsg));
+					call CC2420Config.setChannel(22);
+					call CC2420Config.setPower(RADIO_MAX_POWER);
+					call CC2420Config.sync();
+					if(call TossimPacketModel.send(AM_BROADCAST_ADDR, &test_signal_pkt, 0) != SUCCESS) {
+					//if(call BeaconSend.send(NULL, 0) != SUCCESS) {
+						dbg("test","---signals fail\n");
+					}else {
+						dbg("test","---signals success\n");
+					}
+				}else {		//receiver
+					call CC2420Config.setChannel(22);
+					call CC2420Config.sync();
+				}
+			}
+			*/
  		}
  	}
+
+	//for Test signals
+	event void TossimPacketModel.sendDone(message_t* msg, error_t error){
+		//dbg("test","sendDone\n");
+	}
+
+	//Receive signal
+	event void TossimPacketModel.receive(message_t* msg){
+		//dbg("test","---Test Signals	:	TossimPacketModel.receive\n");
+	}
+	event bool TossimPacketModel.shouldAck(message_t* msg){}
 
  	async command error_t Send.send(message_t * msg, uint8_t len) {
  		atomic {
@@ -308,7 +346,7 @@ uint8_t COEXISTANCE = 3;
 		set_current_hop_status(call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID);
 		//flow_id_rcv=get_flow_id(call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID);
 		flow_id_rcv = tmp_payload->flowid; //changed by sihoon
-
+		//dbg("test","****Test Signals	:	Subreceive.receive\n");
 		if(flow_id_rcv != 0) {
 			if(TOS_NODE_ID == 51){
 				for(i=0; i<schedule_len; i++) {	//for counting receive of 1ReTx
@@ -531,9 +569,10 @@ uint8_t COEXISTANCE = 3;
   						}//end receiver check
   					}else{
   						if(TOS_NODE_ID == schedule[i][1] && schedule[i][8]==0){
+								dbg("test","\n\n\n");
+								dbg("test","slot start time\n");
 
 								transmission(i,0); 	//i: schedule_idx, 0:ReTx_flag
-
 
 	  					}
   						if(TOS_NODE_ID == schedule[i][2] && schedule[i][8]==0){
@@ -554,13 +593,15 @@ uint8_t COEXISTANCE = 3;
 						}//end Hi-cirtical flow
 					}//end sender
 				}else if(slot_norm-2 == schedule[i][0]) {		//check 2 slot previous slot
-					if(TOS_NODE_ID == 52) {	//Test 2nd retransmission receive
-						call CC2420Config.setChannel(schedule[i][3]);
-						call CC2420Config.sync();
-					}
 					if(schedule[i][1] == TOS_NODE_ID) {		//check sender
 							if(backup_schedule[CRITICALITY] == 1) {		//check Hi-critical flow
 								if(schedule[i][8] == 0) {		//check no-ack
+
+									if(TOS_NODE_ID == 52) {	//Test 2nd retransmission receive
+										call CC2420Config.setChannel(schedule[i][3]);
+										call CC2420Config.sync();
+									}
+
 									if(backup_schedule[PKTLOSS] == 2) {		//check retransmission count
 										//transmission(i,2);		//Second Retransmission
 									}//end retransmission count

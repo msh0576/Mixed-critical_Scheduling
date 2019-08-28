@@ -48,6 +48,8 @@ generic module GenericSlotSenderP(uint16_t offset, uint16_t backoff, bool cca)  
 
 	uses interface Boot;
 
+	uses interface TossimPacketModel as SignalSend;		//added by sihoon
+
 } implementation {
 	enum {
 		S_START = 0,
@@ -59,6 +61,8 @@ generic module GenericSlotSenderP(uint16_t offset, uint16_t backoff, bool cca)  
 	message_t *toSend;
 	uint8_t toSendLen;
 	uint8_t state;
+
+	message_t test_signal_pkt;	//added by sihoon
 
 	event void Boot.booted()
 	{
@@ -82,6 +86,18 @@ generic module GenericSlotSenderP(uint16_t offset, uint16_t backoff, bool cca)  
 
   		if (msg == NULL) return FAIL;
 
+			//For test signals in a slot
+			dbg("test","Before transmission\n");
+
+
+			if(TOS_NODE_ID == 1) {
+				if(call SignalSend.send(AM_BROADCAST_ADDR, &test_signal_pkt, 0) != SUCCESS) {
+					dbg("test","---signals fail\n");
+				}else {
+					dbg("test","GenericSlotSenderP. signals success\n");
+				}
+			}
+
 
 
       if(TOS_NODE_ID != 0)
@@ -95,9 +111,9 @@ generic module GenericSlotSenderP(uint16_t offset, uint16_t backoff, bool cca)  
           offset_ = offset;
         }else {
           if(TOS_NODE_ID == 1)
-            offset_ = 32*0;
+            offset_ = 32*1;
           else
-            offset_ = 32*2;	//2 tick = 60us
+            offset_ = 32*4;	//2 tick = 60us
         }
 
 			toSend = msg;
@@ -146,7 +162,9 @@ generic module GenericSlotSenderP(uint16_t offset, uint16_t backoff, bool cca)  
   		atomic state = S_OFFSET;
   		if (call SubSend.send(toSend, toSendLen) != SUCCESS) {
 			atomic state = S_END;
-		}
+			}else {
+				dbg("test","GenericSlotSenderP. Delay Tx success\n");
+			}
   	}
 
 
@@ -181,4 +199,15 @@ generic module GenericSlotSenderP(uint16_t offset, uint16_t backoff, bool cca)  
 	async event bool SubCcaControl.getCca(message_t * msg, bool defaultCca) {
 		return cca;
 	}
+
+	//for Test signals
+	event void SignalSend.sendDone(message_t* msg, error_t error){
+		dbg("test","GenericSlotSenderP. sendDone\n");
+	}
+
+	//Receive signal
+	event void SignalSend.receive(message_t* msg){
+	}
+	event bool SignalSend.shouldAck(message_t* msg){}
+
 }

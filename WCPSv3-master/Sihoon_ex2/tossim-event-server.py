@@ -36,20 +36,19 @@ t = Tossim([])
 
 #t.addChannel('printf', sys.stdout)
 t.addChannel("DataFeedback", sys.stdout)
-t.addChannel("receive", sys.stdout)
+#t.addChannel("receive", sys.stdout)
 t.addChannel("transmission", sys.stdout)
-#t.addChannel("TossimPacketModelC", sys.stdout)
 t.addChannel("receive_ack", sys.stdout)
+t.addChannel("test", sys.stdout)
+
+
+#t.addChannel("TossimPacketModelC", sys.stdout)
+#t.addChannel("SimMoteRadioChannel", sys.stdout)
 
 #t.addChannel("Gain", sys.stdout)
 #t.addChannel("receive_power", sys.stdout)
 #t.addChannel("SimMote_power", sys.stdout)
-
 #t.addChannel("AM", sys.stdout)
-
-
-#t.addChannel('Gain', sys.stdout)
-
 
 
 #Log Data
@@ -68,6 +67,7 @@ for channel_1 in [22, 23, 24, 25, 26]:
 	for sensor in [1, 2, 51, 52]:		# Set network topology
 		r.add(sensor, 100, sync_rssi_strength, channel_1)	#add(source, destination, gain)
 		r.add(100, sensor, sync_rssi_strength, channel_1)
+
 		'''
 		if sensor == 1:
 			r.add(sensor, 100, sync_rssi_strength, channel_1)	#add(source, destination, gain)
@@ -81,20 +81,29 @@ for channel_1 in [22, 23, 24, 25, 26]:
 		'''
 
 
+for channel in [22, 23, 24, 25, 26]:
+	if channel == 22:
+		f = open("topo_rssis_ch_22_ex1.txt", "r")##topo and RSSI strength
+		for line in f:
+			s = line.split()
+			if s:
+				#print " ", s[0], " ", s[1], " ", s[2];
+				r.add(int(s[0]), int(s[1]), float(s[2]) - 4, channel)##Topos in two channels are the same. RSSI different--yh
+	elif channel == 23:
+		f = open("topo_rssis_ch_23_ex1.txt", "r")
+		for line in f:
+			s = line.split()
+			if s:
+				#print " ", s[0], " ", s[1], " ", s[2];
+				r.add(int(s[0]), int(s[1]), float(s[2]) - 4, channel)##It seems that the r.add is modified by Bo--yh
+	else:
+		f = open("topo_rssis_ch_22_ex1.txt", "r")
+		for line in f:
+			s = line.split()
+			if s:
+				#print " ", s[0], " ", s[1], " ", s[2];
+				r.add(int(s[0]), int(s[1]), float(s[2]) - 4, channel)##It seems that the r.add is modified by Bo--yh
 
-f = open("topo_rssis_ch_22_ex1.txt", "r")##topo and RSSI strength
-for line in f:
-	s = line.split()
-	if s:
-		#print " ", s[0], " ", s[1], " ", s[2];
-		r.add(int(s[0]), int(s[1]), float(s[2]) - 4, 22)##Topos in two channels are the same. RSSI different--yh
-
-f = open("topo_rssis_ch_23_ex1.txt", "r")
-for line in f:
-	s = line.split()
-	if s:
-		#print " ", s[0], " ", s[1], " ", s[2];
-		r.add(int(s[0]), int(s[1]), float(s[2]) - 4, 23)##It seems that the r.add is modified by Bo--yh
 
 
 for node in [100, 1, 2, 51, 52]:
@@ -117,7 +126,7 @@ for node in [100, 1, 2, 51, 52]:
 	#print "Booting ", node, " at time ", str(0)
 
 
-run_count = 10 * 1000;
+run_count = 10 * 10;
 #0 means not received.
 while (t.time() <= 97656250*run_count):
 	rcved = t.runNextEvent()

@@ -20,6 +20,7 @@ implementation
   command error_t Init.init()
   {
     channel = CC2420_DEF_CHANNEL;
+    //dbg("CC2420ControlP","CC2420ControlP// CC2420_DEF_CHANNEL:%d\n",CC2420_DEF_CHANNEL);     //added by sihoon
     power = 0;
 #if defined(CC2420_NO_ACKNOWLEDGEMENTS)
     autoAck = FALSE;

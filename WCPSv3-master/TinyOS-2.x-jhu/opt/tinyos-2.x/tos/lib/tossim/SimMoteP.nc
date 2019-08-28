@@ -64,6 +64,7 @@ implementation {
    */
   command error_t SimMote.setRadioChannel(uint8_t newRadioChannel)
   {
+    dbg("SimMoteRadioChannel","SimMote.setRadioChannel:%d\n",radioChannel);
     if (newRadioChannel >= 11 && newRadioChannel <= 26) {
       radioChannel = newRadioChannel;
       return SUCCESS;

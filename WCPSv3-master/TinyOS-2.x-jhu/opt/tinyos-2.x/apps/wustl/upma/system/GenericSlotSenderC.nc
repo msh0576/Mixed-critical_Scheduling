@@ -19,8 +19,8 @@
  * OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR
  * MODIFICATIONS."
  */
- 
-/**      
+
+/**
  *
  * @author Octav Chipara
  * @version $Revision: 1.2 $
@@ -39,15 +39,17 @@ generic configuration GenericSlotSenderC(uint16_t offset, uint16_t backoff, bool
 	components new GenericSlotSenderP(offset, backoff, cca);
 	//components new VirtualizedAlarmMilli16C();
 	components new Alarm32khz16C();
-	
+  components TossimPacketModelC;  //added by sihoon
+
 	MainC.SoftwareInit -> GenericSlotSenderP.Init;
 	GenericSlotSenderP.Alarm -> Alarm32khz16C;
 	GenericSlotSenderP.SubSend = SubSend;
 	GenericSlotSenderP.AMPacket = AMPacket;
 	GenericSlotSenderP.SubCcaControl = SubCcaControl;
 	GenericSlotSenderP.Leds -> LedsC;
+  GenericSlotSenderP.SignalSend -> TossimPacketModelC.Packet; //added by sihoon
 	Send = GenericSlotSenderP;
-	
-	
+
+
 	GenericSlotSenderP.Boot -> MainC.Boot;
 }

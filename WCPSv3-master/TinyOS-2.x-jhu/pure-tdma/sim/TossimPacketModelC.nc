@@ -170,6 +170,8 @@ implementation {
     if (sending != NULL) {
       return EBUSY;
     }
+    dbg("TossimPacketModelC", "Packet.send()\n");
+
     sendingLength = len;
     sending = msg;
     destNode = dest;
