@@ -3,7 +3,7 @@
 
 //added by sihoon
 #define NETWORK_NODE 5
-#define NETWORK_FLOW 2
+#define NETWORK_FLOW 3
 
 #include <AM.h>
 #include "TestNetworkC.h"

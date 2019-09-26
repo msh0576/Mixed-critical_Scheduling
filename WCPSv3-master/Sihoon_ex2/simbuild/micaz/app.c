@@ -806,7 +806,7 @@ extern void *malloc(size_t __size) __attribute((__leaf__)) __attribute((__nothro
 #line 483
 extern void free(void *__ptr) __attribute((__leaf__)) __attribute((__nothrow__)) ;
 #line 742
-typedef int (*__compar_fn_t)(const void *arg_0x2b0c941cecf8, const void *arg_0x2b0c941cd020);
+typedef int (*__compar_fn_t)(const void *arg_0x2b0471ae6cf8, const void *arg_0x2b0471ae5020);
 #line 780
 __extension__ 
 #line 797
@@ -827,7 +827,7 @@ extern double fabs(double __x) __attribute((__leaf__)) __attribute((__nothrow__)
 
 extern double floor(double __x) __attribute((__leaf__)) __attribute((__nothrow__)) __attribute((const)) ;
 #line 250
-extern double erfc(double arg_0x2b0c94251618) __attribute((__leaf__)) __attribute((__nothrow__)) ;
+extern double erfc(double arg_0x2b0471b69618) __attribute((__leaf__)) __attribute((__nothrow__)) ;
 #line 326
 __extension__ 
 
@@ -1246,8 +1246,8 @@ typedef struct hashtable hashtable_t;
 #line 78
 struct hashtable *
 create_hashtable(unsigned int minsize, 
-unsigned int (*hashfunction)(void *arg_0x2b0c944a2268), 
-int (*key_eq_fn)(void *arg_0x2b0c944a29e0, void *arg_0x2b0c944a2c80));
+unsigned int (*hashfunction)(void *arg_0x2b0471dba268), 
+int (*key_eq_fn)(void *arg_0x2b0471dba9e0, void *arg_0x2b0471dbac80));
 #line 103
 #line 102
 int 
@@ -1283,7 +1283,7 @@ typedef struct sim_log_channel {
 } sim_log_channel_t;
 
 enum __nesc_unnamed4272 {
-  SIM_LOG_OUTPUT_COUNT = 201U
+  SIM_LOG_OUTPUT_COUNT = 199U
 };
 
 sim_log_output_t outputs[SIM_LOG_OUTPUT_COUNT];
@@ -1864,7 +1864,7 @@ struct tm;
 
 struct tm;
 # 46 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/lib/tossim/randomlib.h"
-static inline void RandomInitialise(int arg_0x2b0c946ab610, int arg_0x2b0c946ab878);
+static inline void RandomInitialise(int arg_0x2b0471fc3610, int arg_0x2b0471fc3878);
 static double RandomUniform(void );
 # 50 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/lib/tossim/sim_noise.c"
 int numCase1 = 0;
@@ -4470,11 +4470,11 @@ static error_t MeasureClockC__Init__init(void );
 # 56 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/TaskBasic.nc"
 static error_t SimSchedulerBasicP__TaskBasic__postTask(
 # 41 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/lib/tossim/SimSchedulerBasicP.nc"
-uint8_t arg_0x2b0c947e1158);
+uint8_t arg_0x2b04720f9158);
 # 64 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/TaskBasic.nc"
 static void SimSchedulerBasicP__TaskBasic__default__runTask(
 # 41 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/lib/tossim/SimSchedulerBasicP.nc"
-uint8_t arg_0x2b0c947e1158);
+uint8_t arg_0x2b04720f9158);
 # 46 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/Scheduler.nc"
 static void SimSchedulerBasicP__Scheduler__init(void );
 
@@ -4545,7 +4545,7 @@ message_t *
 
 AsyncReceiveAdapterP__Receive__default__receive(
 # 31 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/pure-tdma/sim/AsyncReceiveAdapterP.nc"
-am_id_t arg_0x2b0c94c05a78, 
+am_id_t arg_0x2b047251da78, 
 # 60 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
@@ -4566,7 +4566,7 @@ uint8_t len);
 # 69 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
 static error_t AsyncSendAdapterP__AMSend__send(
 # 31 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/pure-tdma/sim/AsyncSendAdapterP.nc"
-am_id_t arg_0x2b0c94c26a00, 
+am_id_t arg_0x2b047253ea00, 
 # 69 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
 am_addr_t addr, 
 #line 60
@@ -4587,7 +4587,7 @@ void *
 
 AsyncSendAdapterP__AMSend__getPayload(
 # 31 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/pure-tdma/sim/AsyncSendAdapterP.nc"
-am_id_t arg_0x2b0c94c26a00, 
+am_id_t arg_0x2b047253ea00, 
 # 121 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
 message_t * msg, 
 
@@ -4861,7 +4861,7 @@ error_t error);
 #line 40
 static error_t SenderDispatcherP__Send__send(
 # 39 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/system/SenderDispatcherP.nc"
-uint8_t arg_0x2b0c94fe46d8, 
+uint8_t arg_0x2b04728fb6d8, 
 # 34 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/interfaces/AsyncSend.nc"
 message_t * msg, 
 
@@ -4877,7 +4877,7 @@ void *
 
 SenderDispatcherP__Send__getPayload(
 # 39 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/system/SenderDispatcherP.nc"
-uint8_t arg_0x2b0c94fe46d8, 
+uint8_t arg_0x2b04728fb6d8, 
 # 68 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/interfaces/AsyncSend.nc"
 message_t * msg, 
 
@@ -4886,7 +4886,7 @@ uint8_t len);
 #line 48
 static void SenderDispatcherP__Send__default__sendDone(
 # 39 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/system/SenderDispatcherP.nc"
-uint8_t arg_0x2b0c94fe46d8, 
+uint8_t arg_0x2b04728fb6d8, 
 # 44 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/interfaces/AsyncSend.nc"
 message_t * msg, 
 
@@ -4986,8 +4986,10 @@ uint8_t channel_id);
 
 
 static bool CpmModelC__Model__clearChannel(void );
-# 5 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/ScheduleConfig.nc"
-static uint8_t ScheduleConfigC__ScheduleConfig__backupNode(uint8_t nodeid);
+# 4 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/ScheduleConfig.nc"
+static uint8_t ScheduleConfigC__ScheduleConfig__primaryNode(uint8_t flowid, uint8_t nodeid);
+
+static uint8_t ScheduleConfigC__ScheduleConfig__backupNode(uint8_t flowid, uint8_t nodeid);
 
 static uint8_t ScheduleConfigC__ScheduleConfig__criticality(uint8_t flowid);
 # 67 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/Receive.nc"
@@ -4999,7 +5001,7 @@ message_t *
 
 SyncReceiveAdapterP__Receive__receive(
 # 3 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/pure-tdma/sim/SyncReceiveAdapterP.nc"
-am_id_t arg_0x2b0c9534b630, 
+am_id_t arg_0x2b0472c59e68, 
 # 60 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
@@ -5020,7 +5022,7 @@ static void SyncSendAdapterP__SplitControl__stopDone(error_t error);
 # 99 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
 static void SyncSendAdapterP__AMSend__sendDone(
 # 3 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/pure-tdma/sim/SyncSendAdapterP.nc"
-am_id_t arg_0x2b0c95342408, 
+am_id_t arg_0x2b0472c58d88, 
 # 92 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
 message_t * msg, 
 
@@ -5056,7 +5058,7 @@ uint8_t len);
 # 69 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
 static error_t TossimActiveMessageC__AMSend__send(
 # 39 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/lib/tossim/TossimActiveMessageC.nc"
-am_id_t arg_0x2b0c95378850, 
+am_id_t arg_0x2b0472c81020, 
 # 69 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
 am_addr_t addr, 
 #line 60
@@ -5077,7 +5079,7 @@ void *
 
 TossimActiveMessageC__AMSend__getPayload(
 # 39 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/lib/tossim/TossimActiveMessageC.nc"
-am_id_t arg_0x2b0c95378850, 
+am_id_t arg_0x2b0472c81020, 
 # 121 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
 message_t * msg, 
 
@@ -5092,7 +5094,7 @@ message_t *
 
 TossimActiveMessageC__Snoop__default__receive(
 # 41 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/lib/tossim/TossimActiveMessageC.nc"
-am_id_t arg_0x2b0c95372670, 
+am_id_t arg_0x2b0472c80ca0, 
 # 60 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
@@ -5209,7 +5211,7 @@ error_t error);
 # 99 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
 static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__sendDone(
 # 40 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/system/AMQueueImplP.nc"
-am_id_t arg_0x2b0c9541ad28, 
+am_id_t arg_0x2b0472d271a0, 
 # 92 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
 message_t * msg, 
 
@@ -5226,7 +5228,7 @@ void *
 
 /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__getPayload(
 # 38 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/system/AMQueueImplP.nc"
-uint8_t arg_0x2b0c9541bb90, 
+uint8_t arg_0x2b0472d28020, 
 # 111 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/Send.nc"
 message_t * msg, 
 
@@ -5235,7 +5237,7 @@ uint8_t len);
 #line 89
 static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__default__sendDone(
 # 38 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/system/AMQueueImplP.nc"
-uint8_t arg_0x2b0c9541bb90, 
+uint8_t arg_0x2b0472d28020, 
 # 85 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/Send.nc"
 message_t * msg, 
 
@@ -5435,7 +5437,7 @@ int sim_main_start_mote(void )   ;
 # 64 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/TaskBasic.nc"
 static void SimSchedulerBasicP__TaskBasic__runTask(
 # 41 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/lib/tossim/SimSchedulerBasicP.nc"
-uint8_t arg_0x2b0c947e1158);
+uint8_t arg_0x2b04720f9158);
 
 
 
@@ -5735,7 +5737,7 @@ message_t *
 
 AsyncReceiveAdapterP__Receive__receive(
 # 31 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/pure-tdma/sim/AsyncReceiveAdapterP.nc"
-am_id_t arg_0x2b0c94c05a78, 
+am_id_t arg_0x2b047251da78, 
 # 60 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
@@ -5776,7 +5778,7 @@ static inline message_t *AsyncReceiveAdapterP__Receive__default__receive(am_id_t
 # 99 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
 static void AsyncSendAdapterP__AMSend__sendDone(
 # 31 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/pure-tdma/sim/AsyncSendAdapterP.nc"
-am_id_t arg_0x2b0c94c26a00, 
+am_id_t arg_0x2b047253ea00, 
 # 92 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
 message_t * msg, 
 
@@ -5884,8 +5886,10 @@ static error_t PureTDMASchedulerP__CC2420Config__sync(void );
 
 
 static uint8_t PureTDMASchedulerP__CC2420Config__getChannel(void );
-# 5 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/ScheduleConfig.nc"
-static uint8_t PureTDMASchedulerP__ScheduleConfig__backupNode(uint8_t nodeid);
+# 4 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/ScheduleConfig.nc"
+static uint8_t PureTDMASchedulerP__ScheduleConfig__primaryNode(uint8_t flowid, uint8_t nodeid);
+
+static uint8_t PureTDMASchedulerP__ScheduleConfig__backupNode(uint8_t flowid, uint8_t nodeid);
 
 static uint8_t PureTDMASchedulerP__ScheduleConfig__criticality(uint8_t flowid);
 # 39 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/pure-tdma/sim/TossimPacketModelCCA.nc"
@@ -6014,10 +6018,17 @@ uint8_t PureTDMASchedulerP__schedule[1000][32][11];
 
 
 uint8_t PureTDMASchedulerP__backup_schedule[1000][4];
-uint8_t PureTDMASchedulerP__BACKUPNODE[1000];
+
 uint8_t PureTDMASchedulerP__PKTLOSS[1000];
 uint8_t PureTDMASchedulerP__CRITICALITY[1000];
 
+
+
+
+
+uint8_t PureTDMASchedulerP__Path[1000][3][2];
+
+uint8_t PureTDMASchedulerP__BACKUPPATH[1000];
 
 uint8_t PureTDMASchedulerP__schedule_len[1000];
 uint32_t PureTDMASchedulerP__superframe_length[1000];
@@ -6029,11 +6040,11 @@ bool PureTDMASchedulerP__requestStop[1000];
 
 
 static inline error_t PureTDMASchedulerP__Init__init(void );
-#line 161
+#line 178
 static error_t PureTDMASchedulerP__SplitControl__start(void );
-#line 180
-static inline void PureTDMASchedulerP__RadioPowerControl__startDone(error_t error);
 #line 197
+static inline void PureTDMASchedulerP__RadioPowerControl__startDone(error_t error);
+#line 214
 static inline void PureTDMASchedulerP__RadioPowerControl__stopDone(error_t error);
 
 
@@ -6046,7 +6057,7 @@ static inline void PureTDMASchedulerP__RadioPowerControl__stopDone(error_t error
 
 
 static inline void PureTDMASchedulerP__Slotter__slot(uint32_t slot);
-#line 275
+#line 292
 static inline void PureTDMASchedulerP__TossimPacketModel__sendDone(message_t *msg, error_t error);
 
 
@@ -6069,9 +6080,9 @@ static inline error_t PureTDMASchedulerP__Send__send(message_t *msg, uint8_t len
 
 
 static inline void PureTDMASchedulerP__SubSend__sendDone(message_t *msg, error_t error);
-#line 336
+#line 353
 static inline void PureTDMASchedulerP__SubReceive__receive(message_t *msg, void *payload, uint8_t len);
-#line 414
+#line 431
 static inline void *PureTDMASchedulerP__Send__getPayload(message_t *msg, uint8_t len);
 
 
@@ -6082,18 +6093,18 @@ static inline void *PureTDMASchedulerP__Send__getPayload(message_t *msg, uint8_t
 
 
 static inline void PureTDMASchedulerP__Receive__updateBuffer(message_t *msg);
-#line 437
+#line 454
 static inline void PureTDMASchedulerP__CC2420Config__syncDone(error_t error);
 static inline void PureTDMASchedulerP__BeaconSend__sendDone(message_t *msg, error_t error);
 
 static inline uint8_t PureTDMASchedulerP__get_last_hop_status(uint8_t flow_id_t, uint8_t access_type_t, uint8_t hop_count_t);
-#line 458
+#line 475
 static inline void PureTDMASchedulerP__set_current_hop_status(uint32_t slot_t, uint8_t sender, uint8_t receiver);
-#line 487
+#line 504
 static inline void PureTDMASchedulerP__set_send_status(uint32_t slot_at_send_done, uint8_t ack_at_send_done);
-#line 537
+#line 554
 static inline void PureTDMASchedulerP__set_send(uint32_t slot_t);
-#line 616
+#line 633
 static void PureTDMASchedulerP__transmission(uint8_t schedule_idx, uint8_t ReTx_flag);
 # 35 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/GeneralIO.nc"
 static void LedsP__Led0__makeOutput(void );
@@ -6717,7 +6728,7 @@ uint8_t len);
 #line 48
 static void SenderDispatcherP__Send__sendDone(
 # 39 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/system/SenderDispatcherP.nc"
-uint8_t arg_0x2b0c94fe46d8, 
+uint8_t arg_0x2b04728fb6d8, 
 # 44 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/interfaces/AsyncSend.nc"
 message_t * msg, 
 
@@ -7098,18 +7109,35 @@ static inline void CpmModelC__free_receive_message(CpmModelC__receive_message_t 
 static inline void CpmModelC__read_rssi_task__runTask(void );
 #line 550
 static inline void CpmModelC__ReadRssi__default__readDone(error_t error, uint16_t data);
-# 14 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/ScheduleConfigC.nc"
-uint8_t ScheduleConfigC__backup_topology[1000][5];
+# 10 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/ScheduleConfigC.nc"
+uint8_t ScheduleConfigC__Primarypath[1000][3][5];
+
+
+
+
+
+uint8_t ScheduleConfigC__Backuppath[1000][3][5];
+#line 30
+uint8_t ScheduleConfigC__flow_criticality[1000][3];
 
 
 
 
 
 
-uint8_t ScheduleConfigC__flow_criticality[1000][2];
 
 
-static inline uint8_t ScheduleConfigC__ScheduleConfig__backupNode(uint8_t nodeid);
+
+static inline uint8_t ScheduleConfigC__ScheduleConfig__primaryNode(uint8_t flowid, uint8_t nodeid);
+
+
+
+
+
+
+
+static inline uint8_t ScheduleConfigC__ScheduleConfig__backupNode(uint8_t flowid, uint8_t nodeid);
+
 
 
 
@@ -7142,7 +7170,7 @@ static error_t SyncSendAdapterP__SplitControl__start(void );
 # 69 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
 static error_t SyncSendAdapterP__AMSend__send(
 # 3 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/pure-tdma/sim/SyncSendAdapterP.nc"
-am_id_t arg_0x2b0c95342408, 
+am_id_t arg_0x2b0472c58d88, 
 # 69 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
 am_addr_t addr, 
 #line 60
@@ -7163,7 +7191,7 @@ void *
 
 SyncSendAdapterP__AMSend__getPayload(
 # 3 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/pure-tdma/sim/SyncSendAdapterP.nc"
-am_id_t arg_0x2b0c95342408, 
+am_id_t arg_0x2b0472c58d88, 
 # 121 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
 message_t * msg, 
 
@@ -7225,7 +7253,7 @@ static am_addr_t TossimActiveMessageC__amAddress(void );
 # 99 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
 static void TossimActiveMessageC__AMSend__sendDone(
 # 39 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/lib/tossim/TossimActiveMessageC.nc"
-am_id_t arg_0x2b0c95378850, 
+am_id_t arg_0x2b0472c81020, 
 # 92 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
 message_t * msg, 
 
@@ -7244,7 +7272,7 @@ message_t *
 
 TossimActiveMessageC__Snoop__receive(
 # 41 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/lib/tossim/TossimActiveMessageC.nc"
-am_id_t arg_0x2b0c95372670, 
+am_id_t arg_0x2b0472c80ca0, 
 # 60 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
@@ -7263,7 +7291,7 @@ message_t *
 
 TossimActiveMessageC__Receive__receive(
 # 40 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/lib/tossim/TossimActiveMessageC.nc"
-am_id_t arg_0x2b0c95374a90, 
+am_id_t arg_0x2b0472c80158, 
 # 60 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/Receive.nc"
 message_t * msg, 
 void * payload, 
@@ -7422,7 +7450,7 @@ static inline void */*TestNetworkAppC.Sender.AMQueueEntryP*/AMQueueEntryP__0__AM
 # 69 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
 static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__send(
 # 40 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/system/AMQueueImplP.nc"
-am_id_t arg_0x2b0c9541ad28, 
+am_id_t arg_0x2b0472d271a0, 
 # 69 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
 am_addr_t addr, 
 #line 60
@@ -7443,7 +7471,7 @@ void *
 
 /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__getPayload(
 # 40 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/system/AMQueueImplP.nc"
-am_id_t arg_0x2b0c9541ad28, 
+am_id_t arg_0x2b0472d271a0, 
 # 121 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
 message_t * msg, 
 
@@ -7452,7 +7480,7 @@ uint8_t len);
 # 89 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/Send.nc"
 static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__sendDone(
 # 38 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/system/AMQueueImplP.nc"
-uint8_t arg_0x2b0c9541bb90, 
+uint8_t arg_0x2b0472d28020, 
 # 85 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/Send.nc"
 message_t * msg, 
 
@@ -7895,7 +7923,7 @@ static inline void TossimActiveMessageC__active_message_deliver_handle(sim_event
   message_t *m = (message_t *)evt->data;
 
 #line 230
-  sim_log_debug(195U, "Packet", "Delivering packet to %i at %s\n", (int )sim_node(), sim_time_string());
+  sim_log_debug(193U, "Packet", "Delivering packet to %i at %s\n", (int )sim_node(), sim_time_string());
   TossimActiveMessageC__Model__receive(m);
 }
 
@@ -8062,13 +8090,13 @@ inline static void PureTDMASchedulerP__SimMote__setTcpMsg(int flow_id, int slot_
 #line 49
 }
 #line 49
-# 458 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
+# 475 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
 static inline void PureTDMASchedulerP__set_current_hop_status(uint32_t slot_t, uint8_t sender, uint8_t receiver)
-#line 458
+#line 475
 {
   uint8_t i;
 
-#line 460
+#line 477
   for (i = 0; i < PureTDMASchedulerP__schedule_len[sim_node()]; i++) {
       if (PureTDMASchedulerP__schedule[sim_node()][i][0] == slot_t) {
           if (PureTDMASchedulerP__schedule[sim_node()][i][1] == sender) {
@@ -8095,9 +8123,9 @@ inline static am_addr_t PureTDMASchedulerP__AMPacket__source(message_t * amsg){
 #line 77
 }
 #line 77
-# 336 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
+# 353 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
 static inline void PureTDMASchedulerP__SubReceive__receive(message_t *msg, void *payload, uint8_t len)
-#line 336
+#line 353
 {
   am_addr_t src = PureTDMASchedulerP__AMPacket__source(msg);
   uint8_t i;
@@ -8118,14 +8146,14 @@ static inline void PureTDMASchedulerP__SubReceive__receive(message_t *msg, void 
               if (PureTDMASchedulerP__schedule[sim_node()][i][2] == TOS_NODE_ID && PureTDMASchedulerP__schedule[sim_node()][i][6] == flow_id_rcv && PureTDMASchedulerP__schedule[sim_node()][i][0] == current_slot) {
 
                   PureTDMASchedulerP__Loss_flag[sim_node()] = 1;
-                  sim_log_debug(119U, "receive", "flow_id:%u, SLOT: %u, src:%u, myID:%u, channel:%u   rcv_count[%d]:%d\n", flow_id_rcv, current_slot, src, TOS_NODE_ID, PureTDMASchedulerP__CC2420Config__getChannel(), flow_id_rcv - 1, ++PureTDMASchedulerP__rcv_count[sim_node()][flow_id_rcv - 1]);
+                  sim_log_debug(118U, "receive", "flow_id:%u, SLOT: %u, src:%u, myID:%u, channel:%u   rcv_count[%d]:%d\n", flow_id_rcv, current_slot, src, TOS_NODE_ID, PureTDMASchedulerP__CC2420Config__getChannel(), flow_id_rcv - 1, ++PureTDMASchedulerP__rcv_count[sim_node()][flow_id_rcv - 1]);
                 }
               else {
-#line 358
+#line 375
                 if (PureTDMASchedulerP__schedule[sim_node()][i][2] == TOS_NODE_ID && PureTDMASchedulerP__schedule[sim_node()][i][6] == flow_id_rcv && PureTDMASchedulerP__schedule[sim_node()][i][0] == current_slot - 1) {
 
                     PureTDMASchedulerP__Loss_flag[sim_node()] = 1;
-                    sim_log_debug(120U, "receive", "flow_id:%u, SLOT: %u, src:%u, myID:%u, channel:%u   ReTx_rcv:%d\n", flow_id_rcv, current_slot, src, TOS_NODE_ID, PureTDMASchedulerP__CC2420Config__getChannel(), ++PureTDMASchedulerP__ReTx_rcv[sim_node()]);
+                    sim_log_debug(119U, "receive", "flow_id:%u, SLOT: %u, src:%u, myID:%u, channel:%u   ReTx_rcv:%d\n", flow_id_rcv, current_slot, src, TOS_NODE_ID, PureTDMASchedulerP__CC2420Config__getChannel(), ++PureTDMASchedulerP__ReTx_rcv[sim_node()]);
                   }
                 }
             }
@@ -8134,11 +8162,11 @@ static inline void PureTDMASchedulerP__SubReceive__receive(message_t *msg, void 
           PureTDMASchedulerP__SimMote__setTcpMsg(flow_id_rcv, PureTDMASchedulerP__SlotterControl__getSlot() % PureTDMASchedulerP__superframe_length[sim_node()], src, TOS_NODE_ID, PureTDMASchedulerP__CC2420Config__getChannel());
         }
       else {
-#line 369
+#line 386
         if (TOS_NODE_ID == 52) {
             PureTDMASchedulerP__Loss_flag[sim_node()] = 1;
 
-            sim_log_debug(121U, "receive", "flow_id:%u, SLOT: %u, src:%u, myID:%u, channel:%u   rcv_count[%d]:%d\n", flow_id_rcv, PureTDMASchedulerP__SlotterControl__getSlot() % PureTDMASchedulerP__superframe_length[sim_node()], src, TOS_NODE_ID, PureTDMASchedulerP__CC2420Config__getChannel(), flow_id_rcv - 1, ++PureTDMASchedulerP__rcv_count[sim_node()][flow_id_rcv - 1]);
+            sim_log_debug(120U, "receive", "flow_id:%u, SLOT: %u, src:%u, myID:%u, channel:%u   rcv_count[%d]:%d\n", flow_id_rcv, PureTDMASchedulerP__SlotterControl__getSlot() % PureTDMASchedulerP__superframe_length[sim_node()], src, TOS_NODE_ID, PureTDMASchedulerP__CC2420Config__getChannel(), flow_id_rcv - 1, ++PureTDMASchedulerP__rcv_count[sim_node()][flow_id_rcv - 1]);
           }
         }
     }
@@ -8348,13 +8376,13 @@ static inline message_t *SyncReceiveAdapterP__Receive__receive(am_id_t id, messa
 }
 
 # 67 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/Receive.nc"
-inline static message_t * TossimActiveMessageC__Receive__receive(am_id_t arg_0x2b0c95374a90, message_t * msg, void * payload, uint8_t len){
+inline static message_t * TossimActiveMessageC__Receive__receive(am_id_t arg_0x2b0472c80158, message_t * msg, void * payload, uint8_t len){
 #line 67
   nx_struct message_t *__nesc_result;
 #line 67
 
 #line 67
-  __nesc_result = SyncReceiveAdapterP__Receive__receive(arg_0x2b0c95374a90, msg, payload, len);
+  __nesc_result = SyncReceiveAdapterP__Receive__receive(arg_0x2b0472c80158, msg, payload, len);
 #line 67
 
 #line 67
@@ -8543,14 +8571,14 @@ inline static void PureTDMASchedulerP__CC2420Config__setChannel(uint8_t channel)
 #line 59
 }
 #line 59
-# 440 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
+# 457 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
 static inline uint8_t PureTDMASchedulerP__get_last_hop_status(uint8_t flow_id_t, uint8_t access_type_t, uint8_t hop_count_t)
-#line 440
+#line 457
 {
   uint8_t last_hop_status = 0;
   uint8_t i;
 
-#line 443
+#line 460
   for (i = 0; i < PureTDMASchedulerP__schedule_len[sim_node()]; i++) {
       if (PureTDMASchedulerP__schedule[sim_node()][i][0] <= PureTDMASchedulerP__SlotterControl__getSlot() % PureTDMASchedulerP__superframe_length[sim_node()]) {
           if (PureTDMASchedulerP__schedule[sim_node()][i][6] == flow_id_t) {
@@ -8566,12 +8594,12 @@ static inline uint8_t PureTDMASchedulerP__get_last_hop_status(uint8_t flow_id_t,
   return last_hop_status;
 }
 
-#line 537
+#line 554
 static inline void PureTDMASchedulerP__set_send(uint32_t slot_t)
-#line 537
+#line 554
 {
   uint8_t i;
-#line 538
+#line 555
   uint8_t j;
   uint32_t slot_norm = slot_t;
   TestNetworkMsg *tmp_payload;
@@ -8582,7 +8610,7 @@ static inline void PureTDMASchedulerP__set_send(uint32_t slot_t)
               if (PureTDMASchedulerP__schedule[sim_node()][i][10] > 1) {
                   if (TOS_NODE_ID == PureTDMASchedulerP__schedule[sim_node()][i][1] && PureTDMASchedulerP__schedule[sim_node()][i][8] == 0) {
                       if (PureTDMASchedulerP__get_last_hop_status(PureTDMASchedulerP__schedule[sim_node()][i][6], PureTDMASchedulerP__schedule[sim_node()][i][4], PureTDMASchedulerP__schedule[sim_node()][i][10])) {
-#line 561
+#line 578
                           PureTDMASchedulerP__transmission(i, 0);
                         }
                     }
@@ -8594,11 +8622,11 @@ static inline void PureTDMASchedulerP__set_send(uint32_t slot_t)
                     }
                 }
               else 
-#line 570
+#line 587
                 {
                   if (TOS_NODE_ID == PureTDMASchedulerP__schedule[sim_node()][i][1] && PureTDMASchedulerP__schedule[sim_node()][i][8] == 0) {
-                      sim_log_debug(122U, "test", "\n\n\n");
-                      sim_log_debug(123U, "test", "slot start time\n");
+                      sim_log_debug(121U, "test", "\n\n\n");
+                      sim_log_debug(122U, "test", "slot start time\n");
 
                       PureTDMASchedulerP__transmission(i, 0);
                     }
@@ -8612,7 +8640,7 @@ static inline void PureTDMASchedulerP__set_send(uint32_t slot_t)
             }
         }
       else {
-#line 585
+#line 602
         if (slot_norm - 1 == PureTDMASchedulerP__schedule[sim_node()][i][0]) {
             if (PureTDMASchedulerP__schedule[sim_node()][i][1] == TOS_NODE_ID) {
                 if (PureTDMASchedulerP__backup_schedule[sim_node()][PureTDMASchedulerP__CRITICALITY[sim_node()]] == 1) {
@@ -8625,7 +8653,7 @@ static inline void PureTDMASchedulerP__set_send(uint32_t slot_t)
               }
           }
         else {
-#line 595
+#line 612
           if (slot_norm - 2 == PureTDMASchedulerP__schedule[sim_node()][i][0]) {
               if (PureTDMASchedulerP__schedule[sim_node()][i][1] == TOS_NODE_ID) {
                   if (PureTDMASchedulerP__backup_schedule[sim_node()][PureTDMASchedulerP__CRITICALITY[sim_node()]] == 1) {
@@ -8771,13 +8799,13 @@ static inline tossim_header_t *SyncSendAdapterP__getHeader(message_t *msg)
 }
 
 # 124 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
-inline static void * SyncSendAdapterP__AMSend__getPayload(am_id_t arg_0x2b0c95342408, message_t * msg, uint8_t len){
+inline static void * SyncSendAdapterP__AMSend__getPayload(am_id_t arg_0x2b0472c58d88, message_t * msg, uint8_t len){
 #line 124
   void *__nesc_result;
 #line 124
 
 #line 124
-  __nesc_result = TossimActiveMessageC__AMSend__getPayload(arg_0x2b0c95342408, msg, len);
+  __nesc_result = TossimActiveMessageC__AMSend__getPayload(arg_0x2b0472c58d88, msg, len);
 #line 124
 
 #line 124
@@ -8860,18 +8888,18 @@ inline static error_t PureTDMASchedulerP__BeaconSend__send(message_t * msg, uint
 #line 40
 }
 #line 40
-# 208 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
+# 225 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
 static inline void PureTDMASchedulerP__Slotter__slot(uint32_t slot)
-#line 208
+#line 225
 {
   message_t *tmpToSend;
   uint8_t tmpToSendLen;
   uint8_t i;
 
   { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
-#line 213
+#line 230
     PureTDMASchedulerP__slot_[sim_node()] = slot;
-#line 213
+#line 230
     __nesc_atomic_end(__nesc_atomic); }
 
   if (slot == 0) {
@@ -8879,7 +8907,7 @@ static inline void PureTDMASchedulerP__Slotter__slot(uint32_t slot)
           PureTDMASchedulerP__BeaconSend__send((void *)0, 0);
           sim_log_debug(113U, "printf", "SENSOR: %u has done network synchronization in SLOT: %u at time: %s:\n", TOS_NODE_ID, slot, sim_time_string());
         }
-#line 219
+#line 236
       ;
       return;
     }
@@ -8897,15 +8925,15 @@ static inline void PureTDMASchedulerP__Slotter__slot(uint32_t slot)
           PureTDMASchedulerP__Loss_flag[sim_node()] = 0;
         }
       else 
-#line 234
+#line 251
         {
           PureTDMASchedulerP__Loss_count[sim_node()] = PureTDMASchedulerP__Loss_count[sim_node()] + 1;
         }
 
       if (TOS_NODE_ID == 51 || TOS_NODE_ID == 52) {
-          sim_log_debug(114U, "receive", "Loss_count:%d\n", PureTDMASchedulerP__Loss_count[sim_node()]);
         }
     }
+
 
   if (slot >= PureTDMASchedulerP__sd[sim_node()] + 1) {
       return;
@@ -8913,7 +8941,7 @@ static inline void PureTDMASchedulerP__Slotter__slot(uint32_t slot)
   if (slot < PureTDMASchedulerP__cap[sim_node()]) {
     }
   else 
-#line 247
+#line 264
     {
       PureTDMASchedulerP__set_send(slot % PureTDMASchedulerP__superframe_length[sim_node()]);
     }
@@ -8994,7 +9022,7 @@ uint8_t len)
   tossim_header_t *header = TossimActiveMessageC__getHeader(amsg);
 
 #line 70
-  sim_log_debug(191U, "AM", "AM: Sending packet (id=%hhu, len=%hhu) to %hu\n", id, len, addr);
+  sim_log_debug(189U, "AM", "AM: Sending packet (id=%hhu, len=%hhu) to %hu\n", id, len, addr);
   __nesc_hton_uint8(header->type.nxdata, id);
   __nesc_hton_uint16(header->dest.nxdata, addr);
   __nesc_hton_uint16(header->src.nxdata, TossimActiveMessageC__AMPacket__address());
@@ -9004,13 +9032,13 @@ uint8_t len)
 }
 
 # 69 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
-inline static error_t SyncSendAdapterP__AMSend__send(am_id_t arg_0x2b0c95342408, am_addr_t addr, message_t * msg, uint8_t len){
+inline static error_t SyncSendAdapterP__AMSend__send(am_id_t arg_0x2b0472c58d88, am_addr_t addr, message_t * msg, uint8_t len){
 #line 69
   unsigned char __nesc_result;
 #line 69
 
 #line 69
-  __nesc_result = TossimActiveMessageC__AMSend__send(arg_0x2b0c95342408, addr, msg, len);
+  __nesc_result = TossimActiveMessageC__AMSend__send(arg_0x2b0472c58d88, addr, msg, len);
 #line 69
 
 #line 69
@@ -9146,9 +9174,9 @@ static inline void SyncSendAdapterP__AMSend__sendDone(am_id_t id, message_t *msg
 }
 
 # 99 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
-inline static void TossimActiveMessageC__AMSend__sendDone(am_id_t arg_0x2b0c95378850, message_t * msg, error_t error){
+inline static void TossimActiveMessageC__AMSend__sendDone(am_id_t arg_0x2b0472c81020, message_t * msg, error_t error){
 #line 99
-  SyncSendAdapterP__AMSend__sendDone(arg_0x2b0c95378850, msg, error);
+  SyncSendAdapterP__AMSend__sendDone(arg_0x2b0472c81020, msg, error);
 #line 99
 }
 #line 99
@@ -9159,9 +9187,9 @@ static inline void TossimActiveMessageC__Model__sendDone(message_t *msg, error_t
   TossimActiveMessageC__AMSend__sendDone(TossimActiveMessageC__AMPacket__type(msg), msg, result);
 }
 
-# 275 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
+# 292 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
 static inline void PureTDMASchedulerP__TossimPacketModel__sendDone(message_t *msg, error_t error)
-#line 275
+#line 292
 {
 }
 
@@ -9169,7 +9197,7 @@ static inline void PureTDMASchedulerP__TossimPacketModel__sendDone(message_t *ms
 static inline void /*TDMASlotSenderC.TDMASlotSender.GenericSlotSenderP*/GenericSlotSenderP__0__SignalSend__sendDone(message_t *msg, error_t error)
 #line 204
 {
-  sim_log_debug(142U, "test", "GenericSlotSenderP. sendDone\n");
+  sim_log_debug(140U, "test", "GenericSlotSenderP. sendDone\n");
 }
 
 # 71 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/lib/tossim/TossimPacketModel.nc"
@@ -9226,7 +9254,7 @@ static inline void TossimPacketModelC__send_backoff(sim_event_t *evt)
 
 #line 363
         TossimPacketModelC__sending[sim_node()] = (void *)0;
-        sim_log_debug(157U, "TossimPacketModelC", "PACKET: Failed to send packet due to busy channel.\n");
+        sim_log_debug(155U, "TossimPacketModelC", "PACKET: Failed to send packet due to busy channel.\n");
         TossimPacketModelC__Packet__sendDone(rval, EBUSY);
       }
     }
@@ -9250,13 +9278,13 @@ static inline void TossimPacketModelC__send_transmit(sim_event_t *evt)
   evt->time += duration;
   evt->handle = TossimPacketModelC__send_transmit_done;
 
-  sim_log_debug(151U, "TossimPacketModelC", "PACKET: Broadcasting packet to everyone.\n");
+  sim_log_debug(149U, "TossimPacketModelC", "PACKET: Broadcasting packet to everyone.\n");
 
 
   TossimPacketModelC__GainRadioModel__putOnAirTo(TossimPacketModelC__destNode[sim_node()], TossimPacketModelC__sending[sim_node()], __nesc_ntoh_uint8(metadata->ack.nxdata), evt->time, sim_mote_getPower(sim_node()), 0.0, sim_mote_get_radio_channel(sim_node()));
   __nesc_hton_uint8(metadata->ack.nxdata, 0);
   evt->time += sim_csma_rxtx_delay() * (sim_ticks_per_sec() / sim_csma_symbols_per_sec());
-  sim_log_debug(152U, "TossimPacketModelC", "PACKET: Send done at %llu.\n", evt->time);
+  sim_log_debug(150U, "TossimPacketModelC", "PACKET: Send done at %llu.\n", evt->time);
   sim_queue_insert(evt);
 }
 
@@ -9304,9 +9332,9 @@ static inline void TossimPacketModelC__start_csma(void )
   sim_queue_insert(&TossimPacketModelC__sendEvent[sim_node()]);
 }
 
-# 438 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
+# 455 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
 static inline void PureTDMASchedulerP__BeaconSend__sendDone(message_t *msg, error_t error)
-#line 438
+#line 455
 {
 }
 
@@ -9377,12 +9405,12 @@ inline static am_id_t PureTDMASchedulerP__AMPacket__type(message_t * amsg){
 #line 136
 }
 #line 136
-# 487 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
+# 504 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
 static inline void PureTDMASchedulerP__set_send_status(uint32_t slot_at_send_done, uint8_t ack_at_send_done)
-#line 487
+#line 504
 {
   uint8_t k;
-#line 488
+#line 505
   uint8_t i;
   uint8_t flow_id_at_send_done;
   uint8_t root_id_at_send_done;
@@ -9417,7 +9445,7 @@ static inline void PureTDMASchedulerP__set_send_status(uint32_t slot_at_send_don
         }
     }
   else {
-#line 521
+#line 538
     if (access_type_at_send_done == 1) {
 
         if (ack_at_send_done == 1) {
@@ -9473,14 +9501,14 @@ inline static bool PureTDMASchedulerP__PacketAcknowledgements__wasAcked(message_
 #line 74
 }
 #line 74
-# 296 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
+# 313 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
 static inline void PureTDMASchedulerP__SubSend__sendDone(message_t *msg, error_t error)
-#line 296
+#line 313
 {
   uint32_t slot_at_send_done;
   uint8_t ack_at_send_done;
 
-#line 299
+#line 316
   slot_at_send_done = PureTDMASchedulerP__SlotterControl__getSlot() % PureTDMASchedulerP__superframe_length[sim_node()];
   ack_at_send_done = PureTDMASchedulerP__PacketAcknowledgements__wasAcked(msg) ? 1 : 0;
 
@@ -9488,14 +9516,14 @@ static inline void PureTDMASchedulerP__SubSend__sendDone(message_t *msg, error_t
       PureTDMASchedulerP__backup_schedule[sim_node()][PureTDMASchedulerP__PKTLOSS[sim_node()]] = PureTDMASchedulerP__backup_schedule[sim_node()][PureTDMASchedulerP__PKTLOSS[sim_node()]] + 1;
 
       if (PureTDMASchedulerP__backup_schedule[sim_node()][PureTDMASchedulerP__PKTLOSS[sim_node()]] == 1) {
-          sim_log_debug(115U, "receive_ack", "No Ack --- slot:%d, ack:%d, dest:%d, first_NoAck_count:%d\n", PureTDMASchedulerP__SlotterControl__getSlot(), ack_at_send_done, PureTDMASchedulerP__AMPacket__destination(msg), ++PureTDMASchedulerP__first_NoAck_count[sim_node()]);
-          sim_log_debug(116U, "receive_ack", "backup_schedule[PKTLOSS]:%d\n", PureTDMASchedulerP__backup_schedule[sim_node()][PureTDMASchedulerP__PKTLOSS[sim_node()]]);
+          sim_log_debug(114U, "receive_ack", "No Ack --- slot:%d, ack:%d, dest:%d, first_NoAck_count:%d\n", PureTDMASchedulerP__SlotterControl__getSlot(), ack_at_send_done, PureTDMASchedulerP__AMPacket__destination(msg), ++PureTDMASchedulerP__first_NoAck_count[sim_node()]);
+          sim_log_debug(115U, "receive_ack", "backup_schedule[PKTLOSS]:%d\n", PureTDMASchedulerP__backup_schedule[sim_node()][PureTDMASchedulerP__PKTLOSS[sim_node()]]);
         }
       else {
-#line 308
+#line 325
         if (PureTDMASchedulerP__backup_schedule[sim_node()][PureTDMASchedulerP__PKTLOSS[sim_node()]] == 2) {
-            sim_log_debug(117U, "receive_ack", "No Ack --- slot:%d, ack:%d, dest:%d, second_NoAck_count:%d\n", PureTDMASchedulerP__SlotterControl__getSlot(), ack_at_send_done, PureTDMASchedulerP__AMPacket__destination(msg), ++PureTDMASchedulerP__second_NoAck_count[sim_node()]);
-            sim_log_debug(118U, "receive_ack", "backup_schedule[PKTLOSS]:%d\n", PureTDMASchedulerP__backup_schedule[sim_node()][PureTDMASchedulerP__PKTLOSS[sim_node()]]);
+            sim_log_debug(116U, "receive_ack", "No Ack --- slot:%d, ack:%d, dest:%d, second_NoAck_count:%d\n", PureTDMASchedulerP__SlotterControl__getSlot(), ack_at_send_done, PureTDMASchedulerP__AMPacket__destination(msg), ++PureTDMASchedulerP__second_NoAck_count[sim_node()]);
+            sim_log_debug(117U, "receive_ack", "backup_schedule[PKTLOSS]:%d\n", PureTDMASchedulerP__backup_schedule[sim_node()][PureTDMASchedulerP__PKTLOSS[sim_node()]]);
           }
         }
     }
@@ -9507,7 +9535,7 @@ static inline void PureTDMASchedulerP__SubSend__sendDone(message_t *msg, error_t
           PureTDMASchedulerP__Send__sendDone(msg, error);
         }
       else 
-#line 320
+#line 337
         {
         }
     }
@@ -9546,9 +9574,9 @@ static inline void SenderDispatcherP__Send__default__sendDone(uint8_t type, mess
 }
 
 # 48 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/interfaces/AsyncSend.nc"
-inline static void SenderDispatcherP__Send__sendDone(uint8_t arg_0x2b0c94fe46d8, message_t * msg, error_t error){
+inline static void SenderDispatcherP__Send__sendDone(uint8_t arg_0x2b04728fb6d8, message_t * msg, error_t error){
 #line 48
-  switch (arg_0x2b0c94fe46d8) {
+  switch (arg_0x2b04728fb6d8) {
 #line 48
     case TDMA_SLOT:
 #line 48
@@ -9564,7 +9592,7 @@ inline static void SenderDispatcherP__Send__sendDone(uint8_t arg_0x2b0c94fe46d8,
 #line 48
     default:
 #line 48
-      SenderDispatcherP__Send__default__sendDone(arg_0x2b0c94fe46d8, msg, error);
+      SenderDispatcherP__Send__default__sendDone(arg_0x2b04728fb6d8, msg, error);
 #line 48
       break;
 #line 48
@@ -9640,9 +9668,9 @@ inline static bool CpmModelC__Model__shouldAck(message_t *msg){
 #line 53
 }
 #line 53
-# 280 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
+# 297 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
 static inline void PureTDMASchedulerP__TossimPacketModel__receive(message_t *msg)
-#line 280
+#line 297
 {
 }
 
@@ -9690,7 +9718,7 @@ static inline bool CpmModelC__checkReceive(CpmModelC__receive_message_t *msg)
 #line 278
   noise = pow(10.0, noise / 10.0);
   while (list != (void *)0) {
-      sim_log_debug(167U, "CpmModelC", "checkReceive: outstanding from %d\n", list->source);
+      sim_log_debug(165U, "CpmModelC", "checkReceive: outstanding from %d\n", list->source);
       count++;
 
       if (list->channel != sim_mote_get_radio_channel(sim_node())) {
@@ -9703,9 +9731,9 @@ static inline bool CpmModelC__checkReceive(CpmModelC__receive_message_t *msg)
       list = list->next;
     }
   noise = 10.0 * log(noise) / log(10.0);
-  sim_log_debug(168U, "CpmModelC", "checkReceive: outstanding count %d noise %lf at %lf\n", count, noise, (double )sim_time() / sim_ticks_per_sec());
+  sim_log_debug(166U, "CpmModelC", "checkReceive: outstanding count %d noise %lf at %lf\n", count, noise, (double )sim_time() / sim_ticks_per_sec());
   msg->lqi = sim_lqi_generate(msg->power - noise);
-  sim_log_debug(169U, "receive_power", "received msg->power:%f\n", msg->power);
+  sim_log_debug(167U, "receive_power", "received msg->power:%f\n", msg->power);
 
 
 
@@ -9720,7 +9748,7 @@ static inline void CpmModelC__sim_gain_receive_handle(sim_event_t *evt)
   CpmModelC__receive_message_t *predecessor = (void *)0;
   CpmModelC__receive_message_t *list = CpmModelC__outstandingReceptionHead[sim_node()];
 
-  sim_log_debug(172U, "CpmModelC", "Handling reception event @ %s.\n", sim_time_string());
+  sim_log_debug(170U, "CpmModelC", "Handling reception event @ %s.\n", sim_time_string());
   while (list != (void *)0) {
       if (list->next == mine) {
           predecessor = list;
@@ -9736,13 +9764,13 @@ static inline void CpmModelC__sim_gain_receive_handle(sim_event_t *evt)
         CpmModelC__outstandingReceptionHead[sim_node()] = mine->next;
       }
     else {
-        sim_log_error(173U, "CpmModelC", "Incoming packet list structure is corrupted: entry is not the head and no entry points to it.\n");
+        sim_log_error(171U, "CpmModelC", "Incoming packet list structure is corrupted: entry is not the head and no entry points to it.\n");
       }
     }
 #line 362
-  sim_log_debug(174U, "CpmModelC,SNRLoss", "Packet from %i to %i\n", (int )mine->source, (int )sim_node());
+  sim_log_debug(172U, "CpmModelC,SNRLoss", "Packet from %i to %i\n", (int )mine->source, (int )sim_node());
   if (!CpmModelC__checkReceive(mine)) {
-      sim_log_debug(175U, "CpmModelC,SNRLoss", " - lost packet from %i as SNR was too low.\n", (int )mine->source);
+      sim_log_debug(173U, "CpmModelC,SNRLoss", " - lost packet from %i as SNR was too low.\n", (int )mine->source);
       mine->lost = 1;
     }
 
@@ -9761,17 +9789,17 @@ static inline void CpmModelC__sim_gain_receive_handle(sim_event_t *evt)
       __nesc_hton_int8(meta->strength.nxdata, mine->strength);
       __nesc_hton_uint8(meta->lqi.nxdata, mine->lqi);
 
-      sim_log_debug_clear(176U, "CpmModelC,SNRLoss", "  -signaling reception\n");
+      sim_log_debug_clear(174U, "CpmModelC,SNRLoss", "  -signaling reception\n");
       CpmModelC__Model__receive(mine->msg);
       if (mine->ack) {
-          sim_log_debug_clear(177U, "CpmModelC", " acknowledgment requested, ");
+          sim_log_debug_clear(175U, "CpmModelC", " acknowledgment requested, ");
         }
       else {
-          sim_log_debug_clear(178U, "CpmModelC", " no acknowledgment requested.\n");
+          sim_log_debug_clear(176U, "CpmModelC", " no acknowledgment requested.\n");
         }
 
       if (mine->ack && CpmModelC__Model__shouldAck(mine->msg)) {
-          sim_log_debug_clear(179U, "CpmModelC", " scheduling ack.\n");
+          sim_log_debug_clear(177U, "CpmModelC", " scheduling ack.\n");
           CpmModelC__sim_gain_schedule_ack(mine->source, sim_time() + 1, mine);
         }
       else {
@@ -9782,9 +9810,9 @@ static inline void CpmModelC__sim_gain_receive_handle(sim_event_t *evt)
     }
   else {
       if (RandomUniform() < 0.001) {
-          sim_log_debug(180U, "CpmModelC,SNRLoss", "Packet was technically lost, but TOSSIM introduces an ack false positive rate.\n");
+          sim_log_debug(178U, "CpmModelC,SNRLoss", "Packet was technically lost, but TOSSIM introduces an ack false positive rate.\n");
           if (mine->ack && CpmModelC__Model__shouldAck(mine->msg)) {
-              sim_log_debug_clear(181U, "CpmModelC", " scheduling ack.\n");
+              sim_log_debug_clear(179U, "CpmModelC", " scheduling ack.\n");
               CpmModelC__sim_gain_schedule_ack(mine->source, sim_time() + 1, mine);
             }
           else {
@@ -9795,7 +9823,7 @@ static inline void CpmModelC__sim_gain_receive_handle(sim_event_t *evt)
           CpmModelC__free_receive_message(mine);
         }
       CpmModelC__receiving[sim_node()] = 0;
-      sim_log_debug_clear(182U, "CpmModelC,SNRLoss", "  -packet was lost.\n");
+      sim_log_debug_clear(180U, "CpmModelC,SNRLoss", "  -packet was lost.\n");
     }
 }
 
@@ -9852,13 +9880,13 @@ static inline void CpmModelC__enqueue_receive_event(int source, sim_time_t endTi
 
 
   if (!sim_mote_is_on(sim_node())) {
-      sim_log_debug(183U, "CpmModelC", "Lost packet from %i due to %i being off\n", source, sim_node());
+      sim_log_debug(181U, "CpmModelC", "Lost packet from %i due to %i being off\n", source, sim_node());
       rcv->lost = 1;
     }
   else {
 #line 449
     if (!CpmModelC__shouldReceive(power - noiseStr)) {
-        sim_log_debug(184U, "CpmModelC,SNRLoss", "Lost packet from %i to %i due to SNR being too low (%i)\n", source, sim_node(), (int )(power - noiseStr));
+        sim_log_debug(182U, "CpmModelC,SNRLoss", "Lost packet from %i to %i due to SNR being too low (%i)\n", source, sim_node(), (int )(power - noiseStr));
         rcv->lost = 1;
       }
     else {
@@ -9869,7 +9897,7 @@ static inline void CpmModelC__enqueue_receive_event(int source, sim_time_t endTi
       else {
 #line 456
         if (CpmModelC__receiving[sim_node()]) {
-            sim_log_debug(185U, "CpmModelC,SNRLoss", "Lost packet from %i due to %i being mid-reception\n", source, sim_node());
+            sim_log_debug(183U, "CpmModelC,SNRLoss", "Lost packet from %i due to %i being mid-reception\n", source, sim_node());
             rcv->lost = 1;
           }
         else {
@@ -9886,7 +9914,7 @@ static inline void CpmModelC__enqueue_receive_event(int source, sim_time_t endTi
           continue;
         }
       if (!CpmModelC__shouldReceive(list->power - rcv->power)) {
-          sim_log_debug(186U, "Gain,SNRLoss", "Going to lose packet from %i with signal %lf as am receiving a packet from %i with signal %lf\n", list->source, list->power, source, rcv->power);
+          sim_log_debug(184U, "Gain,SNRLoss", "Going to lose packet from %i with signal %lf as am receiving a packet from %i with signal %lf\n", list->source, list->power, source, rcv->power);
           list->lost = 1;
         }
       list = list->next;
@@ -9905,7 +9933,7 @@ static inline void CpmModelC__sim_gain_put(int dest, message_t *msg, sim_time_t 
   int prevNode = sim_node();
 
 #line 486
-  sim_log_debug(187U, "CpmModelC", "Enqueing reception event for %i at %llu with power %lf.\n", dest, endTime, power);
+  sim_log_debug(185U, "CpmModelC", "Enqueing reception event for %i at %llu with power %lf.\n", dest, endTime, power);
   sim_set_node(dest);
   CpmModelC__enqueue_receive_event(prevNode, endTime, msg, receive, power, reversePower);
   sim_set_node(prevNode);
@@ -9974,7 +10002,7 @@ static inline double CpmModelC__prr_estimate_from_snr(double SNR)
   double prr_hat = pow(1 - PSE, 23 * 2);
 
 #line 247
-  sim_log_debug(165U, "CpmModelC", "SNR is %lf, PRR is %lf\n", SNR, prr_hat);
+  sim_log_debug(163U, "CpmModelC", "SNR is %lf, PRR is %lf\n", SNR, prr_hat);
   if (prr_hat > 1) {
     prr_hat = 1;
     }
@@ -9996,15 +10024,15 @@ static inline bool TossimActiveMessageC__Model__shouldAck(message_t *msg)
 
 #line 121
   if (__nesc_ntoh_uint16(header->dest.nxdata) == TossimActiveMessageC__amAddress()) {
-      sim_log_debug(194U, "Acks", "Received packet addressed to me so ack it\n");
+      sim_log_debug(192U, "Acks", "Received packet addressed to me so ack it\n");
       return TRUE;
     }
   return FALSE;
 }
 
-# 283 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
+# 300 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
 static inline bool PureTDMASchedulerP__TossimPacketModel__shouldAck(message_t *msg)
-#line 283
+#line 300
 {
 }
 
@@ -10044,7 +10072,7 @@ static inline void TossimPacketModelC__GainRadioModel__acked(message_t *msg)
       __nesc_hton_uint8(metadata->ack.nxdata, 1);
       if (msg != TossimPacketModelC__sending[sim_node()]) {
           TossimPacketModelC__error[sim_node()] = 1;
-          sim_log_debug(156U, "TossimPacketModelC", "Requested ack for 0x%x, but outgoing packet is 0x%x.\n", msg, TossimPacketModelC__sending[sim_node()]);
+          sim_log_debug(154U, "TossimPacketModelC", "Requested ack for 0x%x, but outgoing packet is 0x%x.\n", msg, TossimPacketModelC__sending[sim_node()]);
         }
     }
 }
@@ -10068,7 +10096,7 @@ static inline double CpmModelC__arr_estimate_from_snr(double SNR)
   double prr_hat = pow(1 - PSE, 23 * 2);
 
 #line 166
-  sim_log_debug(162U, "CpmModelC,SNRLoss", "SNR is %lf, ARR is %lf\n", SNR, prr_hat);
+  sim_log_debug(160U, "CpmModelC,SNRLoss", "SNR is %lf, ARR is %lf\n", SNR, prr_hat);
   if (prr_hat > 1) {
     prr_hat = 1;
     }
@@ -10352,17 +10380,17 @@ static inline error_t /*TDMASlotSenderC.TDMASlotSender.GenericSlotSenderP*/Gener
     return FAIL;
     }
 
-  sim_log_debug(138U, "test", "Before transmission\n");
+  sim_log_debug(136U, "test", "Before transmission\n");
 
 
   if (TOS_NODE_ID == 1) {
       if (/*TDMASlotSenderC.TDMASlotSender.GenericSlotSenderP*/GenericSlotSenderP__0__SignalSend__send(AM_BROADCAST_ADDR, &/*TDMASlotSenderC.TDMASlotSender.GenericSlotSenderP*/GenericSlotSenderP__0__test_signal_pkt[sim_node()], 0) != SUCCESS) {
-          sim_log_debug(139U, "test", "---signals fail\n");
+          sim_log_debug(137U, "test", "---signals fail\n");
         }
       else 
 #line 96
         {
-          sim_log_debug(140U, "test", "GenericSlotSenderP. signals success\n");
+          sim_log_debug(138U, "test", "GenericSlotSenderP. signals success\n");
         }
     }
 
@@ -10512,7 +10540,7 @@ static inline void /*TDMASlotSenderC.TDMASlotSender.GenericSlotSenderP*/GenericS
   else 
 #line 165
     {
-      sim_log_debug(141U, "test", "GenericSlotSenderP. Delay Tx success\n");
+      sim_log_debug(139U, "test", "GenericSlotSenderP. Delay Tx success\n");
     }
 }
 
@@ -10721,13 +10749,13 @@ static inline message_t *TossimActiveMessageC__Snoop__default__receive(am_id_t i
 }
 
 # 67 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/Receive.nc"
-inline static message_t * TossimActiveMessageC__Snoop__receive(am_id_t arg_0x2b0c95372670, message_t * msg, void * payload, uint8_t len){
+inline static message_t * TossimActiveMessageC__Snoop__receive(am_id_t arg_0x2b0472c80ca0, message_t * msg, void * payload, uint8_t len){
 #line 67
   nx_struct message_t *__nesc_result;
 #line 67
 
 #line 67
-    __nesc_result = TossimActiveMessageC__Snoop__default__receive(arg_0x2b0c95372670, msg, payload, len);
+    __nesc_result = TossimActiveMessageC__Snoop__default__receive(arg_0x2b0472c80ca0, msg, payload, len);
 #line 67
 
 #line 67
@@ -10923,9 +10951,9 @@ inline static void * PureTDMASchedulerP__SubSend__getPayload(message_t * msg, ui
 #line 71
 }
 #line 71
-# 414 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
+# 431 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
 static inline void *PureTDMASchedulerP__Send__getPayload(message_t *msg, uint8_t len)
-#line 414
+#line 431
 {
   return PureTDMASchedulerP__SubSend__getPayload(msg, len);
 }
@@ -10952,13 +10980,13 @@ static inline void *AsyncSendAdapterP__AMSend__getPayload(am_id_t id, message_t 
 }
 
 # 124 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
-inline static void * /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__getPayload(am_id_t arg_0x2b0c9541ad28, message_t * msg, uint8_t len){
+inline static void * /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__getPayload(am_id_t arg_0x2b0472d271a0, message_t * msg, uint8_t len){
 #line 124
   void *__nesc_result;
 #line 124
 
 #line 124
-  __nesc_result = AsyncSendAdapterP__AMSend__getPayload(arg_0x2b0c9541ad28, msg, len);
+  __nesc_result = AsyncSendAdapterP__AMSend__getPayload(arg_0x2b0472d271a0, msg, len);
 #line 124
 
 #line 124
@@ -11044,13 +11072,13 @@ static inline message_t *AsyncReceiveAdapterP__Receive__default__receive(am_id_t
 }
 
 # 67 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/Receive.nc"
-inline static message_t * AsyncReceiveAdapterP__Receive__receive(am_id_t arg_0x2b0c94c05a78, message_t * msg, void * payload, uint8_t len){
+inline static message_t * AsyncReceiveAdapterP__Receive__receive(am_id_t arg_0x2b047251da78, message_t * msg, void * payload, uint8_t len){
 #line 67
   nx_struct message_t *__nesc_result;
 #line 67
 
 #line 67
-  switch (arg_0x2b0c94c05a78) {
+  switch (arg_0x2b047251da78) {
 #line 67
     case 5:
 #line 67
@@ -11062,7 +11090,7 @@ inline static message_t * AsyncReceiveAdapterP__Receive__receive(am_id_t arg_0x2
 #line 67
     default:
 #line 67
-      __nesc_result = AsyncReceiveAdapterP__Receive__default__receive(arg_0x2b0c94c05a78, msg, payload, len);
+      __nesc_result = AsyncReceiveAdapterP__Receive__default__receive(arg_0x2b047251da78, msg, payload, len);
 #line 67
       break;
 #line 67
@@ -11089,11 +11117,11 @@ inline static void PureTDMASchedulerP__SubReceive__updateBuffer(message_t * msg)
 #line 52
 }
 #line 52
-# 423 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
+# 440 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
 static inline void PureTDMASchedulerP__Receive__updateBuffer(message_t *msg)
-#line 423
+#line 440
 {
-#line 423
+#line 440
   return PureTDMASchedulerP__SubReceive__updateBuffer(msg);
 }
 
@@ -11147,14 +11175,14 @@ static inline void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__sendDone(am
       /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__sendDone(/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current[sim_node()], msg, err);
     }
   else {
-      sim_log_debug(200U, "PointerBug", "%s received send done for %p, signaling for %p.\n", __FUNCTION__, msg, /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__queue[sim_node()][/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current[sim_node()]].msg);
+      sim_log_debug(198U, "PointerBug", "%s received send done for %p, signaling for %p.\n", __FUNCTION__, msg, /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__queue[sim_node()][/*AMQueueP.AMQueueImplP*/AMQueueImplP__0__current[sim_node()]].msg);
     }
 }
 
 # 99 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
-inline static void AsyncSendAdapterP__AMSend__sendDone(am_id_t arg_0x2b0c94c26a00, message_t * msg, error_t error){
+inline static void AsyncSendAdapterP__AMSend__sendDone(am_id_t arg_0x2b047253ea00, message_t * msg, error_t error){
 #line 99
-  /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__sendDone(arg_0x2b0c94c26a00, msg, error);
+  /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__sendDone(arg_0x2b047253ea00, msg, error);
 #line 99
 }
 #line 99
@@ -11226,13 +11254,13 @@ inline static error_t PureTDMASchedulerP__GenericSlotter__start(void ){
 #line 74
 }
 #line 74
-# 180 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
+# 197 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
 static inline void PureTDMASchedulerP__RadioPowerControl__startDone(error_t error)
-#line 180
+#line 197
 {
   int i;
 
-#line 182
+#line 199
   if (PureTDMASchedulerP__coordinatorId[sim_node()] == TOS_NODE_ID) {
       if (PureTDMASchedulerP__init[sim_node()] == FALSE) {
           PureTDMASchedulerP__SplitControl__startDone(error);
@@ -11242,7 +11270,7 @@ static inline void PureTDMASchedulerP__RadioPowerControl__startDone(error_t erro
         }
     }
   else 
-#line 189
+#line 206
     {
       if (PureTDMASchedulerP__init[sim_node()] == FALSE) {
           PureTDMASchedulerP__SplitControl__startDone(error);
@@ -11294,9 +11322,9 @@ inline static void PureTDMASchedulerP__SplitControl__stopDone(error_t error){
 #line 117
 }
 #line 117
-# 197 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
+# 214 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
 static inline void PureTDMASchedulerP__RadioPowerControl__stopDone(error_t error)
-#line 197
+#line 214
 {
   if (PureTDMASchedulerP__requestStop[sim_node()]) {
       printf("This is sensor: %u and the RadioPowerControl.stopDone has been reached\n", TOS_NODE_ID);
@@ -11378,9 +11406,9 @@ static inline void TestNetworkC__CC2420Config__syncDone(error_t error)
     }
 }
 
-# 437 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
+# 454 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
 static inline void PureTDMASchedulerP__CC2420Config__syncDone(error_t error)
-#line 437
+#line 454
 {
 }
 
@@ -11420,7 +11448,7 @@ static inline void CpmModelC__read_rssi_task__runTask(void )
 
 #line 534
   CpmModelC__rssi[sim_node()] = FALSE;
-  sim_log_debug(190U, "CpmModelC", "ReadRssi: noise %f\n", noise);
+  sim_log_debug(188U, "CpmModelC", "ReadRssi: noise %f\n", noise);
 
 
   CpmModelC__ReadRssi__readDone(SUCCESS, noise + 45);
@@ -11464,9 +11492,9 @@ static inline void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__default__send
 }
 
 # 89 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/Send.nc"
-inline static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__sendDone(uint8_t arg_0x2b0c9541bb90, message_t * msg, error_t error){
+inline static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__sendDone(uint8_t arg_0x2b0472d28020, message_t * msg, error_t error){
 #line 89
-  switch (arg_0x2b0c9541bb90) {
+  switch (arg_0x2b0472d28020) {
 #line 89
     case 0U:
 #line 89
@@ -11476,7 +11504,7 @@ inline static void /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__sendDone(uint
 #line 89
     default:
 #line 89
-      /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__default__sendDone(arg_0x2b0c9541bb90, msg, error);
+      /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__Send__default__sendDone(arg_0x2b0472d28020, msg, error);
 #line 89
       break;
 #line 89
@@ -11520,9 +11548,9 @@ static inline void SimSchedulerBasicP__TaskBasic__default__runTask(uint8_t id)
 }
 
 # 64 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/TaskBasic.nc"
-inline static void SimSchedulerBasicP__TaskBasic__runTask(uint8_t arg_0x2b0c947e1158){
+inline static void SimSchedulerBasicP__TaskBasic__runTask(uint8_t arg_0x2b04720f9158){
 #line 64
-  switch (arg_0x2b0c947e1158) {
+  switch (arg_0x2b04720f9158) {
 #line 64
     case AsyncReceiveAdapterP__receiveDone_task:
 #line 64
@@ -11580,7 +11608,7 @@ inline static void SimSchedulerBasicP__TaskBasic__runTask(uint8_t arg_0x2b0c947e
 #line 64
     default:
 #line 64
-      SimSchedulerBasicP__TaskBasic__default__runTask(arg_0x2b0c947e1158);
+      SimSchedulerBasicP__TaskBasic__default__runTask(arg_0x2b04720f9158);
 #line 64
       break;
 #line 64
@@ -11603,33 +11631,33 @@ inline static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__errorTask__postT
 #line 56
 }
 #line 56
-# 285 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
+# 302 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
 static inline error_t PureTDMASchedulerP__Send__send(message_t *msg, uint8_t len)
-#line 285
+#line 302
 {
   { __nesc_atomic_t __nesc_atomic = __nesc_atomic_start();
-#line 286
+#line 303
     {
       if (PureTDMASchedulerP__toSend[sim_node()] == (void *)0) {
           PureTDMASchedulerP__toSend[sim_node()] = msg;
           PureTDMASchedulerP__toSendLen[sim_node()] = len;
           {
             unsigned char __nesc_temp = 
-#line 290
+#line 307
             SUCCESS;
 
             {
-#line 290
+#line 307
               __nesc_atomic_end(__nesc_atomic); 
-#line 290
+#line 307
               return __nesc_temp;
             }
           }
         }
     }
-#line 294
+#line 311
     __nesc_atomic_end(__nesc_atomic); }
-#line 293
+#line 310
   return FAIL;
 }
 
@@ -11657,13 +11685,13 @@ static inline error_t AsyncSendAdapterP__AMSend__send(am_id_t id, am_addr_t addr
 }
 
 # 69 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/tos/interfaces/AMSend.nc"
-inline static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__send(am_id_t arg_0x2b0c9541ad28, am_addr_t addr, message_t * msg, uint8_t len){
+inline static error_t /*AMQueueP.AMQueueImplP*/AMQueueImplP__0__AMSend__send(am_id_t arg_0x2b0472d271a0, am_addr_t addr, message_t * msg, uint8_t len){
 #line 69
   unsigned char __nesc_result;
 #line 69
 
 #line 69
-  __nesc_result = AsyncSendAdapterP__AMSend__send(arg_0x2b0c9541ad28, addr, msg, len);
+  __nesc_result = AsyncSendAdapterP__AMSend__send(arg_0x2b0472d271a0, addr, msg, len);
 #line 69
 
 #line 69
@@ -11823,10 +11851,10 @@ static inline error_t TossimPacketModelC__Control__start(void )
 #line 103
 {
   if (!TossimPacketModelC__initialized[sim_node()]) {
-      sim_log_error(144U, "TossimPacketModelC", "TossimPacketModelC: Control.start() called before initialization!\n");
+      sim_log_error(142U, "TossimPacketModelC", "TossimPacketModelC: Control.start() called before initialization!\n");
       return FAIL;
     }
-  sim_log_debug(145U, "TossimPacketModelC", "TossimPacketModelC: Control.start() called.\n");
+  sim_log_debug(143U, "TossimPacketModelC", "TossimPacketModelC: Control.start() called.\n");
   TossimPacketModelC__startDoneTask__postTask();
   return SUCCESS;
 }
@@ -12116,7 +12144,7 @@ static inline error_t LedsP__Init__init(void )
   /* atomic removed: atomic calls only */
 #line 46
   {
-    sim_log_debug(128U, "Init", "LEDS: initialized.\n");
+    sim_log_debug(126U, "Init", "LEDS: initialized.\n");
     LedsP__Led0__makeOutput();
     LedsP__Led1__makeOutput();
     LedsP__Led2__makeOutput();
@@ -12362,7 +12390,7 @@ inline static bool SimMainP__Scheduler__runNextTask(void ){
 static inline error_t TossimPacketModelC__Init__init(void )
 #line 83
 {
-  sim_log_debug(143U, "TossimPacketModelC", "TossimPacketModelC: Init.init() called\n");
+  sim_log_debug(141U, "TossimPacketModelC", "TossimPacketModelC: Init.init() called\n");
   TossimPacketModelC__initialized[sim_node()] = TRUE;
 
 
@@ -12371,67 +12399,97 @@ static inline error_t TossimPacketModelC__Init__init(void )
   return SUCCESS;
 }
 
-# 32 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/ScheduleConfigC.nc"
+# 57 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/ScheduleConfigC.nc"
 static inline uint8_t ScheduleConfigC__ScheduleConfig__criticality(uint8_t flowid)
-#line 32
+#line 57
 {
-  if (flowid > 2 || flowid < 0) {
+  if (flowid > 3 || flowid < 0) {
       return 0;
     }
   else 
-#line 35
+#line 60
     {
       return ScheduleConfigC__flow_criticality[sim_node()][flowid];
     }
 }
 
-# 7 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/ScheduleConfig.nc"
+# 8 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/ScheduleConfig.nc"
 inline static uint8_t PureTDMASchedulerP__ScheduleConfig__criticality(uint8_t flowid){
-#line 7
+#line 8
   unsigned char __nesc_result;
-#line 7
+#line 8
 
-#line 7
+#line 8
   __nesc_result = ScheduleConfigC__ScheduleConfig__criticality(flowid);
-#line 7
+#line 8
 
-#line 7
+#line 8
   return __nesc_result;
-#line 7
+#line 8
 }
-#line 7
-# 24 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/ScheduleConfigC.nc"
-static inline uint8_t ScheduleConfigC__ScheduleConfig__backupNode(uint8_t nodeid)
-#line 24
+#line 8
+# 48 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/ScheduleConfigC.nc"
+static inline uint8_t ScheduleConfigC__ScheduleConfig__backupNode(uint8_t flowid, uint8_t nodeid)
+#line 48
 {
   if (nodeid > 5 || nodeid < 0) {
       return 0;
     }
   else 
-#line 27
+#line 51
     {
-      return ScheduleConfigC__backup_topology[sim_node()][nodeid];
+
+      return ScheduleConfigC__Backuppath[sim_node()][flowid][nodeid];
     }
 }
 
-# 5 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/ScheduleConfig.nc"
-inline static uint8_t PureTDMASchedulerP__ScheduleConfig__backupNode(uint8_t nodeid){
-#line 5
+# 6 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/ScheduleConfig.nc"
+inline static uint8_t PureTDMASchedulerP__ScheduleConfig__backupNode(uint8_t flowid, uint8_t nodeid){
+#line 6
   unsigned char __nesc_result;
-#line 5
+#line 6
 
-#line 5
-  __nesc_result = ScheduleConfigC__ScheduleConfig__backupNode(nodeid);
-#line 5
+#line 6
+  __nesc_result = ScheduleConfigC__ScheduleConfig__backupNode(flowid, nodeid);
+#line 6
 
-#line 5
+#line 6
   return __nesc_result;
-#line 5
+#line 6
 }
-#line 5
-# 124 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
+#line 6
+# 40 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/ScheduleConfigC.nc"
+static inline uint8_t ScheduleConfigC__ScheduleConfig__primaryNode(uint8_t flowid, uint8_t nodeid)
+#line 40
+{
+  if (nodeid > 5 || nodeid < 0) {
+      return 0;
+    }
+  else 
+#line 43
+    {
+      return ScheduleConfigC__Primarypath[sim_node()][flowid][nodeid];
+    }
+}
+
+# 4 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/ScheduleConfig.nc"
+inline static uint8_t PureTDMASchedulerP__ScheduleConfig__primaryNode(uint8_t flowid, uint8_t nodeid){
+#line 4
+  unsigned char __nesc_result;
+#line 4
+
+#line 4
+  __nesc_result = ScheduleConfigC__ScheduleConfig__primaryNode(flowid, nodeid);
+#line 4
+
+#line 4
+  return __nesc_result;
+#line 4
+}
+#line 4
+# 131 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
 static inline error_t PureTDMASchedulerP__Init__init(void )
-#line 124
+#line 131
 {
   uint8_t i;
 
@@ -12449,7 +12507,14 @@ static inline error_t PureTDMASchedulerP__Init__init(void )
   PureTDMASchedulerP__second_NoAck_count[sim_node()] = 0;
   PureTDMASchedulerP__Loss_flag[sim_node()] = 0;
   PureTDMASchedulerP__Loss_count[sim_node()] = 0;
-  PureTDMASchedulerP__backup_schedule[sim_node()][PureTDMASchedulerP__BACKUPNODE[sim_node()]] = PureTDMASchedulerP__ScheduleConfig__backupNode(TOS_NODE_ID);
+
+
+
+
+  for (i = 0; i < 3; i++) {
+      PureTDMASchedulerP__Path[sim_node()][i][PureTDMASchedulerP__BACKUPPATH[sim_node()]] = PureTDMASchedulerP__ScheduleConfig__primaryNode(i, TOS_NODE_ID);
+      PureTDMASchedulerP__Path[sim_node()][i][PureTDMASchedulerP__BACKUPPATH[sim_node()]] = PureTDMASchedulerP__ScheduleConfig__backupNode(i, TOS_NODE_ID);
+    }
 
   for (i = 0; i < PureTDMASchedulerP__schedule_len[sim_node()]; i++) {
       if (PureTDMASchedulerP__schedule[sim_node()][i][1] == TOS_NODE_ID) {
@@ -12465,6 +12530,9 @@ static inline error_t PureTDMASchedulerP__Init__init(void )
   PureTDMASchedulerP__sync[sim_node()] = FALSE;
   PureTDMASchedulerP__requestStop[sim_node()] = FALSE;
   PureTDMASchedulerP__SimMote__setTcpMsg(0, 0, 0, 0, 0);
+
+
+
 
   return SUCCESS;
 }
@@ -14345,11 +14413,11 @@ static void TossimActiveMessageC__Model__receive(message_t *msg)
   payload = TossimActiveMessageC__Packet__getPayload(TossimActiveMessageC__bufferPointer[sim_node()], TossimActiveMessageC__Packet__maxPayloadLength());
 
   if (TossimActiveMessageC__AMPacket__isForMe(msg)) {
-      sim_log_debug(192U, "AM", "Received active message (%p) of type %hhu and length %hhu for me @ %s.\n", TossimActiveMessageC__bufferPointer[sim_node()], TossimActiveMessageC__AMPacket__type(TossimActiveMessageC__bufferPointer[sim_node()]), len, sim_time_string());
+      sim_log_debug(190U, "AM", "Received active message (%p) of type %hhu and length %hhu for me @ %s.\n", TossimActiveMessageC__bufferPointer[sim_node()], TossimActiveMessageC__AMPacket__type(TossimActiveMessageC__bufferPointer[sim_node()]), len, sim_time_string());
       TossimActiveMessageC__bufferPointer[sim_node()] = TossimActiveMessageC__Receive__receive(TossimActiveMessageC__AMPacket__type(TossimActiveMessageC__bufferPointer[sim_node()]), TossimActiveMessageC__bufferPointer[sim_node()], payload, len);
     }
   else {
-      sim_log_debug(193U, "AM", "Snooped on active message of type %hhu and length %hhu for %hu @ %s.\n", TossimActiveMessageC__AMPacket__type(TossimActiveMessageC__bufferPointer[sim_node()]), len, TossimActiveMessageC__AMPacket__destination(TossimActiveMessageC__bufferPointer[sim_node()]), sim_time_string());
+      sim_log_debug(191U, "AM", "Snooped on active message of type %hhu and length %hhu for %hu @ %s.\n", TossimActiveMessageC__AMPacket__type(TossimActiveMessageC__bufferPointer[sim_node()]), len, TossimActiveMessageC__AMPacket__destination(TossimActiveMessageC__bufferPointer[sim_node()]), sim_time_string());
       TossimActiveMessageC__bufferPointer[sim_node()] = TossimActiveMessageC__Snoop__receive(TossimActiveMessageC__AMPacket__type(TossimActiveMessageC__bufferPointer[sim_node()]), TossimActiveMessageC__bufferPointer[sim_node()], payload, len);
     }
 }
@@ -14593,18 +14661,18 @@ static error_t TossimPacketModelC__Packet__send(int dest, message_t *msg, uint8_
 #line 160
 {
   if (!TossimPacketModelC__initialized[sim_node()]) {
-      sim_log_error(148U, "TossimPacketModelC", "TossimPacketModelC: Send.send() called, but not initialized!\n");
+      sim_log_error(146U, "TossimPacketModelC", "TossimPacketModelC: Send.send() called, but not initialized!\n");
       return EOFF;
     }
   if (!TossimPacketModelC__running[sim_node()]) {
-      sim_log_error(149U, "TossimPacketModelC", "TossimPacketModelC: Send.send() called, but not running!\n");
+      sim_log_error(147U, "TossimPacketModelC", "TossimPacketModelC: Send.send() called, but not running!\n");
       return EOFF;
     }
 
   if (TossimPacketModelC__sending[sim_node()] != (void *)0) {
       return EBUSY;
     }
-  sim_log_debug(150U, "TossimPacketModelC", "Packet.send()\n");
+  sim_log_debug(148U, "TossimPacketModelC", "Packet.send()\n");
 
   TossimPacketModelC__sendingLength[sim_node()] = len;
   TossimPacketModelC__sending[sim_node()] = msg;
@@ -14625,7 +14693,7 @@ static void TossimPacketModelC__send_transmit_done(sim_event_t *evt)
 #line 296
   TossimPacketModelC__sending[sim_node()] = (void *)0;
   TossimPacketModelC__transmitting[sim_node()] = FALSE;
-  sim_log_debug(155U, "TossimPacketModelC", "PACKET: Signaling send done at %llu.\n", sim_time());
+  sim_log_debug(153U, "TossimPacketModelC", "PACKET: Signaling send done at %llu.\n", sim_time());
   TossimPacketModelC__Packet__sendDone(rval, TossimPacketModelC__running[sim_node()] ? SUCCESS : EOFF);
 }
 
@@ -14709,11 +14777,11 @@ static void CpmModelC__Model__putOnAirTo(int dest, message_t *msg, bool ack, sim
 #line 495
   CpmModelC__requestAck[sim_node()] = ack;
   CpmModelC__outgoing[sim_node()] = msg;
-  sim_log_debug(188U, "CpmModelC", "Node %i transmitting to %i, finishes at %llu, at channel: %d\n", sim_node(), dest, endTime, channel_id);
+  sim_log_debug(186U, "CpmModelC", "Node %i transmitting to %i, finishes at %llu, at channel: %d\n", sim_node(), dest, endTime, channel_id);
   while (neighborEntry != (void *)0) {
       int other = neighborEntry->mote;
 
-      sim_log_debug(189U, "CpmModelC", "Node %i with neighborEntry:%d.\n", sim_node(), neighborEntry->mote);
+      sim_log_debug(187U, "CpmModelC", "Node %i with neighborEntry:%d.\n", sim_node(), neighborEntry->mote);
 
       CpmModelC__sim_gain_put(other, msg, endTime, ack && (other == dest || dest == AM_BROADCAST_ADDR), power + sim_gain_value(sim_node(), other, channel_id), reversePower + sim_gain_value(other, sim_node(), channel_id), channel_id);
       neighborEntry = sim_gain_next(neighborEntry);
@@ -14739,7 +14807,7 @@ static double CpmModelC__packetNoise(CpmModelC__receive_message_t *msg)
   while (list != (void *)0) {
 
 
-      sim_log_debug(170U, "CpmModelC", "packetReceive: outstanding from %d\n", list->source);
+      sim_log_debug(168U, "CpmModelC", "packetReceive: outstanding from %d\n", list->source);
       count++;
 
       if (list->channel != sim_mote_get_radio_channel(sim_node())) {
@@ -14752,7 +14820,7 @@ static double CpmModelC__packetNoise(CpmModelC__receive_message_t *msg)
       list = list->next;
     }
   noise = 10.0 * log(noise) / log(10.0);
-  sim_log_debug(171U, "CpmModelC", "packetReceive: outstanding count %d noise %lf at %lf\n", count, noise, (double )sim_time() / sim_ticks_per_sec());
+  sim_log_debug(169U, "CpmModelC", "packetReceive: outstanding count %d noise %lf at %lf\n", count, noise, (double )sim_time() / sim_ticks_per_sec());
   return noise;
 }
 
@@ -14767,14 +14835,14 @@ static double CpmModelC__noise_hash_generation(void )
   uint16_t node_id = sim_node();
 
 #line 137
-  sim_log_debug(160U, "CpmModelC", "IN: noise_hash_generation() with CT: %f and channel id: %d and sensor id: %d\n", CT, sim_mote_get_radio_channel(node_id), node_id);
+  sim_log_debug(158U, "CpmModelC", "IN: noise_hash_generation() with CT: %f and channel id: %d and sensor id: %d\n", CT, sim_mote_get_radio_channel(node_id), node_id);
   if (5 <= remain && remain < 10) {
       noise_val = (double )sim_noise_generate(node_id, quotient + 1, sim_mote_get_radio_channel(node_id));
     }
   else {
       noise_val = (double )sim_noise_generate(node_id, quotient, sim_mote_get_radio_channel(node_id));
     }
-  sim_log_debug(161U, "CpmModelC", "@ %s: OUT: noise_hash_generation(): %lf\n", sim_time_string(), noise_val);
+  sim_log_debug(159U, "CpmModelC", "@ %s: OUT: noise_hash_generation(): %lf\n", sim_time_string(), noise_val);
 
   return noise_val;
 }
@@ -14814,7 +14882,7 @@ static bool CpmModelC__shouldReceive(double SNR)
         }
     }
 #line 270
-  sim_log_debug(166U, "CpmModelC", "Sensor: %u, channel is %u, returned PRR	 in shouldReceive is %lf\n", node_id, sim_mote_get_radio_channel(node_id), prr);
+  sim_log_debug(164U, "CpmModelC", "Sensor: %u, channel is %u, returned PRR	 in shouldReceive is %lf\n", node_id, sim_mote_get_radio_channel(node_id), prr);
   return prr;
 }
 
@@ -14916,7 +14984,7 @@ static void CpmModelC__sim_gain_schedule_ack(int source, sim_time_t t, CpmModelC
 static bool CpmModelC__Model__clearChannel(void )
 #line 219
 {
-  sim_log_debug(164U, "CpmModelC", "Checking clear channel @ %s: %f <= %f \n", sim_time_string(), (double )CpmModelC__packetNoise((void *)0), CpmModelC__clearThreshold[sim_node()]);
+  sim_log_debug(162U, "CpmModelC", "Checking clear channel @ %s: %f <= %f \n", sim_time_string(), (double )CpmModelC__packetNoise((void *)0), CpmModelC__clearThreshold[sim_node()]);
 
 
   return CpmModelC__packetNoise((void *)0) < CpmModelC__clearThreshold[sim_node()];
@@ -14940,11 +15008,11 @@ static void TossimPacketModelC__send_transmit_with_cca(sim_event_t *evt)
   evt->time += duration;
   evt->handle = TossimPacketModelC__send_transmit_done;
 
-  sim_log_debug(153U, "TossimPacketModelC", "PACKET: Broadcasting packet to everyone.\n");
+  sim_log_debug(151U, "TossimPacketModelC", "PACKET: Broadcasting packet to everyone.\n");
   TossimPacketModelC__GainRadioModel__putOnAirTo(TossimPacketModelC__destNode[sim_node()], TossimPacketModelC__sending[sim_node()], __nesc_ntoh_uint8(metadata->ack.nxdata), evt->time, 0.0, 0.0, sim_mote_get_radio_channel(sim_node()));
   __nesc_hton_uint8(metadata->ack.nxdata, 0);
   evt->time += sim_csma_rxtx_delay() * (sim_ticks_per_sec() / sim_csma_symbols_per_sec());
-  sim_log_debug(154U, "TossimPacketModelC", "PACKET: Send done at %llu.\n", evt->time);
+  sim_log_debug(152U, "TossimPacketModelC", "PACKET: Send done at %llu.\n", evt->time);
   sim_queue_insert(evt);
 }
 
@@ -14962,9 +15030,9 @@ static void TossimPacketModelC__send_transmit_with_cca(sim_event_t *evt)
   return result;
 }
 
-# 616 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
+# 633 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
 static void PureTDMASchedulerP__transmission(uint8_t schedule_idx, uint8_t ReTx_flag)
-#line 616
+#line 633
 {
   TestNetworkMsg *tmp_payload;
   uint8_t i;
@@ -14978,11 +15046,8 @@ static void PureTDMASchedulerP__transmission(uint8_t schedule_idx, uint8_t ReTx_
       PureTDMASchedulerP__CC2420Config__setChannel(PureTDMASchedulerP__schedule[sim_node()][i][3]);
       PureTDMASchedulerP__CC2420Config__setPower(PureTDMASchedulerP__RADIO_DEF_POWER);
       PureTDMASchedulerP__CC2420Config__sync();
-      PureTDMASchedulerP__AMPacket__setDestination(&PureTDMASchedulerP__packet[sim_node()], PureTDMASchedulerP__backup_schedule[sim_node()][PureTDMASchedulerP__BACKUPNODE[sim_node()]]);
-      sim_log_debug(124U, "transmission", "!!!!!!!!!!!!!!!!!backupnode:%d\n", PureTDMASchedulerP__backup_schedule[sim_node()][PureTDMASchedulerP__BACKUPNODE[sim_node()]]);
     }
   else {
-#line 631
     if (ReTx_flag == 1) {
         PureTDMASchedulerP__CC2420Config__setChannel(PureTDMASchedulerP__schedule[sim_node()][i][3]);
         PureTDMASchedulerP__CC2420Config__setPower(PureTDMASchedulerP__RADIO_DEF_POWER);
@@ -14990,7 +15055,7 @@ static void PureTDMASchedulerP__transmission(uint8_t schedule_idx, uint8_t ReTx_
         PureTDMASchedulerP__AMPacket__setDestination(&PureTDMASchedulerP__packet[sim_node()], PureTDMASchedulerP__schedule[sim_node()][i][2]);
       }
     else {
-#line 636
+#line 653
       if (ReTx_flag == 0) {
           PureTDMASchedulerP__CC2420Config__setChannel(PureTDMASchedulerP__schedule[sim_node()][i][3]);
           PureTDMASchedulerP__CC2420Config__setPower(PureTDMASchedulerP__RADIO_DEF_POWER);
@@ -14999,28 +15064,28 @@ static void PureTDMASchedulerP__transmission(uint8_t schedule_idx, uint8_t ReTx_
         }
       }
     }
-#line 643
+#line 660
   PureTDMASchedulerP__PacketAcknowledgements__requestAck(&PureTDMASchedulerP__packet[sim_node()]);
   PureTDMASchedulerP__TossimPacketModelCCA__set_cca(PureTDMASchedulerP__schedule[sim_node()][i][4]);
   if (PureTDMASchedulerP__SubSend__send(&PureTDMASchedulerP__packet[sim_node()], sizeof(TestNetworkMsg )) == SUCCESS) {
       if (ReTx_flag == 0) {
-        sim_log_debug(125U, "transmission", "trans_count:%d\n", ++PureTDMASchedulerP__trans_count[sim_node()]);
+        sim_log_debug(123U, "transmission", "trans_count:%d\n", ++PureTDMASchedulerP__trans_count[sim_node()]);
         }
       else {
-#line 648
+#line 665
         if (ReTx_flag == 1) {
-          sim_log_debug(126U, "transmission", "first_Retrans_count:%d\n", ++PureTDMASchedulerP__first_Retrans_count[sim_node()]);
+          sim_log_debug(124U, "transmission", "first_Retrans_count:%d\n", ++PureTDMASchedulerP__first_Retrans_count[sim_node()]);
           }
         else {
-#line 650
+#line 667
           if (ReTx_flag == 2) {
-            sim_log_debug(127U, "transmission", "second_Retrans_count:%d\n", ++PureTDMASchedulerP__second_Retrans_count[sim_node()]);
+            sim_log_debug(125U, "transmission", "second_Retrans_count:%d\n", ++PureTDMASchedulerP__second_Retrans_count[sim_node()]);
             }
           }
         }
     }
   else 
-#line 653
+#line 670
     {
     }
 }
@@ -15044,7 +15109,7 @@ static void * /*TDMASlotSenderC.TDMASlotSender.GenericSlotSenderP*/GenericSlotSe
 static error_t CC2420ControlP__CC2420Config__sync(void )
 #line 43
 {
-  sim_log_debug(158U, "CC2420Config", "CC2420Config: sync: autoAck %d, hwAutoAck %d\n", CC2420ControlP__autoAck[sim_node()], CC2420ControlP__hwAutoAck[sim_node()]);
+  sim_log_debug(156U, "CC2420Config", "CC2420Config: sync: autoAck %d, hwAutoAck %d\n", CC2420ControlP__autoAck[sim_node()], CC2420ControlP__hwAutoAck[sim_node()]);
   sim_mote_set_radio_channel(sim_node(), CC2420ControlP__channel[sim_node()]);
   sim_mote_setPower(sim_node(), CC2420ControlP__power[sim_node()]);
   CC2420ControlP__syncDoneTask__postTask();
@@ -15358,13 +15423,13 @@ static void TestNetworkC__RadioControl__startDone(error_t err)
     }
 }
 
-# 161 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
+# 178 "/home/sihoon/WCPSv3-master/TinyOS-2.x-jhu/opt/tinyos-2.x/apps/wustl/upma/lib/macs/pure-tdma/PureTDMASchedulerP.nc"
 static error_t PureTDMASchedulerP__SplitControl__start(void )
-#line 161
+#line 178
 {
   error_t err;
 
-#line 163
+#line 180
   if (PureTDMASchedulerP__init[sim_node()] == FALSE) {
       PureTDMASchedulerP__FrameConfiguration__setSlotLength(PureTDMASchedulerP__slotSize[sim_node()]);
       PureTDMASchedulerP__FrameConfiguration__setFrameLength(PureTDMASchedulerP__bi[sim_node()] + 1);
@@ -16004,12 +16069,6 @@ static int __nesc_nido_resolve(int __nesc_mote,
     *size = sizeof(PureTDMASchedulerP__backup_schedule[__nesc_mote]);
     return 0;
   }
-  if (!strcmp(varname, "PureTDMASchedulerP__BACKUPNODE"))
-  {
-    *addr = (uintptr_t)&PureTDMASchedulerP__BACKUPNODE[__nesc_mote];
-    *size = sizeof(PureTDMASchedulerP__BACKUPNODE[__nesc_mote]);
-    return 0;
-  }
   if (!strcmp(varname, "PureTDMASchedulerP__PKTLOSS"))
   {
     *addr = (uintptr_t)&PureTDMASchedulerP__PKTLOSS[__nesc_mote];
@@ -16020,6 +16079,18 @@ static int __nesc_nido_resolve(int __nesc_mote,
   {
     *addr = (uintptr_t)&PureTDMASchedulerP__CRITICALITY[__nesc_mote];
     *size = sizeof(PureTDMASchedulerP__CRITICALITY[__nesc_mote]);
+    return 0;
+  }
+  if (!strcmp(varname, "PureTDMASchedulerP__Path"))
+  {
+    *addr = (uintptr_t)&PureTDMASchedulerP__Path[__nesc_mote];
+    *size = sizeof(PureTDMASchedulerP__Path[__nesc_mote]);
+    return 0;
+  }
+  if (!strcmp(varname, "PureTDMASchedulerP__BACKUPPATH"))
+  {
+    *addr = (uintptr_t)&PureTDMASchedulerP__BACKUPPATH[__nesc_mote];
+    *size = sizeof(PureTDMASchedulerP__BACKUPPATH[__nesc_mote]);
     return 0;
   }
   if (!strcmp(varname, "PureTDMASchedulerP__schedule_len"))
@@ -16414,10 +16485,16 @@ static int __nesc_nido_resolve(int __nesc_mote,
   /* Module TossimComPrintfP */
 
   /* Module ScheduleConfigC */
-  if (!strcmp(varname, "ScheduleConfigC__backup_topology"))
+  if (!strcmp(varname, "ScheduleConfigC__Primarypath"))
   {
-    *addr = (uintptr_t)&ScheduleConfigC__backup_topology[__nesc_mote];
-    *size = sizeof(ScheduleConfigC__backup_topology[__nesc_mote]);
+    *addr = (uintptr_t)&ScheduleConfigC__Primarypath[__nesc_mote];
+    *size = sizeof(ScheduleConfigC__Primarypath[__nesc_mote]);
+    return 0;
+  }
+  if (!strcmp(varname, "ScheduleConfigC__Backuppath"))
+  {
+    *addr = (uintptr_t)&ScheduleConfigC__Backuppath[__nesc_mote];
+    *size = sizeof(ScheduleConfigC__Backuppath[__nesc_mote]);
     return 0;
   }
   if (!strcmp(varname, "ScheduleConfigC__flow_criticality"))
@@ -16730,9 +16807,10 @@ static void __nesc_nido_initialise(int __nesc_mote)
   memset((void *)&PureTDMASchedulerP__Loss_count[__nesc_mote], 0, sizeof PureTDMASchedulerP__Loss_count[__nesc_mote]);
   memcpy((void *)&PureTDMASchedulerP__schedule[__nesc_mote], (void *)&(unsigned char [32][11]){ { 1, 1, 51, 22, 0, 1, 1, 1, 0, 0, 1 } }, sizeof PureTDMASchedulerP__schedule[__nesc_mote]);
   memcpy((void *)&PureTDMASchedulerP__backup_schedule[__nesc_mote], (void *)&(unsigned char [4]){ 0, 0, 0, 0 }, sizeof PureTDMASchedulerP__backup_schedule[__nesc_mote]);
-  PureTDMASchedulerP__BACKUPNODE[__nesc_mote] = 0;
   PureTDMASchedulerP__PKTLOSS[__nesc_mote] = 1;
   PureTDMASchedulerP__CRITICALITY[__nesc_mote] = 2;
+  memset((void *)&PureTDMASchedulerP__Path[__nesc_mote], 0, sizeof PureTDMASchedulerP__Path[__nesc_mote]);
+  PureTDMASchedulerP__BACKUPPATH[__nesc_mote] = 1;
   PureTDMASchedulerP__schedule_len[__nesc_mote] = 32;
   PureTDMASchedulerP__superframe_length[__nesc_mote] = 11;
   memset((void *)&PureTDMASchedulerP__sync[__nesc_mote], 0, sizeof PureTDMASchedulerP__sync[__nesc_mote]);
@@ -16835,8 +16913,9 @@ static void __nesc_nido_initialise(int __nesc_mote)
   /* Module TossimComPrintfP */
 
   /* Module ScheduleConfigC */
-  memcpy((void *)&ScheduleConfigC__backup_topology[__nesc_mote], (void *)&(unsigned char [5]){ 0, 52, 51 }, sizeof ScheduleConfigC__backup_topology[__nesc_mote]);
-  memcpy((void *)&ScheduleConfigC__flow_criticality[__nesc_mote], (void *)&(unsigned char [2]){ 0, 1, 0 }, sizeof ScheduleConfigC__flow_criticality[__nesc_mote]);
+  memcpy((void *)&ScheduleConfigC__Primarypath[__nesc_mote], (void *)&(unsigned char [3][5]){ { 0, 0, 0 }, { 0, 51, 0 }, { 0, 0, 52 } }, sizeof ScheduleConfigC__Primarypath[__nesc_mote]);
+  memcpy((void *)&ScheduleConfigC__Backuppath[__nesc_mote], (void *)&(unsigned char [3][5]){ { 0, 0, 0 }, { 0, 52, 0 }, { 0, 0, 51 } }, sizeof ScheduleConfigC__Backuppath[__nesc_mote]);
+  memcpy((void *)&ScheduleConfigC__flow_criticality[__nesc_mote], (void *)&(unsigned char [3]){ 0, 1, 0 }, sizeof ScheduleConfigC__flow_criticality[__nesc_mote]);
 
   /* Module SyncReceiveAdapterP */
 

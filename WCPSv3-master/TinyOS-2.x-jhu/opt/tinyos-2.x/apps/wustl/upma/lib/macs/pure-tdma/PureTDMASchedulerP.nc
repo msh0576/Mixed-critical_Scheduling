@@ -112,6 +112,13 @@ uint8_t PKTLOSS = 1;
 uint8_t CRITICALITY = 2;
 uint8_t COEXISTANCE = 3;
 
+/* Routing Path */
+		//0 Primary path
+		//1 Backup path
+uint8_t Path[NETWORK_FLOW][2];
+uint8_t PRIMARYPATH = 0;
+uint8_t BACKUPPATH = 1;
+
 	uint8_t schedule_len=32;
 	uint32_t superframe_length = 11; //5Hz at most
 
@@ -138,8 +145,15 @@ uint8_t COEXISTANCE = 3;
 		second_NoAck_count = 0;
 		Loss_flag = 0;
 		Loss_count = 0;
-		backup_schedule[BACKUPNODE] = call ScheduleConfig.backupNode(TOS_NODE_ID);
+		//backup_schedule[BACKUPNODE] = call ScheduleConfig.backupNode(TOS_NODE_ID);
 		//dbg("transmission","backup_schedule[0]:%d\n", backup_schedule[0]);
+
+		//Store primary and backup path for each flow id
+		for(i=0; i<NETWORK_FLOW; i++){
+			Path[i][BACKUPPATH] = call ScheduleConfig.primaryNode(i, TOS_NODE_ID);
+			Path[i][BACKUPPATH] = call ScheduleConfig.backupNode(i, TOS_NODE_ID);
+		}
+
 		for(i=0; i<schedule_len; i++) {
 			if(schedule[i][1] == TOS_NODE_ID) {
 				backup_schedule[CRITICALITY] = call ScheduleConfig.criticality(schedule[i][6]);		//Assume: primary flows are not inter-cross at some nodes
@@ -154,6 +168,9 @@ uint8_t COEXISTANCE = 3;
 		sync = FALSE;
 		requestStop = FALSE;
 		call SimMote.setTcpMsg(0, 0, 0, 0, 0); //reset TcpMsg
+
+		/* Debug ScheduleConfig interface */
+
 
 		return SUCCESS;
 	}
@@ -236,7 +253,7 @@ uint8_t COEXISTANCE = 3;
 				}
 
 				if(TOS_NODE_ID == 51 || TOS_NODE_ID == 52){
-					dbg("receive","Loss_count:%d\n", Loss_count);
+					//dbg("receive","Loss_count:%d\n", Loss_count);
 				}
 	 		}
 
@@ -626,8 +643,8 @@ uint8_t COEXISTANCE = 3;
 				call CC2420Config.setChannel(schedule[i][3]);
 				call CC2420Config.setPower(RADIO_DEF_POWER);		//changed by sihoon
 				call CC2420Config.sync();
-				call AMPacket.setDestination(&packet, backup_schedule[BACKUPNODE]);
-				dbg("transmission","!!!!!!!!!!!!!!!!!backupnode:%d\n", backup_schedule[BACKUPNODE]);
+				//call AMPacket.setDestination(&packet, backup_schedule[BACKUPNODE]);
+				//dbg("transmission","!!!!!!!!!!!!!!!!!backupnode:%d\n", backup_schedule[BACKUPNODE]);
 			}else if(ReTx_flag == 1) {
 				call CC2420Config.setChannel(schedule[i][3]);
 				call CC2420Config.setPower(RADIO_DEF_POWER);		//changed by sihoon

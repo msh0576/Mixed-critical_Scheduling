@@ -6,6 +6,7 @@ import sys
 import socket
 import os
 import time
+import VCS_algorithm
 
 enable_main=0;
 if enable_main:
@@ -36,10 +37,11 @@ t = Tossim([])
 
 #t.addChannel('printf', sys.stdout)
 t.addChannel("DataFeedback", sys.stdout)
-#t.addChannel("receive", sys.stdout)
+t.addChannel("receive", sys.stdout)
 t.addChannel("transmission", sys.stdout)
-t.addChannel("receive_ack", sys.stdout)
-t.addChannel("test", sys.stdout)
+#t.addChannel("receive_ack", sys.stdout)
+#t.addChannel("test", sys.stdout)
+#t.addChannel("ScheduleConfig", sys.stdout)
 
 
 #t.addChannel("TossimPacketModelC", sys.stdout)
@@ -54,6 +56,10 @@ t.addChannel("test", sys.stdout)
 #Log Data
 #Log = open("log.txt", "w")
 #t.addChannel('radio_send', Log)
+
+''' Test VCS_algorithm	'''
+VCS_algorithm.file_test()
+
 
 r = t.radio()
 L=list()
