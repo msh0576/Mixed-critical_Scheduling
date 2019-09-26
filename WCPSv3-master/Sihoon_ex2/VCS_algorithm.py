@@ -16,4 +16,15 @@ if __name__=='__main__':
     [0, 0, 52]
     ]
 
+    Backuppath = [
+    [0, 0, 0],
+    [0, 52, 0],
+    [0, 0, 51]
+    ]
+
+    flow_destination = [0, 51, 52]
+    flow_source = [0, 1, 2]
+    
+
+
     print(Primarypath)
