@@ -274,18 +274,6 @@ def TxConflicts(low_crit_schedule, vir_hi_criti_schedule):
             #print("static_edge:%s, virtual edge:%s"%(static_edge, vir_hi_criti_schedule[slot][:2]))
             virtual_edge = vir_hi_criti_schedule[slot][:2]
 
-            ### Check primary conflicts
-            primary_conflict_set = []
-            primary_conflict_set = Primary_conflict(Edge, virtual_edge[0], virtual_edge[1])
-            #print("primary_conflict_set of virtual_edge:%s"%(primary_conflict_set))
-            if static_edge in primary_conflict_set[0]:      #SC3
-                ConflictType = "SC3"
-                print("=== low critical edge %s has primary conflict (SC3) with virtual edge at slot %s ==="%(static_edge, slot))
-            elif static_edge in primary_conflict_set[1]:    #RC3
-                ConflictType = "RC3"
-                print("=== low critical edge %s has primary conflict (RC3) with virtual edge at slot %s ==="%(static_edge, slot))
-
-
             ### Check secondary conflicts
             secondary_conflict_set = []
             secondary_conflict_set = Secondary_conflict(Edge, virtual_edge[0], virtual_edge[1])
@@ -302,10 +290,24 @@ def TxConflicts(low_crit_schedule, vir_hi_criti_schedule):
                 ConflictType = "SC2"
                 print("--- edge %s has secondary conflict (SC2) at slot %s---"%(static_edge, slot))
 
+            ### Check primary conflicts
+            primary_conflict_set = []
+            primary_conflict_set = Primary_conflict(Edge, virtual_edge[0], virtual_edge[1])
+            #print("primary_conflict_set of virtual_edge:%s"%(primary_conflict_set))
+            if static_edge in primary_conflict_set[0]:      #SC3
+                ConflictType = "SC3"
+                print("=== low critical edge %s has primary conflict (SC3) with virtual edge at slot %s ==="%(static_edge, slot))
+            elif static_edge in primary_conflict_set[1]:    #RC3
+                ConflictType = "RC3"
+                print("=== low critical edge %s has primary conflict (RC3) with virtual edge at slot %s ==="%(static_edge, slot))
+
+
         if ConflictType != 0:
-            Output.append(static_edge)
-            Output.append(slot)
-            Output.append(ConflictType)
+            total = []
+            total.append(static_edge)
+            total.append(slot)
+            total.append(ConflictType)
+            Output.append(total)
 
 
     return Output
@@ -322,10 +324,123 @@ def loss_recur(vector, ele, maxlinkretx):
     if vector[ele] <= maxlinkretx:
         return
 
-if __name__=='__main__':
+''' Virtual Conflict-aware Scheduler '''
+# Output: {nodeid: [slot, conflict types], ...}
+def VCS(sourcepath_set_input, BasicSchedule):                                          # We do not consider hi-critical flow order yet
+    Output = {}
+    for i in Vertex:
+        Output[i] = []
+    # Initialize
+    linklosscount = 0
 
+    sorted_res = sorted(sourcepath_set_input)
+    current_flow = sorted_res[0]
+    current_flowid = int(current_flow[len(current_flow)-1:])
+    Hi_criti_source_path = sourcepath_set_input[current_flow][:]       # copy First source path from source_path_set
+    SLength = len(Hi_criti_source_path) - 1
+    LV = [0 for i in range(SLength)]
+
+    linklosscount = -1
+    cnt = 0
+
+    # set low critical schedule from total schedule
+    low_crit_schedule = {}
+    low_crit_schedule = FindFlowSchedule(2, BasicSchedule)
+    print("low_crit_schedule:%s\n"%(low_crit_schedule))
+
+    # Start VCS
+    while True:
+        vir_Hi_criti_source_path = Hi_criti_source_path[:]
+        TxConflict_output_set = []
+
+        # Make LV permutation
+        linklosscount = linklosscount + 1
+        LV[0] = linklosscount
+        if LV[0] > MaxLinkReTx:
+            linklosscount = 0
+            loss_recur(LV, 0, MaxLinkReTx)
+
+        print("LV:%s"%(LV))
+        tmp_LV = LV[:]
+
+
+
+        ##### Modify source path set considering the virtual link loss #####
+        # reconfigure the source path based on backup path
+        for linkidx, linkloss in enumerate(LV):
+            if linkloss == 2:
+                # build new source path due to 2 loss of a certain link
+                new_path = []
+                print("vir_Hi_criti_source_path:%s" %(vir_Hi_criti_source_path))
+                Source_path(current_flowid, vir_Hi_criti_source_path[linkidx], new_path, LV[linkidx])
+                vir_Hi_criti_source_path = vir_Hi_criti_source_path[:linkidx+1]     # slicing primary path of virtual source path
+                vir_Hi_criti_source_path.extend(new_path)
+                print("Backup vir_Hi_criti_source_path:%s" %(vir_Hi_criti_source_path))
+
+                if len(LV) < len(vir_Hi_criti_source_path)-1:
+                    for i in range((len(vir_Hi_criti_source_path)-1)-len(LV)):
+                        LV.append(0)
+                    #print("change LV:%s"%( LV))
+                else:
+                    pass
+
+        # Add retrnsmission transmitter to source path according to link loss count
+        retx_buffer = []
+        for linkidx, linkloss in enumerate(LV):
+            tmp_list = []       # [link loss count, retransmission node]
+            if linkloss != 0:
+                if linkloss >= 1:       # rebuild virtual source path set considering link loss
+                    retx_node = vir_Hi_criti_source_path[linkidx]
+                    tmp_list.append(linkloss)
+                    tmp_list.append(retx_node)
+                    retx_buffer.append(tmp_list)
+        #print("retx_buffer:%s"%(retx_buffer))
+        for buffer in retx_buffer:
+            tmp_index = vir_Hi_criti_source_path.index(buffer[1])
+            for _ in range(buffer[0]):
+                vir_Hi_criti_source_path.insert(tmp_index, buffer[1])
+        print("New vir_Hi_criti_source_path:%s" %(vir_Hi_criti_source_path))
+
+
+        ##### Virtual Schedule #####
+        vir_schedule = {}
+        vir_schedule = VirtualScheduler(vir_Hi_criti_source_path, current_flowid)
+        print("vir_schedule:%s"%(vir_schedule))
+
+        # Find Types of transmission conflicts on each low critical flow node
+        print("-----TxConflicts---------")
+        TxConflict_output_set = TxConflicts(low_crit_schedule, vir_schedule)
+        print("TxConflict_output:%s"%(TxConflict_output_set))
+        for TxConflict_output in TxConflict_output_set:
+            low_crit_sender = TxConflict_output[0][0]
+            conflict_type = TxConflict_output[2]
+            if conflict_type in Output[low_crit_sender]:
+                pass
+            else:
+                Output[low_crit_sender].append(conflict_type)
+        print("VCS Output:%s\n\n"%(Output))
+
+
+        # Finish VCS algorithm
+        del LV[:]
+        LV = tmp_LV[:]
+        LV_len = len(LV)
+        finish_count = 0
+        for i in LV:
+            if i != MaxLinkReTx:
+                break
+            else:
+                finish_count = finish_count + 1
+
+        if finish_count == LV_len:
+            return Output
+
+def Execution_func():
+    global Primary_path, Backup_path, flow_destination, flow_source, flowid, Vertex, Edge
+    global Superframe_len, MaxLinkReTx, MaxFlowReTx
     ''' Initialize Basic network topology'''
-    '''
+
+    # Topology Test 1
     # col: nodeid,  row: flowid
     Primary_path = [
     [0, 0, 0, 0, 0],
@@ -352,8 +467,9 @@ if __name__=='__main__':
     [3, 4], [3, 51], [3, 52],
     [4, 51], [4, 52]
     ]
-    '''
 
+    '''
+    # Topology Test 2
     Primary_path = [
     [0, 0, 0, 0, 0, 0],
     [0, 3, 52, 5, 0, 52],
@@ -380,21 +496,13 @@ if __name__=='__main__':
     [4,5],
     [5,52]
     ]
+    '''
 
     # Superframe length
     Superframe_len = 10
     MaxLinkReTx = 2
     MaxFlowReTx = 0     # it should be changed
 
-
-
-    #   Test node id
-    test_nodeid = 1
-    test_flowid = 1
-
-
-
-    '''Build a source path'''
 
     # build source_path_set for every flow
     source_path = []
@@ -404,125 +512,20 @@ if __name__=='__main__':
         source_path_set['Flow_%s'%(i)] = []
         source_path_set['Flow_%s'%(i)].append(flow_source[i])
         Source_path(i, flow_source[i], source_path_set['Flow_%s'%(i)])
-
-
-    # Test source_path_set
     print('source_path_set:%s\n'%(source_path_set))
 
 
-    '''Basic Scheduler'''
-    #primary_conflict_set = Primary_conflict(Edge, test_nodeid, Primary_path[test_flowid][test_nodeid])
+    ### Basic_Scheduler
     Scheduled_Edge = {}
     Schedule = {}   # key: tiem slot, value: sender i, receiver j, and flowid k (ex. [i,j,k])
-
-
-    #Test Basic_Scheduler
     Scheduled_Edge, Schedule = Basic_Scheduler(source_path_set)
     print('Scheduled_Edge:%s\n'%(Scheduled_Edge))
     print('Schedule:%s\n' %(Schedule))
 
-
-
-    ''' Virtual Conflict-aware Scheduler '''
-    def VCS(sourcepath_set_input):                                          # We do not consider hi-critical flow order yet
-
-        # Initialize
-        linklosscount = 0
-
-        sorted_res = sorted(sourcepath_set_input)
-        current_flow = sorted_res[0]
-        current_flowid = int(current_flow[len(current_flow)-1:])
-        Hi_criti_source_path = sourcepath_set_input[current_flow][:]       # copy First source path from source_path_set
-        SLength = len(Hi_criti_source_path) - 1
-        LV = [0 for i in range(SLength)]
-
-        linklosscount = -1
-        cnt = 0
-
-        # set low critical schedule from total schedule
-        low_crit_schedule = {}
-        low_crit_schedule = FindFlowSchedule(2, Schedule)
-        print("low_crit_schedule:%s\n"%(low_crit_schedule))
-
-        # Start VCS
-        while True:
-            vir_Hi_criti_source_path = Hi_criti_source_path[:]
-            # Make LV permutation
-            linklosscount = linklosscount + 1
-            LV[0] = linklosscount
-            if LV[0] > MaxLinkReTx:
-                linklosscount = 0
-                loss_recur(LV, 0, MaxLinkReTx)
-
-            print("LV:%s"%(LV))
-            tmp_LV = LV[:]
+    ### VCS_algorithm
+    VCS(source_path_set, Schedule)
 
 
 
-            ##### Modify source path set considering the virtual link loss #####
-            # reconfigure the source path based on backup path
-            for linkidx, linkloss in enumerate(LV):
-                if linkloss == 2:
-                    # build new source path due to 2 loss of a certain link
-                    new_path = []
-                    print("vir_Hi_criti_source_path:%s" %(vir_Hi_criti_source_path))
-                    Source_path(current_flowid, vir_Hi_criti_source_path[linkidx], new_path, LV[linkidx])
-                    vir_Hi_criti_source_path = vir_Hi_criti_source_path[:linkidx+1]     # slicing primary path of virtual source path
-                    vir_Hi_criti_source_path.extend(new_path)
-                    print("Backup vir_Hi_criti_source_path:%s" %(vir_Hi_criti_source_path))
-
-                    if len(LV) < len(vir_Hi_criti_source_path)-1:
-                        for i in range((len(vir_Hi_criti_source_path)-1)-len(LV)):
-                            LV.append(0)
-                        #print("change LV:%s"%( LV))
-                    else:
-                        pass
-
-            # Add retrnsmission transmitter to source path according to link loss count
-            retx_buffer = []
-            for linkidx, linkloss in enumerate(LV):
-                tmp_list = []       # [link loss count, retransmission node]
-                if linkloss != 0:
-                    if linkloss >= 1:       # rebuild virtual source path set considering link loss
-                        retx_node = vir_Hi_criti_source_path[linkidx]
-                        tmp_list.append(linkloss)
-                        tmp_list.append(retx_node)
-                        retx_buffer.append(tmp_list)
-            #print("retx_buffer:%s"%(retx_buffer))
-            for buffer in retx_buffer:
-                tmp_index = vir_Hi_criti_source_path.index(buffer[1])
-                for _ in range(buffer[0]):
-                    vir_Hi_criti_source_path.insert(tmp_index, buffer[1])
-            print("New vir_Hi_criti_source_path:%s" %(vir_Hi_criti_source_path))
-
-
-            ##### Virtual Schedule #####
-            vir_schedule = {}
-            vir_schedule = VirtualScheduler(vir_Hi_criti_source_path, current_flowid)
-            print("vir_schedule:%s"%(vir_schedule))
-
-            # Find Types of transmission conflicts on each low critical flow node
-            print("-----TxConflicts---------")
-            TxConflicts(low_crit_schedule, vir_schedule)
-            print("\n\n")
-
-            # Finish VCS algorithm
-            del LV[:]
-            LV = tmp_LV[:]
-            LV_len = len(LV)
-            finish_count = 0
-            for i in LV:
-                if i != MaxLinkReTx:
-                    break
-                else:
-                    finish_count = finish_count + 1
-
-            if finish_count == LV_len:
-                return
-
-
-
-
-
-    # Test VCS_algorithm
-    VCS(source_path_set)
+if __name__=='__main__':
+    Execution_func()
