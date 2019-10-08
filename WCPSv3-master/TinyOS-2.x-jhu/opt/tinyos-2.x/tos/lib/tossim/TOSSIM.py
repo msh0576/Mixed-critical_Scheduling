@@ -72,7 +72,7 @@ class MAC(_object):
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, MAC, name)
     __repr__ = _swig_repr
-    def __init__(self): 
+    def __init__(self):
         this = _TOSSIM.new_MAC()
         try: self.this.append(this)
         except: self.this = this
@@ -111,7 +111,7 @@ class Radio(_object):
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, Radio, name)
     __repr__ = _swig_repr
-    def __init__(self): 
+    def __init__(self):
         this = _TOSSIM.new_Radio()
         try: self.this.append(this)
         except: self.this = this
@@ -132,7 +132,7 @@ class Packet(_object):
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, Packet, name)
     __repr__ = _swig_repr
-    def __init__(self): 
+    def __init__(self):
         this = _TOSSIM.new_Packet()
         try: self.this.append(this)
         except: self.this = this
@@ -175,7 +175,7 @@ class variable_string_t(_object):
     __swig_setmethods__["isArray"] = _TOSSIM.variable_string_t_isArray_set
     __swig_getmethods__["isArray"] = _TOSSIM.variable_string_t_isArray_get
     if _newclass:isArray = _swig_property(_TOSSIM.variable_string_t_isArray_get, _TOSSIM.variable_string_t_isArray_set)
-    def __init__(self): 
+    def __init__(self):
         this = _TOSSIM.new_variable_string_t()
         try: self.this.append(this)
         except: self.this = this
@@ -202,7 +202,7 @@ class nesc_app_t(_object):
     __swig_setmethods__["variableArray"] = _TOSSIM.nesc_app_t_variableArray_set
     __swig_getmethods__["variableArray"] = _TOSSIM.nesc_app_t_variableArray_get
     if _newclass:variableArray = _swig_property(_TOSSIM.nesc_app_t_variableArray_get, _TOSSIM.nesc_app_t_variableArray_set)
-    def __init__(self): 
+    def __init__(self):
         this = _TOSSIM.new_nesc_app_t()
         try: self.this.append(this)
         except: self.this = this
@@ -217,7 +217,7 @@ class Variable(_object):
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, Variable, name)
     __repr__ = _swig_repr
-    def __init__(self, *args): 
+    def __init__(self, *args):
         this = _TOSSIM.new_Variable(*args)
         try: self.this.append(this)
         except: self.this = this
@@ -233,7 +233,7 @@ class Mote(_object):
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, Mote, name)
     __repr__ = _swig_repr
-    def __init__(self, *args): 
+    def __init__(self, *args):
         this = _TOSSIM.new_Mote(*args)
         try: self.this.append(this)
         except: self.this = this
@@ -263,7 +263,7 @@ class Tossim(_object):
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, Tossim, name)
     __repr__ = _swig_repr
-    def __init__(self, *args): 
+    def __init__(self, *args):
         this = _TOSSIM.new_Tossim(*args)
         try: self.this.append(this)
         except: self.this = this
@@ -284,8 +284,8 @@ class Tossim(_object):
     def mac(self): return _TOSSIM.Tossim_mac(self)
     def radio(self): return _TOSSIM.Tossim_radio(self)
     def newPacket(self): return _TOSSIM.Tossim_newPacket(self)
+    # added by sihoon
+    # Python to MAC
+    def sendVirtualSchedule(self, *args): return _TOSSIM.Tossim_sendVirtualSchedule(self, *args)
 Tossim_swigregister = _TOSSIM.Tossim_swigregister
 Tossim_swigregister(Tossim)
-
-
-

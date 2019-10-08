@@ -6,13 +6,13 @@
  * agreement is hereby granted, provided that the above copyright
  * notice, the following two paragraphs and the author appear in all
  * copies of this software.
- * 
+ *
  * IN NO EVENT SHALL STANFORD UNIVERSITY BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
  * ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN
  * IF STANFORD UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
- * 
+ *
  * STANFORD UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE
@@ -51,7 +51,7 @@ Variable::Variable(char* str, char* formatStr, int array, int which) {
   format = formatStr;
   isArray = array;
   mote = which;
-  
+
   int sLen = strlen(name);
   realName = (char*)malloc(sLen + 1);
   memcpy(realName, name, sLen + 1);
@@ -89,10 +89,10 @@ static unsigned int tossim_hash(void* key) {
   char* str = (char*)key;
   unsigned int hashVal = 0;
   int c;
-  
+
   while ((c = *str++))
     hashVal = c + (hashVal << 6) + (hashVal << 16) - hashVal;
-  
+
   return hashVal;
 }
 
@@ -167,7 +167,7 @@ Variable* Mote::getVariable(char* name) {
   char* typeStr = (char*)"";
   int isArray;
   Variable* var;
-  
+
   var = (Variable*)hashtable_search(varTable, name);
   if (var == NULL) {
     // Could hash this for greater efficiency,
@@ -296,6 +296,11 @@ void Mote::disableIdle() {
   sim_mote_disable_idle(nodeID);
 }
 
+//added by sihoon
+// Python to MAC
+void Tossim::sendVirtualSchedule(int nodeid, int TxOffset, int dummy1, int dummy2 ) {
+  sim_send_VirtualSchedule(nodeid, TxOffset, dummy1, dummy2);
+}
 
 
 MAC* Tossim::mac() {

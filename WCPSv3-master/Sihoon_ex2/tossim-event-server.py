@@ -30,9 +30,7 @@ else:
 	#noise_offset = 17 #74   ##noise levels are changed by offset change--yh
 	#noise_offset = 18 #73
 	#noise_offset = 19 #72
-	#noise_offset = 14 #77
-	#noise_offset = 16 #75
-	#noise_offset = 18 #73
+
 t = Tossim([])
 
 #t.addChannel('printf', sys.stdout)
@@ -41,6 +39,7 @@ t.addChannel("receive", sys.stdout)
 t.addChannel("transmission", sys.stdout)
 #t.addChannel("receive_ack", sys.stdout)
 #t.addChannel("test", sys.stdout)
+t.addChannel("VCStest", sys.stdout)
 #t.addChannel("ScheduleConfig", sys.stdout)
 
 
@@ -58,8 +57,13 @@ t.addChannel("transmission", sys.stdout)
 #t.addChannel('radio_send', Log)
 
 ''' Test VCS_algorithm	'''
-VCS_algorithm.file_test()
+send_to_MAClayer = []
+send_to_MAClayer = VCS_algorithm.Execution_func()
 
+### Python to mote ###
+# Input: (nodeid, TxOffset, 0, 0)
+for seq in send_to_MAClayer:
+	t.sendVirtualSchedule(seq[0], seq[1], 0, 0)
 
 r = t.radio()
 L=list()
@@ -70,7 +74,7 @@ for channel_1 in [22, 23, 24, 25, 26]:
 	sync_rssi_strength_2 = -30
 
 
-	for sensor in [1, 2, 51, 52]:		# Set network topology
+	for sensor in [1, 2, 3, 4, 51, 52]:		# Set network topology
 		r.add(sensor, 100, sync_rssi_strength, channel_1)	#add(source, destination, gain)
 		r.add(100, sensor, sync_rssi_strength, channel_1)
 
@@ -112,7 +116,7 @@ for channel in [22, 23, 24, 25, 26]:
 
 
 
-for node in [100, 1, 2, 51, 52]:
+for node in [100, 1, 2, 3, 4, 51, 52]:
 	m = t.getNode(node);
 	for channel in [22, 23, 24, 25, 26]:
 		if channel==22:
@@ -132,7 +136,7 @@ for node in [100, 1, 2, 51, 52]:
 	#print "Booting ", node, " at time ", str(0)
 
 
-run_count = 10 * 10;
+run_count = 10 * 100;
 #0 means not received.
 while (t.time() <= 97656250*run_count):
 	rcved = t.runNextEvent()

@@ -418,7 +418,7 @@ def VCS(sourcepath_set_input, BasicSchedule):                                   
                 pass
             else:
                 Output[low_crit_sender].append(conflict_type)
-        print("VCS Output:%s\n\n"%(Output))
+        #print("VCS Output:%s\n\n"%(Output))
 
 
         # Finish VCS algorithm
@@ -434,6 +434,24 @@ def VCS(sourcepath_set_input, BasicSchedule):                                   
 
         if finish_count == LV_len:
             return Output
+
+# set TxOffset of each node based on the TxConflict types
+def Conflict2TxOffset(nodeid, ConflictType_list):
+    RC1 = "RC1"
+    RC2 = "RC2"
+    RC3 = "RC3"
+    SC2 = "SC2"
+    SC3 = "SC3"
+
+    if RC3 in ConflictType_list:
+        TxOffset = 10
+    elif SC3 in ConflictType_list:
+        TxOffset = 5
+    else:
+        TxOffset = 3
+
+    return TxOffset
+
 
 def Execution_func():
     global Primary_path, Backup_path, flow_destination, flow_source, flowid, Vertex, Edge
@@ -523,9 +541,20 @@ def Execution_func():
     print('Schedule:%s\n' %(Schedule))
 
     ### VCS_algorithm
-    VCS(source_path_set, Schedule)
+    VCS_output = VCS(source_path_set, Schedule)
+    print("VCS Output:%s\n\n"%(VCS_output))
 
+    # Conflict2TxOffset(nodeid, ConflictType_list)
+    send_to_MAClayer = []   # [ [nodeid, TxOffset], ... ]
+    for nodeid, types in VCS_output.items():
+        if types:       # if types is empty, it return false
+            tmp_ = []
+            tmp_.append(nodeid)
+            tmp_.append(Conflict2TxOffset(nodeid, types))
+            send_to_MAClayer.append(tmp_)
+    print("send_to_MAClayer:%s"%(send_to_MAClayer))
 
+    return send_to_MAClayer
 
 if __name__=='__main__':
     Execution_func()

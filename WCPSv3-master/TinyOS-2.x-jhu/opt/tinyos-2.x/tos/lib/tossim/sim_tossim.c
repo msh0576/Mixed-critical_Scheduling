@@ -6,13 +6,13 @@
  * agreement is hereby granted, provided that the above copyright
  * notice, the following two paragraphs and the author appear in all
  * copies of this software.
- * 
+ *
  * IN NO EVENT SHALL STANFORD UNIVERSITY BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
  * ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN
  * IF STANFORD UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
- * 
+ *
  * STANFORD UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE
@@ -37,6 +37,7 @@
 #include <sys/time.h>
 
 #include <sim_noise.h> //added by HyungJune Lee
+#include "/home/sihoon/WCPSv3-master/Sihoon_ex2/TestNetwork.h"  //added by sihoon
 
 static sim_time_t sim_ticks;
 static unsigned long current_node;
@@ -64,7 +65,7 @@ void sim_init() __attribute__ ((C, spontaneous)) {
     else {
       sim_random_seed(tv.tv_sec);
     }
-  } 
+  }
 }
 
 void sim_end() __attribute__ ((C, spontaneous)) {
@@ -151,20 +152,20 @@ int sim_run_next_event() __attribute__ ((C, spontaneous)) {
   //int tcpMsg_result[5];
   int* tcpMsg_result;
   int result_to_py = 0;
-    
+
   if (!sim_queue_is_empty()) {
     sim_event_t* event = sim_queue_pop();
     sim_set_time(event->time);
     sim_set_node(event->mote);
-    
+
     //we scan through END RECEIVERS [161, 169, SENSING] [157, 180, 108, 175: ACTUATORS]
     //or we read from everybody to see if we get something
     //to read the tcp buffer and see if we have any news updated
-    
+
     if ((sim_mote_is_on(event->mote) || event->force) && event->handle != NULL) {
       //printf("Mote: %u is on.\n", event->mote);
       event->handle(event);
-      
+
       if (event->mote == 161 || event->mote == 169 || event->mote == 157 || event->mote == 180 || event->mote == 108 || event->mote == 175)
       {
       	tcpMsg_result = sim_mote_getTcpMsg(event->mote);
@@ -230,4 +231,20 @@ void sim_add_channel(char* channel, FILE* file) __attribute__ ((C, spontaneous))
 
 bool sim_remove_channel(char* channel, FILE* file)  __attribute__ ((C, spontaneous)) {
   return sim_log_remove_channel(channel, file);
+}
+
+//added by sihoon
+// Python to MAC
+int simScheduleBuf[NETWORK_NODE][VCS_COL_SIZE];
+//int *simScheduleBuf;
+void sim_send_VirtualSchedule(int nodeid, int TxOffset, int dummy1, int dummy2 ) __attribute__ ((C, spontaneous)) {
+  if(nodeid <= NETWORK_NODE){
+    simScheduleBuf[nodeid][0] = TxOffset;
+  }
+
+}
+
+int* sim_get_VirtualSchedule() __attribute__ ((C, spontaneous)) {
+
+  return simScheduleBuf;
 }

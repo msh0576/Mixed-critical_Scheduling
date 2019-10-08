@@ -90,18 +90,6 @@ generic module GenericSlotSenderP(uint16_t offset, uint16_t backoff, bool cca)  
 			dbg("test","Before transmission\n");
 
 
-			if(TOS_NODE_ID == 1) {
-				if(call SignalSend.send(AM_BROADCAST_ADDR, &test_signal_pkt, 0) != SUCCESS) {
-					dbg("test","---signals fail\n");
-				}else {
-					dbg("test","GenericSlotSenderP. signals success\n");
-				}
-			}
-
-
-
-      if(TOS_NODE_ID != 0)
-        //dbg("printf","GenericSlotSenderP\n");
 
   		atomic {
   			state_ = state;

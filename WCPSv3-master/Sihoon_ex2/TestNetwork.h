@@ -2,8 +2,9 @@
 #define TEST_NETWORK_H
 
 //added by sihoon
-#define NETWORK_NODE 5
+#define NETWORK_NODE 6
 #define NETWORK_FLOW 3
+#define VCS_COL_SIZE 1
 
 #include <AM.h>
 #include "TestNetworkC.h"
@@ -156,5 +157,8 @@ typedef nx_struct TestNetworkMsg {
   nx_uint16_t sendCount;
   nx_uint16_t sendSuccessCount;
 } TestNetworkMsg;
+
+
+
 
 #endif

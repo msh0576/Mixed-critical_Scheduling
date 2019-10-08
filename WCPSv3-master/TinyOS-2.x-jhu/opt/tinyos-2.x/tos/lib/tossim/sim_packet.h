@@ -6,13 +6,13 @@
  * agreement is hereby granted, provided that the above copyright
  * notice, the following two paragraphs and the author appear in all
  * copies of this software.
- * 
+ *
  * IN NO EVENT SHALL STANFORD UNIVERSITY BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
  * ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN
  * IF STANFORD UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
- * 
+ *
  * STANFORD UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE
@@ -49,13 +49,13 @@ extern "C" {
    * friendly pointer to a message_t.
    */
   typedef struct sim_packet {} sim_packet_t;
-  
+
   void sim_packet_set_source(sim_packet_t* msg, uint16_t src);
   uint16_t sim_packet_source(sim_packet_t* msg);
-  
+
   void sim_packet_set_destination(sim_packet_t* msg, uint16_t dest);
   uint16_t sim_packet_destination(sim_packet_t* msg);
-  
+
   void sim_packet_set_length(sim_packet_t* msg, uint8_t len);
   uint16_t sim_packet_length(sim_packet_t* msg);
 
@@ -74,8 +74,10 @@ extern "C" {
   void sim_packet_set_dsn(sim_packet_t* msg, uint8_t dsn);
   uint8_t sim_packet_dsn(sim_packet_t* msg);
 
+  
+
 #ifdef __cplusplus
 }
 #endif
-  
+
 #endif // SIM_PACKET_H_INCLUDED

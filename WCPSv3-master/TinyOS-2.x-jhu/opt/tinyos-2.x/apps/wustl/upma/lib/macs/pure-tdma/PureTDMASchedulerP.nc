@@ -40,6 +40,7 @@ module PureTDMASchedulerP {
 		//Added by Sihoon
 		interface ScheduleConfig;
 		interface TossimPacketModel;
+		interface Queue<TestNetworkMsg *> as forwardQ;
 
 	}
 }
@@ -49,6 +50,7 @@ implementation {
 		FRAME_LENGTH = 3,
 		RADIO_DEF_POWER = 0,
 		RADIO_MAX_POWER = 31,
+		MAC_Q = 2,
 	};
 	bool init;
 	uint32_t slotSize;
@@ -62,6 +64,10 @@ implementation {
 	message_t packet;
 	message_t test_signal_pkt;
 
+	//For Queue
+	message_t forwardPktBuffer[MAC_Q];
+	uint8_t queueSize;
+
 	//Added by sihoon
 	uint32_t slot_;
 	uint16_t rcv_count[2] = {0,0};
@@ -73,6 +79,7 @@ implementation {
 	uint32_t second_NoAck_count;
 	bool Loss_flag;
 	uint16_t Loss_count;
+	uint8_t TxOffset;
 
 
 	uint8_t get_last_hop_status(uint8_t flow_id_t, uint8_t access_type_t, uint8_t hop_count_t);
@@ -82,7 +89,7 @@ implementation {
 	uint8_t get_flow_id(uint32_t slot_t, uint8_t sender, uint8_t receiver);
 
 	//added by Sihoon
-	void transmission(uint8_t schedule_idx, uint8_t ReTx_flag);
+	void transmission(uint8_t schedule_idx, uint8_t ReTx_flag, bool relay_flag);
 
   	//0 Slot
   	//1 Sender
@@ -98,8 +105,9 @@ implementation {
 
 uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, retrans twice, baseline.
 	//flow 170, flow sensor
-	{1, 1, 51, 22, 0, 1, 1, 1, 0, 0, 1}
-	//{2, 2, 52, 22, 0, 1, 2, 2, 0, 0, 1}
+	{1, 1, 3, 22, 0, 1, 1, 1, 0, 0, 1},
+	//{2, 3, 51, 22, 0, 1, 1, 1, 0, 0, 2}
+	{1, 2, 3, 22, 0, 1, 2, 2, 0, 0, 1}
 	};
 
 		//0 backup node
@@ -130,6 +138,7 @@ uint8_t BACKUPPATH = 1;
 
 	command error_t Init.init() {
 		uint8_t i;
+		uint32_t (*VCS_buffer)[VCS_COL_SIZE];
 
 		slotSize = 10 * 32;     //10ms
 		bi = 40000; //# of slots in the supersuperframe with only one slot 0 doing sync
@@ -169,7 +178,15 @@ uint8_t BACKUPPATH = 1;
 		requestStop = FALSE;
 		call SimMote.setTcpMsg(0, 0, 0, 0, 0); //reset TcpMsg
 
-		/* Debug ScheduleConfig interface */
+		/* set TxOffset based on VCS algorithm */
+		// Python to MAC
+		VCS_buffer = sim_get_VirtualSchedule();
+		if(TOS_NODE_ID <= NETWORK_NODE){
+			if(VCS_buffer[TOS_NODE_ID][0] != NULL){
+				TxOffset = VCS_buffer[TOS_NODE_ID][0];
+			}
+		}
+		//dbg("VCStest","My TxOffset:%d\n", TxOffset);
 
 
 		return SUCCESS;
@@ -234,6 +251,8 @@ uint8_t BACKUPPATH = 1;
  				call BeaconSend.send(NULL, 0);
  				dbg("printf","SENSOR: %u has done network synchronization in SLOT: %u at time: %s:\n", TOS_NODE_ID, slot, sim_time_string());
  			};
+
+
  			return;
  		}
 
@@ -246,14 +265,21 @@ uint8_t BACKUPPATH = 1;
 		  	}
 
 				//Count Pkt loss in a superframe
-				if(Loss_flag == 1){
-					Loss_flag = 0;
+				if(Loss_flag == TRUE){
+					Loss_flag = FALSE;
 				}else {
 					Loss_count = Loss_count + 1;
 				}
 
 				if(TOS_NODE_ID == 51 || TOS_NODE_ID == 52){
 					//dbg("receive","Loss_count:%d\n", Loss_count);
+				}
+				/// Queue Initilize
+				if(!call forwardQ.empty()){
+					queueSize = call forwardQ.size();
+					for(i=0; i<queueSize; i++){
+						call forwardQ.dequeue();
+					}
 				}
 	 		}
 
@@ -356,7 +382,9 @@ uint8_t BACKUPPATH = 1;
 		uint8_t flow_id_rcv;
 		uint8_t current_slot;
 		TestNetworkMsg* tmp_payload;
+		TestNetworkMsg* dataBuffer;
 		char * printfResults;
+
 
 		current_slot = call SlotterControl.getSlot() % superframe_length;
 		tmp_payload = (TestNetworkMsg*)payload;
@@ -364,17 +392,21 @@ uint8_t BACKUPPATH = 1;
 		//flow_id_rcv=get_flow_id(call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID);
 		flow_id_rcv = tmp_payload->flowid; //changed by sihoon
 		//dbg("test","****Test Signals	:	Subreceive.receive\n");
+
+
+		/// Print Rcv data ///
 		if(flow_id_rcv != 0) {
-			if(TOS_NODE_ID == 51){
+
+			if(TOS_NODE_ID == 3){
 				for(i=0; i<schedule_len; i++) {	//for counting receive of 1ReTx
 					if(schedule[i][2] == TOS_NODE_ID && schedule[i][6] == flow_id_rcv && schedule[i][0] == current_slot) {
 						//original transmission
-						Loss_flag = 1;
+						Loss_flag = TRUE;
 						dbg("receive","flow_id:%u, SLOT: %u, src:%u, myID:%u, channel:%u   rcv_count[%d]:%d\n", flow_id_rcv, current_slot, src, TOS_NODE_ID, call CC2420Config.getChannel(), flow_id_rcv-1,++rcv_count[flow_id_rcv-1]);
 
 					}else if(schedule[i][2] == TOS_NODE_ID && schedule[i][6] == flow_id_rcv && schedule[i][0] == current_slot - 1) {
 						//1 ReTx transmission
-						Loss_flag = 1;
+						Loss_flag = TRUE;
 						dbg("receive","flow_id:%u, SLOT: %u, src:%u, myID:%u, channel:%u   ReTx_rcv:%d\n", flow_id_rcv, current_slot, src, TOS_NODE_ID, call CC2420Config.getChannel(), ++ReTx_rcv);
 					}
 				}
@@ -391,6 +423,15 @@ uint8_t BACKUPPATH = 1;
 				//dbg("printf","RSSI:%d\n",call CC2420Packet.getRssi(msg));
 
 			}
+
+			// Queue //
+			queueSize = call forwardQ.size();
+			dataBuffer = (TestNetworkMsg*)call SubSend.getPayload(&forwardPktBuffer[queueSize], sizeof(TestNetworkMsg));
+			dataBuffer->flowid = tmp_payload->flowid;
+			if(dataBuffer != NULL){
+				call forwardQ.enqueue(dataBuffer);
+			}
+
 		}
 		//printf("RECEIVE: %u->%u, SLOT:%u (time: %s), channel: %u\n", src,TOS_NODE_ID, call SlotterControl.getSlot(), sim_time_string(), call CC2420Config.getChannel());
 		signal Receive.receive(msg, payload, len);
@@ -575,7 +616,7 @@ uint8_t BACKUPPATH = 1;
   								call TossimPacketModelCCA.set_cca(schedule[i][4]); //schedule[i][4]: 0, TDMA; 1, CSMA contending; 2, CSMA steal;
 	  							call SubSend.send(&packet, sizeof(TestNetworkMsg));
 									*/
-										transmission(i,0);
+										transmission(i,0,TRUE);
 
   			  				}// end check last hop
   			  			}// end sender check
@@ -584,27 +625,31 @@ uint8_t BACKUPPATH = 1;
   			  					call CC2420Config.setChannel(schedule[i][3]);
   								call CC2420Config.sync();
   						}//end receiver check
-  					}else{
+  					}
+						// Flow Root Tx
+						else{
   						if(TOS_NODE_ID == schedule[i][1] && schedule[i][8]==0){
 								dbg("test","\n\n\n");
 								dbg("test","slot start time\n");
 
-								transmission(i,0); 	//i: schedule_idx, 0:ReTx_flag
+								transmission(i,0,FALSE); 	//i: schedule_idx, 0:ReTx_flag, FALSE: relay_flag
 
 	  					}
+							// Receiver Setting
   						if(TOS_NODE_ID == schedule[i][2] && schedule[i][8]==0){
-	  						//printf("RECEIVER, HOP =1: %u, slot: %u, channel: %u, time: %s\n", TOS_NODE_ID, slot_norm, schedule[i][3], sim_time_string());
-  			  				call CC2420Config.setChannel(schedule[i][3]);
+			  				call CC2420Config.setChannel(schedule[i][3]);
   							call CC2420Config.sync();
   						}
   					}//end else
   				}//end slot check
-  			}else if(slot_norm-1 == schedule[i][0]) {					//check previous transmission slot
+  			}
+				// ReTx schedule
+				else if(slot_norm-1 == schedule[i][0]) {					//check previous transmission slot
 					if(schedule[i][1] == TOS_NODE_ID) {					//check sender
 						if(backup_schedule[CRITICALITY] == 1) {			//check Hi-cirtical flow
 							if(schedule[i][8] == 0) {									//check no-ack
 								if(backup_schedule[PKTLOSS] == 1) {	//check retransmission count
-										transmission(i,1);		//First Retransmission
+										//transmission(i,1,FALSE);		//First Retransmission
 								}//end retransmission count
 							}//end no-ack
 						}//end Hi-cirtical flow
@@ -620,7 +665,7 @@ uint8_t BACKUPPATH = 1;
 									}
 
 									if(backup_schedule[PKTLOSS] == 2) {		//check retransmission count
-										//transmission(i,2);		//Second Retransmission
+										//transmission(i,2,FALSE);		//Second Retransmission
 									}//end retransmission count
 								}//end no-ack
 							}//end Hi-cirtical flow
@@ -630,14 +675,29 @@ uint8_t BACKUPPATH = 1;
   		}//end for
    	}//end set_send
 
-		void transmission(uint8_t schedule_idx, uint8_t ReTx_flag) {
+		void transmission(uint8_t schedule_idx, uint8_t ReTx_flag, bool relay_flag) {
 			TestNetworkMsg* tmp_payload;
+			TestNetworkMsg* forwardPkt;
 			uint8_t i;
 
 			i = schedule_idx;
 
-			tmp_payload = call SubSend.getPayload(&packet, sizeof(TestNetworkMsg));
-			tmp_payload->flowid = schedule[i][6];
+			/// check the flow root Tx or the relay Tx
+			if(relay_flag == FALSE){
+				tmp_payload = call SubSend.getPayload(&packet, sizeof(TestNetworkMsg));
+				tmp_payload->flowid = schedule[i][6];
+			}else{
+				if(!call forwardQ.empty()){
+					forwardPkt = (TestNetworkMsg*)call forwardQ.head();
+					call forwardQ.dequeue();
+
+					tmp_payload = call SubSend.getPayload(&packet, sizeof(TestNetworkMsg));
+					tmp_payload->flowid = forwardPkt->flowid;
+				}else{
+					return;
+				}
+			}
+
 
 			if(ReTx_flag == 2) {	// Second retransmission change their destination
 				call CC2420Config.setChannel(schedule[i][3]);

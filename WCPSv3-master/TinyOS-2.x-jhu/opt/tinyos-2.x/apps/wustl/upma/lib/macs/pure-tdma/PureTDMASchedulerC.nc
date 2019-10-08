@@ -135,4 +135,7 @@ implementation {
   PureTDMASchedulerP.Alarm -> Alarm32khz16C;
 	PureTDMASchedulerP.ScheduleConfig -> ScheduleConfigC;
 	PureTDMASchedulerP.TossimPacketModel -> TossimPacketModelC.Packet;
+
+	components new QueueC(TestNetworkMsg *, 2);
+	PureTDMASchedulerP.forwardQ -> QueueC;
 }
