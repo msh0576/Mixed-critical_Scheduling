@@ -5,6 +5,7 @@
 #define NETWORK_NODE 6
 #define NETWORK_FLOW 3
 #define VCS_COL_SIZE 1
+#define MAX_LINK_RETX 2
 
 #include <AM.h>
 #include "TestNetworkC.h"
@@ -43,6 +44,7 @@ typedef nx_struct TestNetworkMsg {
   nx_uint8_t data19;
   nx_uint8_t data20;
 
+/*
   nx_uint8_t data21;
   nx_uint8_t data22;
   nx_uint8_t data23;
@@ -149,7 +151,7 @@ typedef nx_struct TestNetworkMsg {
   nx_uint8_t data108;
   nx_uint8_t data109;
   nx_uint8_t data110;
-
+*/
   //nx_uint8_t data111;
   //nx_uint8_t data112;
 

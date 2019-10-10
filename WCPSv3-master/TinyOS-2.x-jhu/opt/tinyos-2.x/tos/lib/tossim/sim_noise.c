@@ -6,13 +6,13 @@
  * agreement is hereby granted, provided that the above copyright
  * notice, the following two paragraphs and the author appear in all
  * copies of this software.
- * 
+ *
  * IN NO EVENT SHALL STANFORD UNIVERSITY BE LIABLE TO ANY PARTY FOR
  * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
  * ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN
  * IF STANFORD UNIVERSITY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
  * DAMAGE.
- * 
+ *
  * STANFORD UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE
@@ -28,14 +28,14 @@
  * @author Hyungjune Lee
  * @date   Oct 13 2006
  */
- 
+
 /**
 * Further edited by for multi-channel TOSSIM, each channel uses different noise traces
 *
 * @author Bo Li of wustl
 * @data Mar 19, 2012
 */
- 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -59,14 +59,14 @@ static int sim_noise_eq(void *key1, void *key2);
 void makeNoiseModel(uint16_t node_id, uint8_t channel_id);
 void makePmfDistr(uint16_t node_id, uint8_t channel_id);
 uint8_t search_bin_num(char noise);
-            
+
 void sim_noise_init()__attribute__ ((C, spontaneous))
 {
   int j;
   int i;
   for (j=0; j< TOSSIM_MAX_NODES; j++) {
     for (i = 0; i < 16; i++) {
-      noiseData[j][i].noiseGenTime = 0;     
+      noiseData[j][i].noiseGenTime = 0;
       noiseData[j][i].noiseTable = create_hashtable(NOISE_HASHTABLE_SIZE, sim_noise_hash, sim_noise_eq);
       noiseData[j][i].noiseTrace = (char*)(malloc(sizeof(char) * NOISE_MIN_TRACE));
       noiseData[j][i].noiseTraceLen = NOISE_MIN_TRACE;
@@ -92,6 +92,7 @@ char sim_real_noise(uint16_t node_id, uint32_t cur_t, uint8_t channel_id) {
 
 void sim_noise_trace_add(uint16_t node_id, char noiseVal, uint8_t channel_id)__attribute__ ((C, spontaneous)) {
   // Need to double size of trace array
+  dbg("Test_a","sim_noise_trace_add--- noiseVal:%d\n", (int)noiseVal);
   if (noiseData[node_id][channel_id].noiseTraceIndex == noiseData[node_id][channel_id].noiseTraceLen) {
     char* data = (char*)(malloc(sizeof(char) * noiseData[node_id][channel_id].noiseTraceLen * 2));
     memcpy(data, noiseData[node_id][channel_id].noiseTrace, noiseData[node_id][channel_id].noiseTraceLen);
@@ -137,18 +138,18 @@ static int sim_noise_eq(void *key1, void *key2) {
 
 void sim_noise_add(uint16_t node_id, char noise, uint8_t channel_id)__attribute__ ((C, spontaneous))
 {
-  int i;  
+  int i;
   struct hashtable *pnoiseTable = noiseData[node_id][channel_id].noiseTable;
   char *key = noiseData[node_id][channel_id].key;
   sim_noise_hash_t *noise_hash;
   noise_hash = (sim_noise_hash_t *)hashtable_search(pnoiseTable, key);
-  
+
   //dbg("channel_switching_debug", "Sensor %u in sim_noise_add() and channel id is: %u\n", node_id, channel_id);
   dbg("Insert", "Adding noise value %hhi\n", noise);
   if (noise_hash == NULL)	{
     noise_hash = (sim_noise_hash_t *)malloc(sizeof(sim_noise_hash_t));
     memcpy((void *)(noise_hash->key), (void *)key, NOISE_HISTORY);
-    
+
     noise_hash->numElements = 0;
     noise_hash->size = NOISE_DEFAULT_ELEMENT_SIZE;
     noise_hash->elements = (char *)malloc(sizeof(char)*noise_hash->size);
@@ -205,7 +206,7 @@ void sim_noise_dist(uint16_t node_id, uint8_t channel_id)__attribute__ ((C, spon
   for (i=0; i < NOISE_NUM_VALUES; i++) {
     noise_hash->dist[i] = 0.0;
   }
-  
+
   for (i=0; i< noise_hash->numElements; i++)
     {
       float val;
@@ -290,9 +291,9 @@ char sim_noise_gen(uint16_t node_id, uint8_t channel_id)__attribute__ ((C, spont
   int i;
   int noiseIndex = 0;
   char noise;
-  
+
   struct hashtable *pnoiseTable = noiseData[node_id][channel_id].noiseTable;
-  
+
   char *pKey = noiseData[node_id][channel_id].key;
   char *fKey = noiseData[node_id][channel_id].freqKey;
   double ranNum = RandomUniform();
@@ -312,16 +313,16 @@ char sim_noise_gen(uint16_t node_id, uint8_t channel_id)__attribute__ ((C, spont
     memcpy((void *)pKey, (void *)fKey, NOISE_HISTORY);
     noise_hash = (sim_noise_hash_t *)hashtable_search(pnoiseTable, pKey);
   }
-  
+
   dbg_clear("HASH", "Key = ");
   for (i=0; i< NOISE_HISTORY ; i++) {
     dbg_clear("HASH", "%d,", pKey[i]);
   }
   dbg_clear("HASH", "\n");
-  
+
   dbg("HASH", "Printing Key\n");
   dbg("HASH", "noise_hash->numElements=%d\n", noise_hash->numElements);
-  
+
   //Tal Debug
   numTotal++;
   //End Tal Debug
@@ -341,17 +342,17 @@ char sim_noise_gen(uint16_t node_id, uint8_t channel_id)__attribute__ ((C, spont
   numCase2++;
   dbg("Noise_c", "In case 2: %i of %i\n", numCase2, numTotal);
   //End Tal Debug
- 
+
   for (i = 0; i < NOISE_NUM_VALUES - 1; i++) {
     dbg("HASH", "IN:for i=%d\n", i);
-    if (i == 0) {	
+    if (i == 0) {
       if (ranNum <= noise_hash->dist[i]) {
 	noiseIndex = i;
 	dbg_clear("HASH", "Selected Bin = %d -> ", i+1);
 	break;
       }
     }
-    else if ( (noise_hash->dist[i-1] < ranNum) && 
+    else if ( (noise_hash->dist[i-1] < ranNum) &&
 	      (ranNum <= noise_hash->dist[i])   ) {
       noiseIndex = i;
       dbg_clear("HASH", "Selected Bin = %d -> ", i+1);
@@ -360,7 +361,7 @@ char sim_noise_gen(uint16_t node_id, uint8_t channel_id)__attribute__ ((C, spont
   }
   dbg("HASH", "OUT:for i=%d\n", i);
   noise = NOISE_MIN_QUANTIZE + i; //TODO search_noise_from_bin_num(i+1);
-  dbg("NoiseAudit", "Noise: %i\n", noise);		
+  dbg("NoiseAudit", "Noise: %i\n", noise);
   return noise;
 }
 
@@ -377,7 +378,7 @@ char sim_noise_generate(uint16_t node_id, uint32_t cur_t, uint8_t channel_id)__a
     dbgerror("TOSSIM", "Tried to generate noise from an uninitialized radio model of node %hu.\n", node_id);
     return 127;
   }
-  
+
   if ( (0<= cur_t) && (cur_t < NOISE_HISTORY) ) {
     noiseData[node_id][channel_id].noiseGenTime = cur_t;
     noiseData[node_id][channel_id].key[cur_t] = search_bin_num(noiseData[node_id][channel_id].noiseTrace[cur_t]);
@@ -389,7 +390,7 @@ char sim_noise_generate(uint16_t node_id, uint32_t cur_t, uint8_t channel_id)__a
     delta_t = cur_t - (NOISE_HISTORY-1);
   else
     delta_t = cur_t - prev_t;
-  
+
   dbg_clear("HASH", "delta_t = %d\n", delta_t);
   if (delta_t == 0)
     noise = noiseData[node_id][channel_id].lastNoiseVal;
@@ -412,16 +413,16 @@ char sim_noise_generate(uint16_t node_id, uint32_t cur_t, uint8_t channel_id)__a
   return noise;
 }
 
-/* 
+/*
  * When initialization process is going on, make noise model by putting
  * experimental noise values.
  */
 void makeNoiseModel(uint16_t node_id, uint8_t channel_id)__attribute__ ((C, spontaneous)) {
   int i;
-  
+
   //dbg("channel_switching_debug", "Sensor %u in makeNoiseModel() and channel id is: %u\n", node_id, channel_id);
 
-  
+
   for(i=0; i<NOISE_HISTORY; i++) {
     noiseData[node_id][channel_id].key[i] = search_bin_num(noiseData[node_id][channel_id].noiseTrace[i]);
     dbg("Insert", "Setting history %i to be %i\n", (int)i, (int)noiseData[node_id][channel_id].key[i]);

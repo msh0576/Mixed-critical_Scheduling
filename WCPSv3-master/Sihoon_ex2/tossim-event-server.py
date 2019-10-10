@@ -16,12 +16,10 @@ if enable_main:
 	rssi_level=int(main()['y0'])
 else:
 
-    noise_offset = 7 #80
-
     #noise_offset = 7 #84
 	#noise_offset = 9 #82
 	#noise_offset = 10 #81
-	#noise_offset = 11 #80
+	noise_offset = 11 #80
 	#noise_offset = 12 #79
 	#noise_offset = 13 #78
 	#noise_offset = 14 #77
@@ -39,8 +37,9 @@ t.addChannel("receive", sys.stdout)
 t.addChannel("transmission", sys.stdout)
 #t.addChannel("receive_ack", sys.stdout)
 #t.addChannel("test", sys.stdout)
-t.addChannel("VCStest", sys.stdout)
+#t.addChannel("VCStest", sys.stdout)
 #t.addChannel("ScheduleConfig", sys.stdout)
+#t.addChannel("CpmModelC", sys.stdout)
 
 
 #t.addChannel("TossimPacketModelC", sys.stdout)
@@ -50,13 +49,15 @@ t.addChannel("VCStest", sys.stdout)
 #t.addChannel("receive_power", sys.stdout)
 #t.addChannel("SimMote_power", sys.stdout)
 #t.addChannel("AM", sys.stdout)
-
+#t.addChannel("Insert", sys.stdout)
+t.addChannel("Test_a", sys.stdout)
 
 #Log Data
 #Log = open("log.txt", "w")
 #t.addChannel('radio_send', Log)
 
 ''' Test VCS_algorithm	'''
+'''
 send_to_MAClayer = []
 send_to_MAClayer = VCS_algorithm.Execution_func()
 
@@ -64,6 +65,7 @@ send_to_MAClayer = VCS_algorithm.Execution_func()
 # Input: (nodeid, TxOffset, 0, 0)
 for seq in send_to_MAClayer:
 	t.sendVirtualSchedule(seq[0], seq[1], 0, 0)
+'''
 
 r = t.radio()
 L=list()
@@ -129,14 +131,16 @@ for node in [100, 1, 2, 3, 4, 51, 52]:
 			strrr = line.strip()
 			if (strrr != ""):
 				val = int(strrr) + noise_offset
+				#print("val:%s"%(val))
 				m.addNoiseTraceReading(val, channel)
-		m.createNoiseModel(channel);
+				#print("I'm Fine")
+		m.createNoiseModel(channel)
 	m.turnOn()
 	m.bootAtTime(0)
 	#print "Booting ", node, " at time ", str(0)
 
 
-run_count = 10 * 100;
+run_count = 10 * 30;
 #0 means not received.
 while (t.time() <= 97656250*run_count):
 	rcved = t.runNextEvent()

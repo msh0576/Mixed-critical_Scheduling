@@ -2,9 +2,6 @@
 import copy
 
 
-def file_test():
-    print('Hello Python')
-
 # Primary Conflict
 # Input: nodeid, E
 # Output: edge set that impose primary conflict
@@ -170,12 +167,12 @@ def Basic_Scheduler(sourcepath_set_input):
                     #print('primary_conflict_set:%s'%(primary_conflict_set))
 
                     if current_edge in primary_conflict_set:
-                        print('Link:%s -- primary conflict with %s' %(current_edge, sche_edge))
+                        #print('Link:%s -- primary conflict with %s' %(current_edge, sche_edge))
                         conflict_flag = True
 
                     # Check simultaneous Tx
                     if current_edge[0] == sche_edge[0]:
-                        print('Link:%s -- simultaneous Tx with %s' %(current_edge, sche_edge))
+                        #print('Link:%s -- simultaneous Tx with %s' %(current_edge, sche_edge))
                         conflict_flag = True
             # Schedule current edge
             if conflict_flag == False:
@@ -282,13 +279,13 @@ def TxConflicts(low_crit_schedule, vir_hi_criti_schedule):
             #print("secondary_conflict_set of %s at slot %s: SC2 -> %s"%(slot, virtual_edge, secondary_conflict_set[2]))
             if static_edge in secondary_conflict_set[0]:    #RC1
                 ConflictType = "RC1"
-                print("--- edge %s has secondary conflict (RC1) at slot %s---"%(static_edge, slot))
+                #print("[dbg]--- edge %s has secondary conflict (RC1) at slot %s---"%(static_edge, slot))
             elif static_edge in secondary_conflict_set[1]:  #RC2
                 ConflictType = "RC2"
-                print("--- edge %s has secondary conflict (RC2) at slot %s---"%(static_edge, slot))
+                #print("[dbg]--- edge %s has secondary conflict (RC2) at slot %s---"%(static_edge, slot))
             elif static_edge in secondary_conflict_set[2]:  #SC2
                 ConflictType = "SC2"
-                print("--- edge %s has secondary conflict (SC2) at slot %s---"%(static_edge, slot))
+                #print("[dbg]--- edge %s has secondary conflict (SC2) at slot %s---"%(static_edge, slot))
 
             ### Check primary conflicts
             primary_conflict_set = []
@@ -296,10 +293,10 @@ def TxConflicts(low_crit_schedule, vir_hi_criti_schedule):
             #print("primary_conflict_set of virtual_edge:%s"%(primary_conflict_set))
             if static_edge in primary_conflict_set[0]:      #SC3
                 ConflictType = "SC3"
-                print("=== low critical edge %s has primary conflict (SC3) with virtual edge at slot %s ==="%(static_edge, slot))
+                #print("[dbg]=== low critical edge %s has primary conflict (SC3) with virtual edge at slot %s ==="%(static_edge, slot))
             elif static_edge in primary_conflict_set[1]:    #RC3
                 ConflictType = "RC3"
-                print("=== low critical edge %s has primary conflict (RC3) with virtual edge at slot %s ==="%(static_edge, slot))
+                #print("[dbg]=== low critical edge %s has primary conflict (RC3) with virtual edge at slot %s ==="%(static_edge, slot))
 
 
         if ConflictType != 0:
@@ -346,7 +343,7 @@ def VCS(sourcepath_set_input, BasicSchedule):                                   
     # set low critical schedule from total schedule
     low_crit_schedule = {}
     low_crit_schedule = FindFlowSchedule(2, BasicSchedule)
-    print("low_crit_schedule:%s\n"%(low_crit_schedule))
+    #print("[dbg]low_crit_schedule:%s\n"%(low_crit_schedule))
 
     # Start VCS
     while True:
@@ -360,7 +357,7 @@ def VCS(sourcepath_set_input, BasicSchedule):                                   
             linklosscount = 0
             loss_recur(LV, 0, MaxLinkReTx)
 
-        print("LV:%s"%(LV))
+        #print("[dbg]LV:%s"%(LV))
         tmp_LV = LV[:]
 
 
@@ -371,11 +368,11 @@ def VCS(sourcepath_set_input, BasicSchedule):                                   
             if linkloss == 2:
                 # build new source path due to 2 loss of a certain link
                 new_path = []
-                print("vir_Hi_criti_source_path:%s" %(vir_Hi_criti_source_path))
+                #print("[dbg]vir_Hi_criti_source_path:%s" %(vir_Hi_criti_source_path))
                 Source_path(current_flowid, vir_Hi_criti_source_path[linkidx], new_path, LV[linkidx])
                 vir_Hi_criti_source_path = vir_Hi_criti_source_path[:linkidx+1]     # slicing primary path of virtual source path
                 vir_Hi_criti_source_path.extend(new_path)
-                print("Backup vir_Hi_criti_source_path:%s" %(vir_Hi_criti_source_path))
+                #print("[dbg]Backup vir_Hi_criti_source_path:%s" %(vir_Hi_criti_source_path))
 
                 if len(LV) < len(vir_Hi_criti_source_path)-1:
                     for i in range((len(vir_Hi_criti_source_path)-1)-len(LV)):
@@ -399,18 +396,18 @@ def VCS(sourcepath_set_input, BasicSchedule):                                   
             tmp_index = vir_Hi_criti_source_path.index(buffer[1])
             for _ in range(buffer[0]):
                 vir_Hi_criti_source_path.insert(tmp_index, buffer[1])
-        print("New vir_Hi_criti_source_path:%s" %(vir_Hi_criti_source_path))
+        #print("[dbg]New vir_Hi_criti_source_path:%s" %(vir_Hi_criti_source_path))
 
 
         ##### Virtual Schedule #####
         vir_schedule = {}
         vir_schedule = VirtualScheduler(vir_Hi_criti_source_path, current_flowid)
-        print("vir_schedule:%s"%(vir_schedule))
+        #print("[dbg]vir_schedule:%s"%(vir_schedule))
 
         # Find Types of transmission conflicts on each low critical flow node
-        print("-----TxConflicts---------")
+        #print("-----TxConflicts---------")
         TxConflict_output_set = TxConflicts(low_crit_schedule, vir_schedule)
-        print("TxConflict_output:%s"%(TxConflict_output_set))
+        #print("[dbg]TxConflict_output:%s"%(TxConflict_output_set))
         for TxConflict_output in TxConflict_output_set:
             low_crit_sender = TxConflict_output[0][0]
             conflict_type = TxConflict_output[2]
@@ -418,7 +415,7 @@ def VCS(sourcepath_set_input, BasicSchedule):                                   
                 pass
             else:
                 Output[low_crit_sender].append(conflict_type)
-        #print("VCS Output:%s\n\n"%(Output))
+        #print("[dbg]VCS Output:%s\n\n"%(Output))
 
 
         # Finish VCS algorithm

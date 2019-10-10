@@ -99,9 +99,9 @@ generic module GenericSlotSenderP(uint16_t offset, uint16_t backoff, bool cca)  
           offset_ = offset;
         }else {
           if(TOS_NODE_ID == 1)
-            offset_ = 32*1;
+            offset_ = 32*0;
           else
-            offset_ = 32*4;	//2 tick = 60us
+            offset_ = 32*0;	//2 tick = 60us
         }
 
 			toSend = msg;

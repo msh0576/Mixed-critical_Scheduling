@@ -425,6 +425,8 @@ implementation {
     double noiseStr = packetNoise(rcv);
     rcv->source = source;
     rcv->start = sim_time();
+    //added by sihoon
+    //dbg("receive","receive Time:%lu\n",rcv->start);
     rcv->end = endTime;
     rcv->power = power;
     rcv->reversePower = reversePower;
