@@ -109,7 +109,7 @@ implementation {
 		{2, 3, 51, 22, 0, 1, 1, 1, 0, 0, 2},
 		///
 		{1, 2, 4, 22, 0, 1, 2, 2, 0, 0, 1},
-		{2, 4, 52, 22, 0, 1, 2, 2, 0, 0, 2},
+		{2, 4, 52, 22, 0, 1, 2, 2, 0, 0, 2}
 		};
 	uint8_t schedule_len=32;
 	uint32_t superframe_length = 11; //5Hz at most
@@ -224,7 +224,7 @@ implementation {
 
 		/* set TxOffset based on VCS algorithm */
 		// Python to MAC
-		/*
+
 		VCS_buffer = sim_get_VirtualSchedule();
 		if(TOS_NODE_ID <= NETWORK_NODE){
 			if(VCS_buffer[TOS_NODE_ID][0] != NULL){
@@ -232,7 +232,6 @@ implementation {
 			}
 		}
 		dbg("VCStest","My TxOffset:%d\n", TxOffset);
-		*/
 
 		return SUCCESS;
 	}

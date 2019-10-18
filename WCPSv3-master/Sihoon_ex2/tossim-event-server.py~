@@ -16,13 +16,12 @@ if enable_main:
 	rssi_level=int(main()['y0'])
 else:
 
-    noise_offset = 7 #84
+    noise_offset = 11 #84
 	#noise_offset = 9 #82
-	#noise_offset = 10 #81	#OK
-	#noise_offset = 11 #80	#NO
-	#noise_offset = 12 #78	#NO
-	#noise_offset = 13 #78	#Ok
-	#noise_offset = 14 #77	#NO
+	#noise_offset = 10 #81
+	#noise_offset = 11 #80
+	#noise_offset = 13 #78
+	#noise_offset = 14 #77
 	#noise_offset = 17 #74   ##noise levels are changed by offset change--yh
 	#noise_offset = 19 #72
 
@@ -34,7 +33,7 @@ t.addChannel("receive", sys.stdout)
 t.addChannel("transmission", sys.stdout)
 #t.addChannel("receive_ack", sys.stdout)
 #t.addChannel("test", sys.stdout)
-t.addChannel("VCStest", sys.stdout)
+#t.addChannel("VCStest", sys.stdout)
 #t.addChannel("ScheduleConfig", sys.stdout)
 #t.addChannel("CpmModelC", sys.stdout)
 
@@ -54,7 +53,7 @@ t.addChannel("VCStest", sys.stdout)
 #t.addChannel('radio_send', Log)
 
 ''' Test VCS_algorithm	'''
-
+'''
 send_to_MAClayer = []
 send_to_MAClayer = VCS_algorithm.Execution_func()
 
@@ -62,11 +61,11 @@ send_to_MAClayer = VCS_algorithm.Execution_func()
 # Input: (nodeid, TxOffset, 0, 0)
 for seq in send_to_MAClayer:
 	t.sendVirtualSchedule(seq[0], seq[1], 0, 0)
-
+'''
 
 r = t.radio()
 L=list()
-for channel_1 in [22, 23, 24, 25, 26]:
+for channel_1 in [22, 23, 26]:
 	channel=channel_1
 	neignbour_strength=-20;
 	sync_rssi_strength=-10
@@ -90,7 +89,7 @@ for channel_1 in [22, 23, 24, 25, 26]:
 		'''
 
 
-for channel in [22, 23, 24, 25, 26]:
+for channel in [22, 23, 26]:
 	if channel == 22:
 		f = open("topo_rssis_ch_22_ex1.txt", "r")##topo and RSSI strength
 		for line in f:
@@ -117,29 +116,28 @@ for channel in [22, 23, 24, 25, 26]:
 
 for node in [100, 1, 2, 3, 4, 51, 52]:
 	m = t.getNode(node);
-	for channel in [22, 23, 24, 25, 26]:
+	for channel in [26]:
 		if channel==22:
-			noise = open("noise_ch_22_26_1000.txt", "r")
+			noise = open("noise_ch_23_26_1000.txt", "r")
 			lines = noise.readlines()
 		elif channel==23:
+			noise = open("noise_ch_23_26_1000.txt", "r")
+			lines = noise.readlines()
+		else:
 			noise = open("noise_ch_23_26_1000.txt", "r")
 			lines = noise.readlines()
 		for line in lines:
 			strrr = line.strip()
 			if (strrr != ""):
 				val = int(strrr) + noise_offset
-				#print("00000000")
-				m.addNoiseTraceReading(val-45, channel)
-				#print("11111111111")
-		#print("222222")
+				m.addNoiseTraceReading(val, channel)
 		m.createNoiseModel(channel)
-		#print("333333")
 	m.turnOn()
 	m.bootAtTime(0)
 	#print "Booting ", node, " at time ", str(0)
 
 
-run_count = 10 * 1101;
+run_count = 10 * 30;
 #0 means not received.
 while (t.time() <= 97656250*run_count):
 	rcved = t.runNextEvent()

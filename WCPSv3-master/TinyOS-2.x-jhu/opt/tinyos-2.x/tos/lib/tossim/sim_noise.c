@@ -92,7 +92,6 @@ char sim_real_noise(uint16_t node_id, uint32_t cur_t, uint8_t channel_id) {
 
 void sim_noise_trace_add(uint16_t node_id, char noiseVal, uint8_t channel_id)__attribute__ ((C, spontaneous)) {
   // Need to double size of trace array
-  dbg("Test_a","sim_noise_trace_add--- noiseVal:%d\n", (int)noiseVal);
   if (noiseData[node_id][channel_id].noiseTraceIndex == noiseData[node_id][channel_id].noiseTraceLen) {
     char* data = (char*)(malloc(sizeof(char) * noiseData[node_id][channel_id].noiseTraceLen * 2));
     memcpy(data, noiseData[node_id][channel_id].noiseTrace, noiseData[node_id][channel_id].noiseTraceLen);

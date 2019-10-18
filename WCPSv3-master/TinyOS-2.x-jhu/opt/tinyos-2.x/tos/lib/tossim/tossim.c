@@ -190,7 +190,7 @@ Variable* Mote::getVariable(char* name) {
 }
 
 void Mote::addNoiseTraceReading(int val, int channel) {
-  printf("I'm fine--- val:%d\n", val);
+
   sim_noise_trace_add(id(), (char)val, channel);
 }
 
