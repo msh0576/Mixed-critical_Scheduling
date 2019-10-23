@@ -8,15 +8,20 @@ module ScheduleConfigC {
 implementation {
 
   uint8_t Primarypath[NETWORK_FLOW][NETWORK_NODE] ={
-    {0, 0, 0, 0, 0},
-    {0, 3, 0, 51, 51},
-    {0, 0, 4, 52, 52}
+    {0, 0, 0, 0, 0, 0},
+    {0, 3, 0, 5, 51, 51},
+    {0, 0, 4, 52, 52, 0}
   };
 
   uint8_t Backuppath[NETWORK_FLOW][NETWORK_NODE] ={
+    /*
     {0, 0, 0, 0, 0},
     {0, 4, 0, 4, 51},
     {0, 0, 3, 52, 3}
+    */
+    {0, 0, 0, 0, 0, 0},
+    {0, 3, 0, 5, 51, 51},
+    {0, 0, 3, 52, 3, 0}
   };
 
   uint8_t flow_destination[NETWORK_FLOW] = {0, 51, 52};

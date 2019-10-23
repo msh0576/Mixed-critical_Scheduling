@@ -15,8 +15,8 @@ if enable_main:
 		return {'y0':rssi_level}
 	rssi_level=int(main()['y0'])
 else:
-
-    noise_offset = 7 #84
+	noise_offset = 1
+    #noise_offset = 7 #84
 	#noise_offset = 9 #82
 	#noise_offset = 10 #81	#OK
 	#noise_offset = 11 #80	#NO
@@ -28,26 +28,23 @@ else:
 
 t = Tossim([])
 
-#t.addChannel('printf', sys.stdout)
-t.addChannel("DataFeedback", sys.stdout)
-t.addChannel("receive", sys.stdout)
-t.addChannel("transmission", sys.stdout)
+''' Debug '''
 #t.addChannel("receive_ack", sys.stdout)
 #t.addChannel("test", sys.stdout)
-t.addChannel("VCStest", sys.stdout)
 #t.addChannel("ScheduleConfig", sys.stdout)
 #t.addChannel("CpmModelC", sys.stdout)
-
-
 #t.addChannel("TossimPacketModelC", sys.stdout)
 #t.addChannel("SimMoteRadioChannel", sys.stdout)
-
 #t.addChannel("Gain", sys.stdout)
 #t.addChannel("receive_power", sys.stdout)
 #t.addChannel("SimMote_power", sys.stdout)
 #t.addChannel("AM", sys.stdout)
 #t.addChannel("Insert", sys.stdout)
 #t.addChannel("Test_a", sys.stdout)
+#t.addChannel("VCStest", sys.stdout)
+#t.addChannel("receive", sys.stdout)
+#t.addChannel("transmission", sys.stdout)
+t.addChannel("Log_data", sys.stdout)
 
 #Log Data
 #Log = open("log.txt", "w")
@@ -73,7 +70,7 @@ for channel_1 in [22, 23, 24, 25, 26]:
 	sync_rssi_strength_2 = -30
 
 
-	for sensor in [1, 2, 3, 4, 51, 52]:		# Set network topology
+	for sensor in [1, 2, 3, 4, 5, 51, 52]:		# Set network topology
 		r.add(sensor, 100, sync_rssi_strength, channel_1)	#add(source, destination, gain)
 		r.add(100, sensor, sync_rssi_strength, channel_1)
 
@@ -115,7 +112,7 @@ for channel in [22, 23, 24, 25, 26]:
 
 
 
-for node in [100, 1, 2, 3, 4, 51, 52]:
+for node in [100, 1, 2, 3, 4, 5, 51, 52]:
 	m = t.getNode(node);
 	for channel in [22, 23, 24, 25, 26]:
 		if channel==22:

@@ -106,10 +106,11 @@ implementation {
 	uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, retrans twice, baseline.
 		//flow 170, flow sensor
 		{1, 1, 3, 22, 0, 1, 1, 1, 0, 0, 1},
-		{2, 3, 51, 22, 0, 1, 1, 1, 0, 0, 2},
+		{2, 3, 5, 22, 0, 1, 1, 1, 0, 0, 2},
+		{3, 5, 51, 22, 0, 1, 1, 1, 0, 0, 3}
 		///
-		{1, 2, 4, 22, 0, 1, 2, 2, 0, 0, 1},
-		{2, 4, 52, 22, 0, 1, 2, 2, 0, 0, 2}
+		//{1, 2, 4, 22, 0, 1, 2, 2, 0, 0, 1},
+		//{2, 4, 52, 22, 0, 1, 2, 2, 0, 0, 2}
 		};
 	uint8_t schedule_len=32;
 	uint32_t superframe_length = 11; //5Hz at most
@@ -145,6 +146,9 @@ implementation {
 	/* Flow root indicator */
 	bool isFlowroot;
 	uint8_t Slot_offset;
+
+	/* End-to-end delay indicator */
+	uint32_t e2e_delay_buffer[10] = {0,0,0,0,0,0,0,0,0,0};	// index: receive slot, value: count
 
 	bool sync;
 	bool requestStop;
@@ -335,6 +339,12 @@ implementation {
 						call forwardQ.dequeue();
 					}
 				}
+
+				//e2e delay print
+				if(TOS_NODE_ID == 51){
+					dbg("receive","e2e_delay_buffer[1]:%d, [2]:%d, [3]:%d, [4]:%d, [5]:%d, [6]:%d, [7]:%d, [8]:%d, [9]:%d\n", e2e_delay_buffer[1], e2e_delay_buffer[2], e2e_delay_buffer[3], e2e_delay_buffer[4], e2e_delay_buffer[5], e2e_delay_buffer[6], e2e_delay_buffer[7], e2e_delay_buffer[8], e2e_delay_buffer[9]);
+
+				}
 				return;
 	 		}
 
@@ -431,7 +441,7 @@ implementation {
 		flow_id_rcv = tmp_payload->flowid; //changed by sihoon
 
 		//check flowid, destination,
-		if(TOS_NODE_ID == 3 || TOS_NODE_ID == 51 || TOS_NODE_ID == 4 || TOS_NODE_ID == 52){
+		if(TOS_NODE_ID == 3 || TOS_NODE_ID == 5 || TOS_NODE_ID == 51 || TOS_NODE_ID == 4 || TOS_NODE_ID == 52){
 		if(flow_id_rcv != 0 && receive_lock[flow_id_rcv] == FALSE) {
 			for(i=0; i<schedule_len; i++) {
 				if(schedule[i][2] == TOS_NODE_ID && schedule[i][6] == flow_id_rcv){
@@ -441,7 +451,18 @@ implementation {
 					Transmit_ready[flow_id_rcv] = TRUE;
 					receive_lock[flow_id_rcv] = TRUE;
 
+					//check e2e delay
+					if(TOS_NODE_ID == 51){
+						e2e_delay_buffer[current_slot] = e2e_delay_buffer[current_slot] + 1;
+					}
+
 					dbg("receive","flow_id:%u, SLOT: %u, src:%u, myID:%u, channel:%u   rcv_count[%d]:%d\n\n", flow_id_rcv, rcv_slot[flow_id_rcv], src, TOS_NODE_ID, call CC2420Config.getChannel(), flow_id_rcv, rcv_count[flow_id_rcv]);
+
+					//Log results
+					//Node id,	flow id,	rcv_count, rcv_count_at_slot1, rcv_count_at_slot2, rcv_count_at_slot3, rcv_count_at_slot4, rcv_count_at_slot5, rcv_count_at_slot6, rcv_count_at_slot7, rcv_count_at_slot8, rcv_count_at_slot9
+					dbg_clear("Log_data","%d %d %d %d %d %d %d %d %d %d %d %d\n", TOS_NODE_ID, flow_id_rcv, rcv_count[flow_id_rcv], e2e_delay_buffer[1], e2e_delay_buffer[2], e2e_delay_buffer[3], e2e_delay_buffer[4], e2e_delay_buffer[5], e2e_delay_buffer[6], e2e_delay_buffer[7], e2e_delay_buffer[8], e2e_delay_buffer[9]);
+
+
 
 					//below is the tcp approach based on a global variable on each sensor, tcp_msg, defined in SimMoteP.nc added by Bo
 					call SimMote.setTcpMsg(flow_id_rcv, call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID, call CC2420Config.getChannel());
