@@ -40,7 +40,9 @@ module PureTDMASchedulerP {
 		//Added by Sihoon
 		interface ScheduleConfig;
 		interface TossimPacketModel;
-		interface Queue<TestNetworkMsg *> as forwardQ;
+		interface Queue<TestNetworkMsg *> as Hi_forwardQ;
+		interface Queue<TestNetworkMsg *> as Lo_forwardQ;
+
 
 	}
 }
@@ -104,13 +106,16 @@ implementation {
   	//10 Hop count in the flow
 
 	uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, retrans twice, baseline.
-		//flow 170, flow sensor
+		// for channel setting
+		{1, 0, 3, 22, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 4, 22, 0, 0, 0, 0, 0, 0, 1},
+		{1, 0, 51, 22, 0, 0, 0, 0, 0, 0, 1},
+		//////
 		{1, 1, 3, 22, 0, 1, 1, 1, 0, 0, 1},
-		{2, 3, 5, 22, 0, 1, 1, 1, 0, 0, 2},
-		{3, 5, 51, 22, 0, 1, 1, 1, 0, 0, 3}
+		{2, 3, 51, 22, 0, 1, 1, 1, 0, 0, 2},
 		///
-		//{1, 2, 4, 22, 0, 1, 2, 2, 0, 0, 1},
-		//{2, 4, 52, 22, 0, 1, 2, 2, 0, 0, 2}
+		//{2, 2, 4, 22, 0, 1, 2, 2, 0, 0, 1},
+		//{3, 4, 52, 22, 0, 1, 2, 2, 0, 0, 2}
 		};
 	uint8_t schedule_len=32;
 	uint32_t superframe_length = 11; //5Hz at most
@@ -123,9 +128,13 @@ implementation {
 	uint8_t CRITICALITY = 1;
 	uint8_t COEXISTANCE = 2;
 
+	uint8_t flow_set[NETWORK_FLOW] = {1, 2};		// existing flowid
+	uint8_t Hi_crit_flowid;
+	uint8_t Lo_crit_flowid;
+
 	/* Routing Path */
-			//0 Primary path
-			//1 Backup path
+			//[i][0] Primary path
+			//[i][1] Backup path
 	uint8_t Path[NETWORK_FLOW][2];
 	uint8_t PRIMARYPATH = 0;
 	uint8_t BACKUPPATH = 1;
@@ -147,8 +156,11 @@ implementation {
 	bool isFlowroot;
 	uint8_t Slot_offset;
 
-	/* End-to-end delay indicator */
-	uint32_t e2e_delay_buffer[10] = {0,0,0,0,0,0,0,0,0,0};	// index: receive slot, value: count
+	/* Node state indicator */
+	uint8_t state_;
+	bool Hi_rcving;
+	bool Lo_rcving;
+
 
 	bool sync;
 	bool requestStop;
@@ -158,6 +170,7 @@ implementation {
 
 	command error_t Init.init() {
 		uint8_t i, j;
+		uint8_t critical_value;
 		uint32_t (*VCS_buffer)[VCS_COL_SIZE];
 
 		slotSize = 10 * 32;     //10ms
@@ -165,6 +178,7 @@ implementation {
 		sd = 40000; //last active slot
 		cap = 0; // what is this used for? is this yet another superframe length?
 
+		critical_value = 0;
 		first_Retrans_count = 0;
 		second_Retrans_count = 0;
 		first_NoAck_count = 0;
@@ -177,12 +191,26 @@ implementation {
 		//backup_schedule[BACKUPNODE] = call ScheduleConfig.backupNode(TOS_NODE_ID);
 		//dbg("transmission","backup_schedule[0]:%d\n", backup_schedule[0]);
 
+		//Note indicator initialize
+		Hi_rcving = FALSE;
+		Lo_rcving = FALSE;
+
 		//Store primary and backup path for each flow id
 		for(i=0; i<NETWORK_FLOW; i++){
 			Path[i][PRIMARYPATH] = call ScheduleConfig.primaryNode(i, TOS_NODE_ID);
 			Path[i][BACKUPPATH] = call ScheduleConfig.backupNode(i, TOS_NODE_ID);
 			//dbg("transmission","Primarypath of flow%d:%d\n", i, Path[i][PRIMARYPATH]);
 			//dbg("transmission","Backuppath of flow%d:%d\n", i, Path[i][BACKUPPATH]);
+
+			// Hi critical flow is 1, Lo critical flow is 2
+			if(flow_set[i]!=0){
+				critical_value = call ScheduleConfig.criticality(flow_set[i]);
+				if(critical_value == 1){
+					Hi_crit_flowid == flow_set[i];
+				}else if(critical_value == 2){
+					Lo_crit_flowid == flow_set[i];
+				}
+			}
 
 			//Initialize
 			ExecutionBuf[i] = 0;
@@ -333,17 +361,11 @@ implementation {
 					//dbg("receive","Loss_count:%d\n", Loss_count);
 				}
 				/// Queue Initilize
-				if(!call forwardQ.empty()){
-					queueSize = call forwardQ.size();
+				if(!call Hi_forwardQ.empty()){
+					queueSize = call Hi_forwardQ.size();
 					for(i=0; i<queueSize; i++){
-						call forwardQ.dequeue();
+						call Hi_forwardQ.dequeue();
 					}
-				}
-
-				//e2e delay print
-				if(TOS_NODE_ID == 51){
-					dbg("receive","e2e_delay_buffer[1]:%d, [2]:%d, [3]:%d, [4]:%d, [5]:%d, [6]:%d, [7]:%d, [8]:%d, [9]:%d\n", e2e_delay_buffer[1], e2e_delay_buffer[2], e2e_delay_buffer[3], e2e_delay_buffer[4], e2e_delay_buffer[5], e2e_delay_buffer[6], e2e_delay_buffer[7], e2e_delay_buffer[8], e2e_delay_buffer[9]);
-
 				}
 				return;
 	 		}
@@ -398,7 +420,7 @@ implementation {
 
 		}else if(ack_at_send_done==1){
 			atomic Transmit_ready[Transmitting_flowid] = FALSE;
-			call forwardQ.dequeue();
+			call Hi_forwardQ.dequeue();
 		}
 		//set ACK variable
 		set_send_status(ack_at_send_done);
@@ -441,41 +463,35 @@ implementation {
 		flow_id_rcv = tmp_payload->flowid; //changed by sihoon
 
 		//check flowid, destination,
-		if(TOS_NODE_ID == 3 || TOS_NODE_ID == 5 || TOS_NODE_ID == 51 || TOS_NODE_ID == 4 || TOS_NODE_ID == 52){
+		if(TOS_NODE_ID == 3 || TOS_NODE_ID == 51 || TOS_NODE_ID == 4 || TOS_NODE_ID == 52){
 		if(flow_id_rcv != 0 && receive_lock[flow_id_rcv] == FALSE) {
-			for(i=0; i<schedule_len; i++) {
-				if(schedule[i][2] == TOS_NODE_ID && schedule[i][6] == flow_id_rcv){
+			//for(i=0; i<schedule_len; i++) {
+				//if(schedule[i][2] == TOS_NODE_ID && schedule[i][6] == flow_id_rcv){
 					rcv_slot[flow_id_rcv] = current_slot;
 					Receive_flag = TRUE;
 					rcv_count[flow_id_rcv] = rcv_count[flow_id_rcv] + 1;
 					Transmit_ready[flow_id_rcv] = TRUE;
 					receive_lock[flow_id_rcv] = TRUE;
 
-					//check e2e delay
-					if(TOS_NODE_ID == 51){
-						e2e_delay_buffer[current_slot] = e2e_delay_buffer[current_slot] + 1;
-					}
-
 					dbg("receive","flow_id:%u, SLOT: %u, src:%u, myID:%u, channel:%u   rcv_count[%d]:%d\n\n", flow_id_rcv, rcv_slot[flow_id_rcv], src, TOS_NODE_ID, call CC2420Config.getChannel(), flow_id_rcv, rcv_count[flow_id_rcv]);
-
-					//Log results
-					//Node id,	flow id,	rcv_count, rcv_count_at_slot1, rcv_count_at_slot2, rcv_count_at_slot3, rcv_count_at_slot4, rcv_count_at_slot5, rcv_count_at_slot6, rcv_count_at_slot7, rcv_count_at_slot8, rcv_count_at_slot9
-					dbg_clear("Log_data","%d %d %d %d %d %d %d %d %d %d %d %d\n", TOS_NODE_ID, flow_id_rcv, rcv_count[flow_id_rcv], e2e_delay_buffer[1], e2e_delay_buffer[2], e2e_delay_buffer[3], e2e_delay_buffer[4], e2e_delay_buffer[5], e2e_delay_buffer[6], e2e_delay_buffer[7], e2e_delay_buffer[8], e2e_delay_buffer[9]);
-
-
 
 					//below is the tcp approach based on a global variable on each sensor, tcp_msg, defined in SimMoteP.nc added by Bo
 					call SimMote.setTcpMsg(flow_id_rcv, call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID, call CC2420Config.getChannel());
 
 					// Queue //
-					queueSize = call forwardQ.size();
-					dataBuffer = (TestNetworkMsg*)call SubSend.getPayload(&forwardPktBuffer[queueSize], sizeof(TestNetworkMsg));
-					dataBuffer->flowid = tmp_payload->flowid;
-					if(dataBuffer != NULL){
-						call forwardQ.enqueue(dataBuffer);
-					}
-				}
-			}
+					//if(flow_id_rcv == Hi_crit_flowid){
+						queueSize = call Hi_forwardQ.size();
+						dataBuffer = (TestNetworkMsg*)call SubSend.getPayload(&forwardPktBuffer[queueSize], sizeof(TestNetworkMsg));
+						dataBuffer->flowid = tmp_payload->flowid;
+						if(dataBuffer != NULL){
+							call Hi_forwardQ.enqueue(dataBuffer);
+						}
+					//}else if(flow_id_rcv == Lo_crit_flowid){
+
+					//}
+
+				//}
+			//}
 		}
 		}
 		//printf("RECEIVE: %u->%u, SLOT:%u (time: %s), channel: %u\n", src,TOS_NODE_ID, call SlotterControl.getSlot(), sim_time_string(), call CC2420Config.getChannel());
@@ -601,6 +617,7 @@ implementation {
 
 							// Receiver Setting
   						if(TOS_NODE_ID == schedule[i][2] && schedule[i][8]==0 && schedule[i][10]==1){
+								//dbg("transmission","Node_%d channel set\n",TOS_NODE_ID);
 			  				call CC2420Config.setChannel(schedule[i][3]);
   							call CC2420Config.sync();
   						}
@@ -609,6 +626,7 @@ implementation {
   			}//end slot check
 
   		}//end for
+
 
 			// What is the order of transmit flow...
 			// * Caution: a node pre-transmit pkts of a flow that has fast flow id.
@@ -645,9 +663,9 @@ implementation {
 				tmp_payload = call SubSend.getPayload(&packet, sizeof(TestNetworkMsg));
 				tmp_payload->flowid = schedule[i][6];
 			}else{
-				if(!call forwardQ.empty()){
-					forwardPkt = (TestNetworkMsg*)call forwardQ.head();
-					//call forwardQ.dequeue();
+				if(!call Hi_forwardQ.empty()){
+					forwardPkt = (TestNetworkMsg*)call Hi_forwardQ.head();
+					//call Hi_forwardQ.dequeue();
 
 					tmp_payload = call SubSend.getPayload(&packet, sizeof(TestNetworkMsg));
 					tmp_payload->flowid = forwardPkt->flowid;
@@ -663,7 +681,7 @@ implementation {
 
 			if(ReTx_flag == 2) {	// Second retransmission change their destination
 				call AMPacket.setDestination(&packet, Path[schedule[i][6]][BACKUPPATH]);
-				//dbg("transmission","!!!!!!!!!!!!!!!!!backupnode:%d\n", backup_schedule[BACKUPNODE]);
+				dbg("transmission","!!!!!!!!!!!!!!!!!backupnode:%d\n", Path[schedule[i][6]][BACKUPPATH]);
 			}else if(ReTx_flag == 1 || ReTx_flag == 0) {
 				call AMPacket.setDestination(&packet, Path[schedule[i][6]][PRIMARYPATH]);
 			}

@@ -8,20 +8,15 @@ module ScheduleConfigC {
 implementation {
 
   uint8_t Primarypath[NETWORK_FLOW][NETWORK_NODE] ={
-    {0, 0, 0, 0, 0, 0},
-    {0, 3, 0, 5, 51, 51},
-    {0, 0, 4, 52, 52, 0}
+    {0, 0, 0, 0, 0},
+    {0, 3, 0, 51, 51},
+    {0, 0, 4, 0, 52}
   };
 
   uint8_t Backuppath[NETWORK_FLOW][NETWORK_NODE] ={
-    /*
     {0, 0, 0, 0, 0},
-    {0, 4, 0, 4, 51},
-    {0, 0, 3, 52, 3}
-    */
-    {0, 0, 0, 0, 0, 0},
-    {0, 3, 0, 5, 51, 51},
-    {0, 0, 3, 52, 3, 0}
+    {0, 4, 0, 51, 51},
+    {0, 0, 4, 0, 52}
   };
 
   uint8_t flow_destination[NETWORK_FLOW] = {0, 51, 52};
@@ -32,7 +27,7 @@ implementation {
   * the value of each index means flow criticality`
   * 1: Hi-criti,  0:Lo-criti
   */
-  uint8_t flow_criticality[NETWORK_FLOW]={0, 1, 0};
+  uint8_t flow_criticality[NETWORK_FLOW]={0, 1, 2};
 
   /*
   * We should change the index of the backup_topology, when we change the network topology
