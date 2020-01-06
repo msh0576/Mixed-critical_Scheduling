@@ -1,100 +1,100 @@
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 1000 1000 0 0 784 188 26 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1001 1001 0 0 755 215 30 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 998 998 996 0 0 739 225 29 3 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 998 995 995 0 0 753 207 33 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 998 997 0 0 763 209 23 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 999 997 0 0 766 198 32 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 998 995 995 0 0 756 210 28 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 998 998 0 0 768 204 24 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 999 997 0 0 753 212 30 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 998 998 0 0 759 211 26 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 999 997 997 0 0 739 230 24 4 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 1000 999 0 0 743 223 32 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 1000 999 0 0 764 205 28 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 999 999 0 0 786 193 14 6 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1000 1000 0 0 764 209 22 5 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 999 999 0 0 744 224 29 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 999 999 999 0 0 755 214 30 0 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 999 998 0 0 776 201 19 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 998 997 0 0 772 205 20 0 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1001 1000 0 0 782 193 24 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 999 999 0 0 759 219 19 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 999 999 0 0 783 187 27 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1000 999 0 0 775 201 23 0 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 999 999 997 0 0 732 237 26 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 999 999 0 0 762 212 25 0 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 999 999 0 0 765 204 30 0 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 999 998 998 0 0 760 213 22 3 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 999 998 0 0 745 229 22 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 999 997 0 0 752 220 24 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 998 995 993 0 0 741 219 29 4 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 998 998 0 0 746 231 21 0 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 999 999 994 0 0 752 216 25 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 999 998 997 0 0 750 220 27 0 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 999 999 998 0 0 733 236 27 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 998 997 0 0 745 226 25 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1000 998 0 0 746 227 23 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 999 999 997 0 0 748 227 21 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1001 999 0 0 751 215 29 4 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1001 1000 0 0 761 215 23 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 998 998 0 0 784 183 30 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1000 999 0 0 775 187 32 5 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 997 996 993 0 0 751 212 29 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 998 997 0 0 747 226 23 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1000 1000 0 0 753 224 22 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 1000 999 0 0 735 236 27 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 999 999 998 0 0 758 220 17 3 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 999 999 0 0 778 204 16 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 998 996 994 0 0 746 215 32 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 998 998 998 0 0 759 216 19 4 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 997 994 0 0 717 239 36 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1001 999 0 0 774 209 14 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 999 998 997 0 0 780 189 27 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 998 997 0 0 743 215 37 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 999 998 0 0 739 230 29 0 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 999 999 997 0 0 756 218 22 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 1000 998 0 0 774 202 20 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1000 1000 0 0 770 205 24 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 998 998 998 0 0 757 214 25 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 999 999 0 0 760 214 25 0 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1001 1001 0 0 768 205 27 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 998 994 993 0 0 730 244 16 3 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 998 996 995 0 0 750 215 30 0 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1000 999 0 0 762 214 22 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 999 997 0 0 776 197 22 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1001 1001 0 0 749 229 22 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 999 996 994 0 0 766 202 25 0 1 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1001 999 0 0 769 202 27 0 1 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1000 1000 0 0 783 194 21 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 999 998 996 0 0 726 236 32 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 999 998 0 0 748 222 26 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 999 997 995 0 0 739 223 31 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1001 1001 0 0 756 213 30 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 998 996 0 0 770 199 27 0 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1001 1000 0 0 769 210 19 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1000 1000 0 0 764 211 24 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 999 999 0 0 741 215 39 4 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 999 997 0 0 744 224 28 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1001 1000 0 0 750 218 30 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 1000 1000 0 0 728 241 28 3 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 999 998 997 0 0 746 226 24 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1000 1000 0 0 741 229 30 0 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 999 998 997 0 0 774 200 20 3 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 999 998 998 0 0 780 184 29 4 1 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 997 995 0 0 760 204 26 5 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 999 997 996 0 0 753 229 13 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 999 998 997 0 0 765 198 31 3 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 998 997 0 0 727 242 26 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1001 999 0 0 769 187 43 0 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 998 997 997 0 0 753 209 33 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 999 999 0 0 746 236 16 1 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 998 997 996 0 0 746 209 41 0 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 998 997 0 0 749 223 25 0 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 999 998 0 0 731 237 27 3 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 1000 999 0 0 770 197 29 3 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 999 999 997 0 0 761 213 20 2 1 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 999 999 0 0 745 223 28 3 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 998 997 996 0 0 732 228 34 2 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1001 1000 998 0 0 780 202 12 4 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 999 997 0 0 769 203 20 5 0 0 0
-3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: 1000 999 998 0 0 757 213 27 1 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 734 734 0 0 0 515 186 31 2 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 731 731 730 0 0 0 529 168 28 4 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 733 733 733 0 0 0 494 200 35 4 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 733 733 732 0 0 0 520 175 35 2 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 732 731 728 728 0 0 0 510 183 32 2 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 733 731 730 0 0 0 498 195 33 4 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 733 733 0 0 0 502 188 39 3 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 732 732 731 0 0 0 496 201 31 2 0 1 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 733 733 732 0 0 0 501 192 32 7 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 732 731 730 0 0 0 514 179 33 4 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 733 732 731 0 0 0 500 198 30 2 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 733 732 0 0 0 505 187 38 1 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 730 728 0 0 0 501 186 38 3 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 732 731 731 731 0 0 0 500 192 37 2 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 732 732 731 731 0 0 0 493 210 26 1 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 733 732 0 0 0 496 201 30 4 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 732 732 731 0 0 0 497 194 36 4 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 732 731 730 0 0 0 510 188 29 3 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 732 732 732 732 0 0 0 515 181 30 5 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 731 731 728 727 0 0 0 501 186 35 3 2 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 734 731 0 0 0 534 173 22 1 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 732 731 731 731 0 0 0 501 197 28 5 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 733 731 729 0 0 0 504 184 35 6 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 734 734 0 0 0 517 190 25 2 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 732 730 730 0 0 0 508 194 25 3 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 733 732 732 0 0 0 502 196 31 2 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 733 732 732 0 0 0 506 179 43 4 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 732 728 727 0 0 0 512 184 30 1 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 732 730 730 0 0 0 511 186 28 4 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 733 733 733 0 0 0 510 185 35 3 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 733 732 732 0 0 0 491 211 29 1 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 733 733 0 0 0 515 179 37 2 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 733 732 731 0 0 0 523 171 34 3 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 733 730 729 0 0 0 487 206 33 3 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 733 731 730 0 0 0 482 215 31 2 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 731 731 731 0 0 0 534 165 28 4 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 731 731 729 0 0 0 525 172 30 2 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 732 732 732 0 0 0 504 192 30 5 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 732 731 731 731 0 0 0 517 193 20 1 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 733 733 733 0 0 0 484 214 30 5 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 733 732 731 0 0 0 523 181 26 1 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 732 731 729 729 0 0 0 503 194 30 2 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 731 731 730 730 0 0 0 507 187 35 1 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 732 732 732 731 0 0 0 519 181 27 4 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 733 731 729 0 0 0 502 196 27 3 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 731 731 730 0 0 0 514 188 26 2 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 731 729 729 0 0 0 516 183 29 1 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 732 731 731 0 0 0 505 190 33 3 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 734 734 0 0 0 515 189 26 4 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 733 733 733 0 0 0 533 168 28 4 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 732 731 731 0 0 0 508 188 33 2 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 731 729 729 0 0 0 510 184 32 3 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 731 731 730 0 0 0 523 170 30 7 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 733 732 729 0 0 0 503 197 27 2 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 733 731 731 0 0 0 510 183 29 9 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 733 733 0 0 0 514 193 24 2 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 732 732 0 0 0 528 169 33 2 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 732 731 731 0 0 0 491 209 28 3 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 731 731 730 0 0 0 497 194 35 4 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 732 731 731 0 0 0 500 197 27 7 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 734 733 0 0 0 513 187 29 4 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 730 728 726 0 0 0 501 194 30 1 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 732 731 730 730 0 0 0 511 182 32 5 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 732 731 731 0 0 0 513 181 33 4 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 733 732 731 0 0 0 500 188 38 5 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 732 732 732 731 0 0 0 527 170 28 6 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 732 730 730 0 0 0 514 188 25 2 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 733 733 731 0 0 0 496 202 28 5 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 733 733 0 0 0 519 178 32 3 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 732 732 732 0 0 0 510 188 31 3 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 732 730 730 0 0 0 508 189 32 1 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 732 732 732 732 0 0 0 504 188 38 2 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 733 733 733 0 0 0 519 181 30 2 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 731 730 730 0 0 0 519 171 36 4 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 733 733 733 0 0 0 499 203 27 3 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 734 734 0 0 0 521 182 30 1 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 733 733 732 0 0 0 513 188 29 2 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 732 732 732 0 0 0 469 213 46 4 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 734 733 0 0 0 506 200 23 4 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 731 730 728 0 0 0 508 180 37 3 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 734 734 0 0 0 517 189 26 2 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 733 732 732 0 0 0 487 209 34 1 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 733 733 0 0 0 525 184 23 1 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 732 732 730 0 0 0 499 192 35 3 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 733 731 0 0 0 512 174 42 3 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 733 732 0 0 0 521 182 27 2 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 732 729 729 0 0 0 508 184 33 4 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 733 733 733 0 0 0 529 177 19 7 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 731 731 728 0 0 0 489 209 28 2 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 733 733 731 0 0 0 488 209 30 4 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 733 733 0 0 0 497 200 32 4 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 734 732 0 0 0 483 210 32 5 2 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 733 731 730 0 0 0 496 206 25 3 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 733 733 732 0 0 0 506 189 36 1 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 731 730 729 0 0 0 496 182 44 7 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 731 729 727 726 0 0 0 511 181 30 2 1 1 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 732 732 732 0 0 0 499 193 37 3 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 732 732 732 0 0 0 504 195 28 4 1 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 734 734 733 733 0 0 0 500 190 38 5 0 0 0 0 0
+3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: 733 733 732 731 0 0 0 509 186 31 5 0 0 0 0 0

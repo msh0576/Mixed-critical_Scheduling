@@ -28,12 +28,15 @@ RCV_SLOT6 = 8
 RCV_SLOT7 = 9
 RCV_SLOT8 = 10
 RCV_SLOT9 = 11
-E2E_DELAY_BOUNDARY = 10     # check slot0 ~ slot9
+RCV_SLOT10 = 12
+RCV_SLOT11 = 13
+E2E_DELAY_BOUNDARY = 13     # check slot0 ~ slot12
 
 # receive node id
 e2e_destination = 51        # topology: 1->3->5->51
 e2e_relay1 = 3
 e2e_relay2 = 5
+e2e_relay3 = 7
 
 # delete content of a file
 def deleteContent(fName):
@@ -57,6 +60,7 @@ for fname in file_name:
     total_e2e_dest_rcv_count = 0
     relay1_rcv_count = 0
     relay2_rcv_count = 0
+    relay3_rcv_count = 0
     total_e2e_delay = [0 for _ in range(E2E_DELAY_BOUNDARY)]        # e2e delay boundary : slot0 ~ slot9
 
 
@@ -74,13 +78,15 @@ for fname in file_name:
                 relay1_rcv_count = line_list[RCV_COUNT]
             elif line_list[NODEID] == str(e2e_relay2):
                 relay2_rcv_count = line_list[RCV_COUNT]
+            elif line_list[NODEID] == str(e2e_relay3):
+                relay3_rcv_count = line_list[RCV_COUNT]
 
     # File Close
     f.close()
 
     # Store total result in a file
     result_f = open(result_file_path + result_file_name, 'a')
-    result_f.write("3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: %s %s %s %s %s %s %s %s %s %s %s %s\n"%(relay1_rcv_count, relay2_rcv_count, total_e2e_dest_rcv_count, total_e2e_delay[1], total_e2e_delay[2], total_e2e_delay[3], total_e2e_delay[4], total_e2e_delay[5], total_e2e_delay[6], total_e2e_delay[7], total_e2e_delay[8], total_e2e_delay[9]))
-    print("3_rcv_count, 5_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9: %s %s %s %s %s %s %s %s %s %s %s %s"%(relay1_rcv_count, relay2_rcv_count, total_e2e_dest_rcv_count, total_e2e_delay[1], total_e2e_delay[2], total_e2e_delay[3], total_e2e_delay[4], total_e2e_delay[5], total_e2e_delay[6], total_e2e_delay[7], total_e2e_delay[8], total_e2e_delay[9]))
+    result_f.write("3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s\n"%(relay1_rcv_count, relay2_rcv_count, relay3_rcv_count, total_e2e_dest_rcv_count, total_e2e_delay[1], total_e2e_delay[2], total_e2e_delay[3], total_e2e_delay[4], total_e2e_delay[5], total_e2e_delay[6], total_e2e_delay[7], total_e2e_delay[8], total_e2e_delay[9], total_e2e_delay[10], total_e2e_delay[11], total_e2e_delay[12]))
+    print("3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s"%(relay1_rcv_count, relay2_rcv_count, relay3_rcv_count, total_e2e_dest_rcv_count, total_e2e_delay[1], total_e2e_delay[2], total_e2e_delay[3], total_e2e_delay[4], total_e2e_delay[5], total_e2e_delay[6], total_e2e_delay[7], total_e2e_delay[8], total_e2e_delay[9], total_e2e_delay[10], total_e2e_delay[11], total_e2e_delay[12]))
 
     result_f.close()

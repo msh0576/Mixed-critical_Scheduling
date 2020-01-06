@@ -137,7 +137,5 @@ implementation {
 	PureTDMASchedulerP.TossimPacketModel -> TossimPacketModelC.Packet;
 
 	components new QueueC(TestNetworkMsg *, 2);
-	PureTDMASchedulerP.Hi_forwardQ -> QueueC;
-	PureTDMASchedulerP.Lo_forwardQ -> QueueC;
-
+	PureTDMASchedulerP.forwardQ -> QueueC;
 }
