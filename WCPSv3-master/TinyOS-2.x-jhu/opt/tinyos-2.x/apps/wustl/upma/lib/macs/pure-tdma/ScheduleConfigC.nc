@@ -9,8 +9,8 @@ implementation {
 
   uint8_t Primarypath[NETWORK_FLOW][NETWORK_NODE] ={
     {0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 3, 0, 5, 51, 7, 0, 51},
-    {0, 0, 4, 52, 52, 0, 0, 0}
+    {0, 3, 0, 4, 51, 0, 0, 0},
+    {0, 0, 3, 4, 52, 0, 0, 0}
   };
 
   uint8_t Backuppath[NETWORK_FLOW][NETWORK_NODE] ={
@@ -30,7 +30,7 @@ implementation {
   /*
   * the index of flow_criticality[] indicate flow id
   * the value of each index means flow criticality`
-  * 1: Hi-criti,  0:Lo-criti
+  * 1: Hi-criti,  2:Lo-criti
   */
   uint8_t flow_criticality[NETWORK_FLOW]={0, 1, 0};
 
@@ -75,6 +75,25 @@ implementation {
       }
     }
     return FALSE;
+  }
+
+  async command bool ScheduleConfig.flowdestination(uint8_t nodeid) {
+    uint8_t i;
+    for(i=0; i<NETWORK_FLOW; i++){
+      if(flow_destination[i] == nodeid){
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
+  async command uint8_t ScheduleConfig.taskid(uint8_t flowroot) {
+    uint8_t i;
+    for(i=0; i<NETWORK_FLOW; i++){
+      if(flow_source[i] == flowroot){
+        return i;
+      }
+    }
   }
 
   async command void ScheduleConfig.VCS(){

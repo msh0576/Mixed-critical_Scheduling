@@ -36,20 +36,8 @@
 
 #include "TinyError.h"
 
-interface GainRadioModel {
-  command void putOnAirTo(int dest,
-			  message_t* msg,
-			  bool ack,
-			  sim_time_t endTime,
-			  double gain,
-			  double reverseGain,
-			  uint8_t channel_id);// added by Bo after changing putOnAirTo in CpmModelC.nc
+interface GainRadioModel2 {   // Thie interface is provided by TossimPacketModelC
 
-  command void setClearValue(double value);
-  command bool clearChannel();
-
-  event void acked(message_t* msg);
-  event void receive(message_t* msg);
-  event bool shouldAck(message_t* msg);
-
+  // Added by sihoon, for indicator of any packet reception
+  event void anypktreceive();
 }

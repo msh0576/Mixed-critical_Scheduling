@@ -346,7 +346,7 @@ implementation {
     dbg("CpmModelC", "Handling reception event @ %s.\n", sim_time_string());
     while (list != NULL) {
       if (list->next == mine) {
-	predecessor = list;
+	       predecessor = list;
       }
       list = list->next;
     }
@@ -378,7 +378,7 @@ implementation {
       meta->strength = mine->strength;
       meta->lqi = mine->lqi;
 
-      dbg_clear("CpmModelC,SNRLoss", "  -signaling reception\n");
+      dbg("CpmModelC", "  -signaling reception\n");
       signal Model.receive(mine->msg);
       if (mine->ack) {
         dbg_clear("CpmModelC", " acknowledgment requested, ");
@@ -509,6 +509,7 @@ implementation {
 
 
  default event void Model.receive(message_t* msg) {}
+
 
  sim_event_t* allocate_receive_event(sim_time_t endTime, receive_message_t* msg) {
    sim_event_t* evt = (sim_event_t*)malloc(sizeof(sim_event_t));

@@ -2,10 +2,11 @@
 #define TEST_NETWORK_H
 
 //added by sihoon
-#define NETWORK_NODE 8
+#define NETWORK_NODE 7
 #define NETWORK_FLOW 3
 #define VCS_COL_SIZE 1
 #define MAX_LINK_RETX 2
+#define MAX_LINK_HOP 4
 
 #include <AM.h>
 #include "TestNetworkC.h"
@@ -17,6 +18,13 @@ typedef nx_struct TestNetworkMsg {
   nx_uint16_t metric;
 
   nx_uint8_t flowid;  //added by Sihoon
+  nx_uint8_t hopcount;
+
+  /* Link Tx oppertunity buffer */
+  nx_uint8_t txopper[MAX_LINK_HOP];
+
+  /* Link Delay buffer */
+  nx_uint8_t txdelay[MAX_LINK_HOP];
 
   //nx_uint16_t data1;
   //nx_float data1;
@@ -155,7 +163,7 @@ typedef nx_struct TestNetworkMsg {
   //nx_uint8_t data111;
   //nx_uint8_t data112;
 
-  nx_uint8_t hopcount;
+
   nx_uint16_t sendCount;
   nx_uint16_t sendSuccessCount;
 } TestNetworkMsg;

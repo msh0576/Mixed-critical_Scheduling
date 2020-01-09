@@ -62,6 +62,7 @@ implementation {
 	components BeaconSlotC;
 	components new Alarm32khz32C();
   components new Alarm32khz16C();
+	components new Alarm32khz16C() as CCAalarm;
 
 
 	components ActiveMessageC; //added by bo, for packet acknowledgement
@@ -133,9 +134,15 @@ implementation {
 
   //Added by Sihoon
   PureTDMASchedulerP.Txdelay -> Alarm32khz16C;
+	PureTDMASchedulerP.CCATxdelay -> CCAalarm;
 	PureTDMASchedulerP.ScheduleConfig -> ScheduleConfigC;
 	PureTDMASchedulerP.TossimPacketModel -> TossimPacketModelC.Packet;
 
-	components new QueueC(TestNetworkMsg *, 2);
-	PureTDMASchedulerP.forwardQ -> QueueC;
+	components new QueueC(TestNetworkMsg *, 2) as HIQueueC;
+	components new QueueC(TestNetworkMsg *, 2) as LOQueueC;
+	PureTDMASchedulerP.HIforwardQ -> HIQueueC;
+	PureTDMASchedulerP.LOforwardQ -> LOQueueC;
+
+	// for checking any pkt reception like a CCA event
+	PureTDMASchedulerP.CCAevent->TossimPacketModelC.GainRadioModel2;
 }

@@ -9,6 +9,10 @@ interface ScheduleConfig {
 
   async command bool flowsource(uint8_t nodeid);
 
+  async command bool flowdestination(uint8_t nodeid);
+
+  async command uint8_t taskid(uint8_t flowroot);
+
   async command void VCS();
 
 

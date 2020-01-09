@@ -42,9 +42,9 @@ t = Tossim([])
 #t.addChannel("Insert", sys.stdout)
 #t.addChannel("Test_a", sys.stdout)
 #t.addChannel("VCStest", sys.stdout)
-#t.addChannel("receive", sys.stdout)
-#t.addChannel("transmission", sys.stdout)
-t.addChannel("Log_data", sys.stdout)
+t.addChannel("receive", sys.stdout)
+t.addChannel("transmission", sys.stdout)
+#t.addChannel("Log_data", sys.stdout)
 
 #Log Data
 #Log = open("log.txt", "w")
@@ -63,6 +63,7 @@ for seq in send_to_MAClayer:
 
 r = t.radio()
 L=list()
+nodes = [1, 2, 3, 4, 51, 52]
 for channel_1 in [22, 23, 24, 25, 26]:
 	channel=channel_1
 	neignbour_strength=-20;
@@ -70,7 +71,7 @@ for channel_1 in [22, 23, 24, 25, 26]:
 	sync_rssi_strength_2 = -30
 
 
-	for sensor in [1, 2, 3, 4, 5, 7, 51, 52]:		# Set network topology
+	for sensor in nodes:		# Set network topology
 		r.add(sensor, 100, sync_rssi_strength, channel_1)	#add(source, destination, gain)
 		r.add(100, sensor, sync_rssi_strength, channel_1)
 
@@ -89,21 +90,21 @@ for channel_1 in [22, 23, 24, 25, 26]:
 
 for channel in [22, 23, 24, 25, 26]:
 	if channel == 22:
-		f = open("topo_rssis_ch_22_ex1.txt", "r")##topo and RSSI strength
+		f = open("topo_rssis_ch_22_ex2.txt", "r")##topo and RSSI strength
 		for line in f:
 			s = line.split()
 			if s:
 				#print " ", s[0], " ", s[1], " ", s[2];
 				r.add(int(s[0]), int(s[1]), float(s[2]) - 4, channel)##Topos in two channels are the same. RSSI different--yh
 	elif channel == 23:
-		f = open("topo_rssis_ch_23_ex1.txt", "r")
+		f = open("topo_rssis_ch_23_ex2.txt", "r")
 		for line in f:
 			s = line.split()
 			if s:
 				#print " ", s[0], " ", s[1], " ", s[2];
 				r.add(int(s[0]), int(s[1]), float(s[2]) - 4, channel)##It seems that the r.add is modified by Bo--yh
 	else:
-		f = open("topo_rssis_ch_22_ex1.txt", "r")
+		f = open("topo_rssis_ch_22_ex2.txt", "r")
 		for line in f:
 			s = line.split()
 			if s:
@@ -111,8 +112,9 @@ for channel in [22, 23, 24, 25, 26]:
 				r.add(int(s[0]), int(s[1]), float(s[2]) - 4, channel)##It seems that the r.add is modified by Bo--yh
 
 
-
-for node in [100, 1, 2, 3, 4, 5, 7, 51, 52]:
+Allnodes = [100]
+Allnodes = Allnodes + nodes
+for node in Allnodes:
 	m = t.getNode(node);
 	for channel in [22, 23, 24, 25, 26]:
 		if channel==22:
@@ -136,7 +138,7 @@ for node in [100, 1, 2, 3, 4, 5, 7, 51, 52]:
 	#print "Booting ", node, " at time ", str(0)
 
 
-run_count = 10 * 1101;
+run_count = 10 * 20;
 #0 means not received.
 while (t.time() <= 97656250*run_count):
 	rcved = t.runNextEvent()

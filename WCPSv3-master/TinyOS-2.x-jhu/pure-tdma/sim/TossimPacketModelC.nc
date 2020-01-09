@@ -57,6 +57,7 @@ module TossimPacketModelC {
     interface TossimPacketModel as Packet;
 
     interface TossimPacketModelCCA;
+    interface GainRadioModel2;
   }
   uses interface GainRadioModel;
 }
@@ -301,9 +302,12 @@ implementation {
 
   event void GainRadioModel.receive(message_t* msg) {
     if (running && !transmitting) {
+      signal GainRadioModel2.anypktreceive();    // added by sihoon
       signal Packet.receive(msg);
     }
   }
+
+
 
   uint8_t error = 0;
 
