@@ -19,24 +19,14 @@ for file_idx in range(FILE_NUMBER):
 NODEID = 0
 FLOWID = 1
 RCV_COUNT = 2
-RCV_SLOT1 = 3
-RCV_SLOT2 = 4
-RCV_SLOT3 = 5
-RCV_SLOT4 = 6
-RCV_SLOT5 = 7
-RCV_SLOT6 = 8
-RCV_SLOT7 = 9
-RCV_SLOT8 = 10
-RCV_SLOT9 = 11
-RCV_SLOT10 = 12
-RCV_SLOT11 = 13
-E2E_DELAY_BOUNDARY = 13     # check slot0 ~ slot12
+SUPERFRAME_LEN = 12     # check slot0 ~ slot19
 
 # receive node id
-e2e_destination = 51        # topology: 1->3->5->51
-e2e_relay1 = 3
-e2e_relay2 = 5
-e2e_relay3 = 7
+Task1_destination = 51        # topology: 1->3->4->51
+Task2_destination = 52        # topology: 2->3->4->52
+
+Task1_relay1 = 3
+Task2_relay1 = 3
 
 # delete content of a file
 def deleteContent(fName):
@@ -57,36 +47,40 @@ for fname in file_name:
         exit(1)
 
     # total result variable
-    total_e2e_dest_rcv_count = 0
-    relay1_rcv_count = 0
-    relay2_rcv_count = 0
-    relay3_rcv_count = 0
-    total_e2e_delay = [0 for _ in range(E2E_DELAY_BOUNDARY)]        # e2e delay boundary : slot0 ~ slot9
-
+    Task1_e2e_rcv_count = 0
+    Task2_e2e_rcv_count = 0
+    Task1_e2e_delay = [0 for _ in range(SUPERFRAME_LEN)]        # e2e delay boundary : slot0 ~ slot19
+    Task2_e2e_delay = [0 for _ in range(SUPERFRAME_LEN)]        # e2e delay boundary : slot0 ~ slot19
+    Task2_relay1_rcv_count_for_task1 = 0
+    Task2_relay1_rcv_count_for_task2 = 0
 
     lines = f.readlines()
+    # Store last line Data in a file
     for line in lines:
         # file each line: Node id, flow id, rcv_count, rcv_count_at_slot1, rcv_count_at_slot2, rcv_count_at_slot3, rcv_count_at_slot4, rcv_count_at_slot5, rcv_count_at_slot6, rcv_count_at_slot7, rcv_count_at_slot8, rcv_count_at_slot9
         line_list = line.split()
         if line_list:
             # cheack node id
-            if line_list[NODEID] == str(e2e_destination):
-                total_e2e_dest_rcv_count = line_list[RCV_COUNT]     # receive packet count
-                for slot in range(1,E2E_DELAY_BOUNDARY):
-                    total_e2e_delay[slot] = (line_list[RCV_SLOT1-1 + slot])
-            elif line_list[NODEID] == str(e2e_relay1):
-                relay1_rcv_count = line_list[RCV_COUNT]
-            elif line_list[NODEID] == str(e2e_relay2):
-                relay2_rcv_count = line_list[RCV_COUNT]
-            elif line_list[NODEID] == str(e2e_relay3):
-                relay3_rcv_count = line_list[RCV_COUNT]
+            if line_list[NODEID] == str(Task1_destination):
+                '''
+                Task1_e2e_rcv_count = line_list[RCV_COUNT]     # receive packet count
+                for slot in range(SUPERFRAME_LEN):
+                    Task1_e2e_delay[slot] = (line_list[3 + slot])
+                '''
+            elif line_list[NODEID] == str(Task2_destination):
+                Task2_e2e_rcv_count = line_list[RCV_COUNT]
+                for slot in range(SUPERFRAME_LEN):
+                    Task2_e2e_delay[slot] = (line_list[3 + slot])
+
 
     # File Close
     f.close()
 
     # Store total result in a file
     result_f = open(result_file_path + result_file_name, 'a')
-    result_f.write("3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s\n"%(relay1_rcv_count, relay2_rcv_count, relay3_rcv_count, total_e2e_dest_rcv_count, total_e2e_delay[1], total_e2e_delay[2], total_e2e_delay[3], total_e2e_delay[4], total_e2e_delay[5], total_e2e_delay[6], total_e2e_delay[7], total_e2e_delay[8], total_e2e_delay[9], total_e2e_delay[10], total_e2e_delay[11], total_e2e_delay[12]))
-    print("3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s"%(relay1_rcv_count, relay2_rcv_count, relay3_rcv_count, total_e2e_dest_rcv_count, total_e2e_delay[1], total_e2e_delay[2], total_e2e_delay[3], total_e2e_delay[4], total_e2e_delay[5], total_e2e_delay[6], total_e2e_delay[7], total_e2e_delay[8], total_e2e_delay[9], total_e2e_delay[10], total_e2e_delay[11], total_e2e_delay[12]))
+    #result_f.write("Task1_e2e_rcv_count, slot0~11: %s %s %s %s %s %s %s %s %s %s %s %s %s \n"%( Task1_e2e_rcv_count, Task1_e2e_delay[0], Task1_e2e_delay[1], Task1_e2e_delay[2], Task1_e2e_delay[3], Task1_e2e_delay[4], Task1_e2e_delay[5], Task1_e2e_delay[6], Task1_e2e_delay[7], Task1_e2e_delay[8], Task1_e2e_delay[9], Task1_e2e_delay[10], Task1_e2e_delay[11]))
+    result_f.write("Task2_e2e_rcv_count, slot0~11: %s %s %s %s %s %s %s %s %s %s %s %s %s\n"%( Task2_e2e_rcv_count, Task2_e2e_delay[0], Task2_e2e_delay[1], Task2_e2e_delay[2], Task2_e2e_delay[3], Task2_e2e_delay[4], Task2_e2e_delay[5], Task2_e2e_delay[6], Task2_e2e_delay[7], Task2_e2e_delay[8], Task2_e2e_delay[9], Task2_e2e_delay[10], Task2_e2e_delay[11]))
+    #result_f.write("Relay ID, rcv_task1, rcv_task2: %s %s %s\n", Task2_relay1, Task2_relay1_rcv_count_for_task1, Task2_relay1_rcv_count_for_task2)
+    #print("3_rcv_count, 5_rcv_count, 7_rcv_count, 51_rcv_count, slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12: %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s %s"%(relay1_rcv_count, relay2_rcv_count, relay3_rcv_count, total_e2e_dest_rcv_count, total_e2e_delay[1], total_e2e_delay[2], total_e2e_delay[3], total_e2e_delay[4], total_e2e_delay[5], total_e2e_delay[6], total_e2e_delay[7], total_e2e_delay[8], total_e2e_delay[9], total_e2e_delay[10], total_e2e_delay[11], total_e2e_delay[12]))
 
     result_f.close()

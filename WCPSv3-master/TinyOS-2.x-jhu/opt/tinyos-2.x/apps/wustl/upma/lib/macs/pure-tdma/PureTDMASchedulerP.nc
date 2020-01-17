@@ -78,8 +78,8 @@ implementation {
 	uint32_t slot_;
 	uint16_t rcv_count[NETWORK_FLOW];
 	uint16_t Tx_count[NETWORK_FLOW];
+	uint16_t Total_tx_count[NETWORK_FLOW];
 
-	bool Receive_flag;
 	uint16_t Loss_count;
 	uint8_t TxOffset;
 
@@ -88,30 +88,23 @@ implementation {
 	void set_current_hop_status(uint32_t slot_t, uint8_t sender, uint8_t receiver);
 	void set_send_status(uint8_t ack_at_send_done, uint8_t taskid);
 	void set_send (uint32_t slot_t);
+	uint8_t SuperframeLength(uint8_t Task_set[][3]);
+	uint8_t getGCD(uint8_t num1, uint8_t num2);
+	uint8_t getLCD(uint8_t num1, uint8_t num2);
 
 	//added by Sihoon
 	void transmission(uint8_t Txing_flowid);
 
-  	//0 Slot
-  	//1 Sender
-  	//2 Receiver
-  	//3 Channel
-  	//4 Access Type:    0: dedicated,  1: shared, 2: steal, 3: ack
-  	//5 Flow Type:      0: emergency, 1: regular
-  	//6 Flow ID:        1, 2
-  	//7 Flow root: root of the flow, i.e., sensor that launch the communcation
-  	//8 Send status in sendDone: 0: no-ack, 1: acked
-  	//9 Last Hop Status:
-  	//10 Hop count in the flow
 
-	uint8_t schedule[32][11]={//Source Routing, 16 sensor topology, 2 prime trans, retrans twice, baseline.
+	uint8_t schedule[NETWORK_FLOW][11]={//Source Routing, 16 sensor topology, 2 prime trans, retrans twice, baseline.
 		//Flow sender schedule
-		{1, 1},
-		{1, 2}
+		{0, 0},
+		{0, 1},		// Task 1 : [0] release time, [1] Source node
+		{0, 2}		// Task 2 :
 
 		};
 	uint8_t schedule_len=32;
-	uint32_t superframe_length = 20; //5Hz at most
+	uint32_t superframe_length = 12; //5Hz at most
 
 	/* Task character */
 	//index: Task id
@@ -120,10 +113,10 @@ implementation {
 	//2 Task maximum Tx oppertunity
 	uint8_t HI_TASK = 1;
 	uint8_t LO_TASK = 2;
-	uint8_t Task_character[NETWORK_FLOW][4]={
+	uint8_t Task_character[NETWORK_FLOW][3]={
 		{0, 0, 0},
-		{4, 4, 3},
-		{4, 4, 3}
+		{8, 8, 3},
+		{12, 12, 3}
 	};
 	uint8_t TASK_PERIOD = 0;
 	uint8_t TASK_DEAD = 1;
@@ -138,9 +131,7 @@ implementation {
 	uint8_t BACKUPPATH = 1;
 
 	/* Transmit schedule index buffer for each flow */
-	uint8_t Sched_idx[NETWORK_FLOW];		//index: flowid, value: schedule index that each node should transmit pkts on the origianl schedule
 	uint32_t rcv_slot[NETWORK_FLOW];		//receive slot for each flow
-	bool Transmit_ready[NETWORK_FLOW];		//flowid to be transmitted at next slot
 	bool receive_lock[NETWORK_FLOW];		//prevent multiple reception from the same flow in a superframe
 
 	/* Flow root indicator */
@@ -149,7 +140,7 @@ implementation {
 	uint8_t Task_rels;
 
 	/* End-to-end delay indicator */
-	uint32_t e2e_delay_buffer[15] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};	// index: receive slot, value: count
+	uint32_t e2e_delay_buffer[100];	// index: receive slot, value: count
 
 	/* Tx/Rx status */
 	bool send_status[NETWORK_FLOW];								// TRUE if Tx success for a task
@@ -157,7 +148,7 @@ implementation {
 	uint8_t taskid;
 	uint8_t Transmitting_flowid;
 	uint8_t My_max_txopper[NETWORK_FLOW];
-
+	uint8_t check_link_quality_1;
 
 	bool sync;
 	bool requestStop;
@@ -176,7 +167,7 @@ implementation {
 		sd = 40000; //last active slot
 		cap = 0; // what is this used for? is this yet another superframe length?
 
-		Receive_flag = TRUE;
+		check_link_quality_1 = 0;
 		Loss_count = 0;
 		isFlowroot = FALSE;
 		isFlowdest = FALSE;
@@ -184,6 +175,13 @@ implementation {
 		taskid = 0;
 		//backup_schedule[BACKUPNODE] = call ScheduleConfig.backupNode(TOS_NODE_ID);
 		//dbg("transmission","backup_schedule[0]:%d\n", backup_schedule[0]);
+
+		/* Superframe Length set*/
+		//superframe_length = SuperframeLength(Task_character);
+
+		for(i=0; i<superframe_length; i++){
+			e2e_delay_buffer[i] = 0;
+		}
 
 		//Store primary and backup path for each flow id
 		for(i=0; i<NETWORK_FLOW; i++){
@@ -195,9 +193,9 @@ implementation {
 			//Initialize
 			rcv_slot[i] = 0;
 			rcv_count[i] = 0;
-			Transmit_ready[i] = FALSE;
 			receive_lock[i] = FALSE;
 			Tx_count[i] = 0;
+			Total_tx_count[i] = 0;
 
 			/* Tx/RX status */
 			send_status[i] = FALSE;
@@ -210,27 +208,10 @@ implementation {
 			isFlowroot = TRUE;
 			taskid = call ScheduleConfig.taskid(TOS_NODE_ID);
 			My_max_txopper[taskid] = Task_character[taskid][TASK_MAXTX];
+			Task_rels = schedule[taskid][0];	// transmission offset
 		}else if(call ScheduleConfig.flowdestination(TOS_NODE_ID) == TRUE){
 			isFlowdest = TRUE;
 		}
-
-
-		// Find schedule informations and fow criticality of each node
-		for(i=0; i<schedule_len; i++) {
-			if(schedule[i][1] == TOS_NODE_ID) {
-				//backup_schedule[CRITICALITY] = call ScheduleConfig.criticality(schedule[i][6]);		//Assume: primary flows are not inter-cross at some nodes
-
-				Sched_idx[schedule[i][6]] = i;
-
-				// Set Tx start time slot of each flow root node
-				if(isFlowroot == TRUE){
-					Task_rels = schedule[i][0];
-				}
-			}
-		}
-		//dbg("transmission","backup_schedule[CRITICALITY]:%d\n", backup_schedule[CRITICALITY]);
-
-
 
 		coordinatorId = 100;
 		init = FALSE;
@@ -318,32 +299,12 @@ implementation {
 
 		/* Receiver Setting */
 
+		if(( (slot%superframe_length) % Task_character[HI_TASK][TASK_PERIOD] == 0)){
+			rcv_slot[HI_TASK] = 0;
+			receive_lock[HI_TASK] = FALSE;
+			Tx_count[HI_TASK] = 0;
+			My_max_txopper[HI_TASK] = 0;
 
-		if ((slot % superframe_length) == 0 ) {
-			if (1 == TOS_NODE_ID) {dbg("transmission","-------------\n");};
-
-
-			//Reset Tx/Rx variable
-			for(i=0; i<NETWORK_FLOW; i++){
-				rcv_slot[i] = 0;
-				Transmit_ready[i] = FALSE;
-				receive_lock[i] = FALSE;
-				Tx_count[i] = 0;
-				My_max_txopper[i] = 0;
-			}
-			Transmitting_flowid = 0;
-
-
-			//Count Pkt loss in a superframe
-			if(Receive_flag == TRUE){
-				Receive_flag = FALSE;
-			}else {
-				Loss_count = Loss_count + 1;
-			}
-
-			if(TOS_NODE_ID == 51 || TOS_NODE_ID == 52){
-				//dbg("receive","Loss_count:%d\n", Loss_count);
-			}
 			/// Queue Initilize
 			if(!call HIforwardQ.empty()){
 				HIqueueSize = call HIforwardQ.size();
@@ -351,19 +312,35 @@ implementation {
 					call HIforwardQ.dequeue();
 				}
 			}
+		}
+		if(( (slot%superframe_length) % Task_character[LO_TASK][TASK_PERIOD] == 0)){
+			rcv_slot[LO_TASK] = 0;
+			receive_lock[LO_TASK] = FALSE;
+			Tx_count[LO_TASK] = 0;
+			My_max_txopper[LO_TASK] = 0;
+
+			/// Queue Initilize
 			if(!call LOforwardQ.empty()){
 				LOqueueSize = call LOforwardQ.size();
 				for(i=0; i<LOqueueSize; i++){
 					call LOforwardQ.dequeue();
 				}
 			}
+		}
+
+
+
+
+
+		if ((slot % superframe_length) == 0 ) {
+			if (1 == TOS_NODE_ID) {dbg("transmission","SF-------------\n");};
 
 			//e2e delay print
 			if(TOS_NODE_ID == 51){
 				//dbg("receive","e2e_delay_buffer[1]:%d, [2]:%d, [3]:%d, [4]:%d, [5]:%d, [6]:%d, [7]:%d, [8]:%d, [9]:%d, [10]:%d, [11]:%d, [12]:%d\n", e2e_delay_buffer[1], e2e_delay_buffer[2], e2e_delay_buffer[3], e2e_delay_buffer[4], e2e_delay_buffer[5], e2e_delay_buffer[6], e2e_delay_buffer[7], e2e_delay_buffer[8], e2e_delay_buffer[9], e2e_delay_buffer[10], e2e_delay_buffer[11], e2e_delay_buffer[12]);
 
 			}
-			return;
+			//return;
  		}
 
  		if (slot >= sd+1) {
@@ -408,10 +385,28 @@ implementation {
 
 			/* set Tx/Rx status */
 			if(Tx_count[Transmitting_flowid] == My_max_txopper[Transmitting_flowid]){  // problem -- "Task_character[Transmitting_flowid][TASK_MAXTX]", should be
-				dbg("transmission","Reset Tx/Rx status\n");
+				dbg("transmission","NoACK:Reset Tx/Rx status -- Transmitting_flowid:%d\n", Transmitting_flowid);
 				Tx_count[Transmitting_flowid] = 0;
 				rcv_slot[Transmitting_flowid] = 0;
 				My_max_txopper[Transmitting_flowid] = 0;
+				receive_lock[Transmitting_flowid] = FALSE;
+
+				/* Q Reset */
+				if(Transmitting_flowid == HI_TASK){
+					if(!call HIforwardQ.empty()){
+						HIqueueSize = call HIforwardQ.size();
+						for(i=0; i<HIqueueSize; i++){
+							call HIforwardQ.dequeue();
+						}
+					}
+				}else if(Transmitting_flowid == LO_TASK){
+					if(!call LOforwardQ.empty()){
+						LOqueueSize = call LOforwardQ.size();
+						for(i=0; i<LOqueueSize; i++){
+							call LOforwardQ.dequeue();
+						}
+					}
+				}
 			}
 
 		}else if(ack_at_send_done==1){
@@ -419,8 +414,10 @@ implementation {
 			Tx_count[Transmitting_flowid] = 0;
 			rcv_slot[Transmitting_flowid] = 0;
 			My_max_txopper[Transmitting_flowid] = 0;
+			// it should be modified
+			//receive_lock[Transmitting_flowid] = FALSE;		// it should be revitalized after the Task_character[TASK_MAXTX]-1 slots, except for destination nodes
 
-			atomic Transmit_ready[Transmitting_flowid] = FALSE;
+			/* Q Reset */
 			if(Transmitting_flowid == HI_TASK){
 				HIqueueSize = call HIforwardQ.size();
 				for(i=0; i<HIqueueSize; i++){
@@ -474,33 +471,24 @@ implementation {
 		flow_id_rcv = tmp_payload->flowid; //changed by sihoon
 		set_current_hop_status(call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID);
 
-
-		//dbg("transmission","Rcv mode change to OFF\n");
-
 		//check flowid, destination,
-		if(TOS_NODE_ID == 3 ||  TOS_NODE_ID == 51 || TOS_NODE_ID == 4 || TOS_NODE_ID == 52){
+		if(TOS_NODE_ID == 3 ||  TOS_NODE_ID == 51 || TOS_NODE_ID == 4 || TOS_NODE_ID == 5 ||TOS_NODE_ID == 6 ||TOS_NODE_ID == 52){
 			if(flow_id_rcv != 0 && receive_lock[flow_id_rcv] == FALSE) {
 				// set Rcv_check_mode for deferring Lo task Tx
 
-
 				rcv_slot[flow_id_rcv] = current_slot;
-				Receive_flag = TRUE;
 				rcv_count[flow_id_rcv] = rcv_count[flow_id_rcv] + 1;
-				Transmit_ready[flow_id_rcv] = TRUE;
 				receive_lock[flow_id_rcv] = TRUE;
 				curr_hopcount = tmp_payload->hopcount + 1;
 				My_max_txopper[flow_id_rcv] = tmp_payload->txopper[curr_hopcount];
 
-				//check e2e delay
-				if(TOS_NODE_ID == 51){
-					e2e_delay_buffer[current_slot] = e2e_delay_buffer[current_slot] + 1;
-				}
 
 				dbg("receive","flow_id:%u, SLOT: %u, src:%u, myID:%u, channel:%u   rcv_count[%d]:%d\n\n", flow_id_rcv, rcv_slot[flow_id_rcv], src, TOS_NODE_ID, call CC2420Config.getChannel(), flow_id_rcv, rcv_count[flow_id_rcv]);
 
-				//Log results
-				//Node id,	flow id,	rcv_count, rcv_count_at_slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
-				dbg_clear("Log_data","%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n", TOS_NODE_ID, flow_id_rcv, rcv_count[flow_id_rcv], e2e_delay_buffer[1], e2e_delay_buffer[2], e2e_delay_buffer[3], e2e_delay_buffer[4], e2e_delay_buffer[5], e2e_delay_buffer[6], e2e_delay_buffer[7], e2e_delay_buffer[8], e2e_delay_buffer[9], e2e_delay_buffer[10], e2e_delay_buffer[11], e2e_delay_buffer[12]);
+				/*
+				if(TOS_NODE_ID == 3){
+					dbg_clear("check_link_quality","%d %d\n",TOS_NODE_ID, rcv_count[flow_id_rcv]);
+				}*/
 
 				//below is the tcp approach based on a global variable on each sensor, tcp_msg, defined in SimMoteP.nc added by Bo
 				call SimMote.setTcpMsg(flow_id_rcv, call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID, call CC2420Config.getChannel());
@@ -530,6 +518,21 @@ implementation {
 					if(LOdataBuffer != NULL){
 						call LOforwardQ.enqueue(LOdataBuffer);
 					}
+				}
+
+				//Log results
+				//check e2e delay
+				if(TOS_NODE_ID == 52){
+					e2e_delay_buffer[current_slot] = e2e_delay_buffer[current_slot] + 1;
+					//Node id,	flow id,	rcv_count, rcv_count_at_slot0,1,2,...
+					dbg_clear("Log_data","%d %d %d ", TOS_NODE_ID, flow_id_rcv, rcv_count[flow_id_rcv]);
+					for(i=0; i<superframe_length; i++){
+						dbg_clear("Log_data","%d ", e2e_delay_buffer[i]);
+					}
+					dbg_clear("Log_data","\n");
+				}else{
+					//Node id, rcv_count[task 1], rcv_count[task2]
+					//dbg_clear("Log_data","%d %d %d\n",TOS_NODE_ID, rcv_count[1], rcv_count[2]);
 				}
 
 			}
@@ -624,9 +627,10 @@ implementation {
 			if(isFlowroot == TRUE){	// check flow root
 				if(Tx_count[taskid] == 0){ // check first Tx
 					//dbg("transmission", "check first TX\n");
-					if(slot_norm == Task_rels){ // check Tx slot
+					atomic Transmitting_flowid = taskid;
+
+					if(slot_norm % (Task_character[Transmitting_flowid][TASK_PERIOD]) == 0 + Task_rels){ // check Tx slot
 						tmp_payload = call SubSend.getPayload(&packet, sizeof(TestNetworkMsg));
-						atomic Transmitting_flowid = taskid;
 						tmp_payload->flowid = taskid;
 						tmp_payload->hopcount = 0;
 						// Store Tx oppertunity for the routing link
@@ -634,11 +638,23 @@ implementation {
 							tmp_payload->txopper[link] = Task_character[Transmitting_flowid][TASK_MAXTX];
 							tmp_payload->txdelay[link] = 0;		//Tx delay setting
 						}
-						transmission(Transmitting_flowid);
+						atomic Total_tx_count[Transmitting_flowid] = Total_tx_count[Transmitting_flowid] + 1;	// for counting Tx packets
+						/*
+						if(TOS_NODE_ID == 2 && check_link_quality_1<100){
+							check_link_quality_1 = check_link_quality_1 + 1;
+							dbg_clear("check_link_quality","%d %d\n", TOS_NODE_ID, check_link_quality_1);
+							transmission(Transmitting_flowid);
+						}*/
+						if(TOS_NODE_ID == 2 && Total_tx_count[Transmitting_flowid] <= 1000){
+							transmission(Transmitting_flowid);
+						}
+						if(TOS_NODE_ID == 1){
+							transmission(Transmitting_flowid);
+						}
 					}
 				}else if(Tx_count[taskid] != 0){ //check ReTx
-					if(slot_norm > Task_rels){ // check Tx slot
-						atomic Transmitting_flowid = taskid;
+					atomic Transmitting_flowid = taskid;
+					if(slot_norm % (Task_character[Transmitting_flowid][TASK_PERIOD]) > 0 + Task_rels){ // check Tx slot
 						if(Tx_count[Transmitting_flowid] < Task_character[Transmitting_flowid][TASK_MAXTX]){ // check maximum Tx oppertunity
 							tmp_payload = call SubSend.getPayload(&packet, sizeof(TestNetworkMsg));
 							tmp_payload->flowid = Transmitting_flowid;
@@ -648,6 +664,12 @@ implementation {
 								tmp_payload->txopper[link] = Task_character[Transmitting_flowid][TASK_MAXTX];
 								tmp_payload->txdelay[link] = 0;		//Tx delay setting
 							}
+							/*
+							if(TOS_NODE_ID == 2 && check_link_quality_1<100){
+								check_link_quality_1 = check_link_quality_1 + 1;
+								dbg_clear("check_link_quality","%d %d\n", TOS_NODE_ID, check_link_quality_1);
+								transmission(Transmitting_flowid);
+							}*/
 							transmission(Transmitting_flowid);
 						}
 					}
@@ -657,6 +679,8 @@ implementation {
 				/* Relay Node Tx, but not destination node */
 				// check receiving multi task packets
 				if(!call HIforwardQ.empty() || !call LOforwardQ.empty()){
+					//dbg("transmission","HIQ empty?:%d, LOQ empty?:%d\n", call HIforwardQ.empty(), call LOforwardQ.empty());
+
 					if(!call HIforwardQ.empty()){		// check HI Q empty
 						forwardPkt = (TestNetworkMsg*)call HIforwardQ.head();
 						//call HIforwardQ.dequeue();
@@ -679,7 +703,6 @@ implementation {
 								tmp_payload->txopper[link] = forwardPkt->txopper[link];
 								tmp_payload->txdelay[link] = forwardPkt->txdelay[link];
 							}
-
 							transmission(Transmitting_flowid);	// set TxOffset
 						}
 					}
@@ -697,7 +720,7 @@ implementation {
 			call CC2420Config.sync();
 
 			//call TossimPacketModelCCA.set_cca(schedule[i][4]); //schedule[i][4]: 0, TDMA; 1, CSMA contending; 2, CSMA steal;
-			if(TOS_NODE_ID == 2){
+			if(TOS_NODE_ID == 2 || TOS_NODE_ID == 5){
 				call Txdelay.start(32 * 3);
 			}else if(TOS_NODE_ID == 3 && Txing_flowid == LO_TASK){
 				Rcv_check_mode = TRUE;
@@ -724,6 +747,11 @@ implementation {
 				dbg("transmission","Tx_count[%d]:%d at slot %d\n",Transmitting_flowid, Tx_count[Transmitting_flowid], current_slot);
 			}else {}
 
+			if(TOS_NODE_ID == 1 || TOS_NODE_ID == 2){
+				//Nodeid, Total_tx_count
+				//dbg_clear("Log_data","%d %d\n", TOS_NODE_ID, Total_tx_count[Transmitting_flowid]);
+			}
+
 		}
 
 		/* For checking pkt reception at TxOffset interval */
@@ -736,10 +764,48 @@ implementation {
 					atomic Rcv_check_mode = FALSE;
 					atomic Tx_count[Transmitting_flowid] = Tx_count[Transmitting_flowid] + 1;
 					dbg("transmission","Tx_count[%d]:%d at slot %d\n",Transmitting_flowid, Tx_count[Transmitting_flowid], current_slot);
+
 				}else {}
 			}
+		}
 
+		uint8_t SuperframeLength(uint8_t Task_set[][3]){
+			uint8_t i;
+			uint8_t prv_task_period;
 
+			prv_task_period = 1;
+
+			for(i=1; i<NETWORK_FLOW; i++){
+				prv_task_period = getLCD(Task_set[i][0], prv_task_period);
+			}
+
+			return prv_task_period;
+		}
+
+		uint8_t getGCD(uint8_t num1, uint8_t num2){
+			uint8_t i;
+			uint8_t gcd;
+
+			if(num1 == 0 || num2 == 0){
+				return 0;
+			}
+
+			if(num1 < num2){
+				return getGCD(num2, num1);
+			}else if(num1%num2 == 0){
+				return num2;
+			}else{
+				return getGCD(num2, num1%num2);
+			}
+		}
+
+		uint8_t getLCD(uint8_t num1, uint8_t num2){
+
+			if(num1 == 0 || num2 == 0){
+				return 0;
+			}
+
+			return (num1*num2)/getGCD(num1, num2);
 		}
 
 
