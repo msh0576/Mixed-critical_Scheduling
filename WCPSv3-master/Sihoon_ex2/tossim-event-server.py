@@ -42,9 +42,9 @@ t = Tossim([])
 #t.addChannel("Insert", sys.stdout)
 #t.addChannel("Test", sys.stdout)
 #t.addChannel("VCStest", sys.stdout)
-#t.addChannel("receive", sys.stdout)
-#t.addChannel("transmission", sys.stdout)
-t.addChannel("Log_data", sys.stdout)
+t.addChannel("receive", sys.stdout)
+t.addChannel("transmission", sys.stdout)
+#t.addChannel("Log_data", sys.stdout)
 #t.addChannel("check_link_quality", sys.stdout)
 
 #Log Data
@@ -139,7 +139,7 @@ for node in Allnodes:
 	#print "Booting ", node, " at time ", str(0)
 
 
-run_count = 10 * 2000;
+run_count = 10 * 500;
 #0 means not received.
 while (t.time() <= 97656250*run_count):
 	rcved = t.runNextEvent()
