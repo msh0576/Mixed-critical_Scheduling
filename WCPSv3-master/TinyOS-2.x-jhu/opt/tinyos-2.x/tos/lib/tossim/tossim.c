@@ -303,6 +303,11 @@ void Tossim::sendVirtualSchedule(int nodeid, int TxOffset, int dummy1, int dummy
   sim_send_VirtualSchedule(nodeid, TxOffset, dummy1, dummy2);
 }
 
+void Tossim::sendTaskPeriods(int Task1_T, int Task2_T, int Task3_T, int Task4_T) {
+  sim_send_TaskPeriods(Task1_T, Task2_T, Task3_T, Task4_T);
+}
+
+/////////////////////////////
 
 MAC* Tossim::mac() {
   return new MAC();

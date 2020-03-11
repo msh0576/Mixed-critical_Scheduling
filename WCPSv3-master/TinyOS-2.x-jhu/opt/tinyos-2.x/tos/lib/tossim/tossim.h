@@ -132,6 +132,7 @@ class Tossim {
 
   //added by sihoon
   void sendVirtualSchedule(int nodeid, int TxOffset, int dummy1, int dummy2 );
+  void sendTaskPeriods(int Task1_T, int Task2_T, int Task3_T, int Task4_T);
 
   //bool runNextEvent();
   //commented out and added a version below by Bo

@@ -65,6 +65,7 @@ implementation {
 	components new Alarm32khz16C() as CCAalarm;
 
 
+
 	components ActiveMessageC; //added by bo, for packet acknowledgement
 	components CC2420ControlC; //added by bo, for batch schedule/channel switching test
 	components TossimPacketModelC; //added by bo, to pass enabling bit of CCA
@@ -145,4 +146,5 @@ implementation {
 
 	// for checking any pkt reception like a CCA event
 	PureTDMASchedulerP.CCAevent->TossimPacketModelC.GainRadioModel2;
+
 }

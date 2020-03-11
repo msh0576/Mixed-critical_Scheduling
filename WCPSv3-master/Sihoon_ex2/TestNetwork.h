@@ -2,9 +2,9 @@
 #define TEST_NETWORK_H
 
 //added by sihoon
-#define NETWORK_NODE 8
+#define NETWORK_NODE 7
 #define NETWORK_FLOW 3
-#define MAX_LINK_HOP 4
+#define MAX_LINK_HOP 3
 #define VCS_COL_SIZE 1
 #define MAX_LINK_RETX 2
 
@@ -26,6 +26,9 @@ typedef nx_struct TestNetworkMsg {
 
   /* Link Delay buffer */
   nx_uint8_t txdelay[MAX_LINK_HOP];
+
+  /* Schedule ratio check */
+  nx_uint16_t job_idx;
 
   //nx_uint16_t data1;
   //nx_float data1;

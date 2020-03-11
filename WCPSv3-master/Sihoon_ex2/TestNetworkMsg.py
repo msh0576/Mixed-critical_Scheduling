@@ -56,16 +56,20 @@ class TestNetworkMsg(tinyos.message.Message.Message):
             pass
         try:
             s += "  [txopper=";
-            for i in range(0, 4):
+            for i in range(0, 3):
                 s += "0x%x " % (self.getElement_txopper(i) & 0xff)
             s += "]\n";
         except:
             pass
         try:
             s += "  [txdelay=";
-            for i in range(0, 4):
+            for i in range(0, 3):
                 s += "0x%x " % (self.getElement_txdelay(i) & 0xff)
             s += "]\n";
+        except:
+            pass
+        try:
+            s += "  [job_idx=0x%x]\n" % (self.get_job_idx())
         except:
             pass
         try:
@@ -514,7 +518,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     def offset_txopper(self, index1):
         offset = 80
-        if index1 < 0 or index1 >= 4:
+        if index1 < 0 or index1 >= 3:
             raise IndexError
         offset += 0 + index1 * 8
         return (offset / 8)
@@ -524,7 +528,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     def offsetBits_txopper(self, index1):
         offset = 80
-        if index1 < 0 or index1 >= 4:
+        if index1 < 0 or index1 >= 3:
             raise IndexError
         offset += 0 + index1 * 8
         return offset
@@ -533,7 +537,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the entire array 'txopper' as a short[]
     #
     def get_txopper(self):
-        tmp = [None]*4
+        tmp = [None]*3
         for index0 in range (0, self.numElements_txopper(0)):
                 tmp[index0] = self.getElement_txopper(index0)
         return tmp
@@ -561,13 +565,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the total size, in bytes, of the array 'txopper'
     #
     def totalSize_txopper(self):
-        return (32 / 8)
+        return (24 / 8)
     
     #
     # Return the total size, in bits, of the array 'txopper'
     #
     def totalSizeBits_txopper(self):
-        return 32
+        return 24
     
     #
     # Return the size, in bytes, of each element of the array 'txopper'
@@ -591,14 +595,14 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the number of elements in the array 'txopper'
     #
     def numElements_txopper():
-        return 4
+        return 3
     
     #
     # Return the number of elements in the array 'txopper'
     # for the given dimension.
     #
     def numElements_txopper(self, dimension):
-        array_dims = [ 4,  ]
+        array_dims = [ 3,  ]
         if dimension < 0 or dimension >= 1:
             raise IndexException
         if array_dims[dimension] == 0:
@@ -628,7 +632,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: txdelay
     #   Field type: short[]
-    #   Offset (bits): 112
+    #   Offset (bits): 104
     #   Size of each element (bits): 8
     #
 
@@ -648,8 +652,8 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'txdelay'
     #
     def offset_txdelay(self, index1):
-        offset = 112
-        if index1 < 0 or index1 >= 4:
+        offset = 104
+        if index1 < 0 or index1 >= 3:
             raise IndexError
         offset += 0 + index1 * 8
         return (offset / 8)
@@ -658,8 +662,8 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bits) of the field 'txdelay'
     #
     def offsetBits_txdelay(self, index1):
-        offset = 112
-        if index1 < 0 or index1 >= 4:
+        offset = 104
+        if index1 < 0 or index1 >= 3:
             raise IndexError
         offset += 0 + index1 * 8
         return offset
@@ -668,7 +672,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the entire array 'txdelay' as a short[]
     #
     def get_txdelay(self):
-        tmp = [None]*4
+        tmp = [None]*3
         for index0 in range (0, self.numElements_txdelay(0)):
                 tmp[index0] = self.getElement_txdelay(index0)
         return tmp
@@ -696,13 +700,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the total size, in bytes, of the array 'txdelay'
     #
     def totalSize_txdelay(self):
-        return (32 / 8)
+        return (24 / 8)
     
     #
     # Return the total size, in bits, of the array 'txdelay'
     #
     def totalSizeBits_txdelay(self):
-        return 32
+        return 24
     
     #
     # Return the size, in bytes, of each element of the array 'txdelay'
@@ -726,14 +730,14 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the number of elements in the array 'txdelay'
     #
     def numElements_txdelay():
-        return 4
+        return 3
     
     #
     # Return the number of elements in the array 'txdelay'
     # for the given dimension.
     #
     def numElements_txdelay(self, dimension):
-        array_dims = [ 4,  ]
+        array_dims = [ 3,  ]
         if dimension < 0 or dimension >= 1:
             raise IndexException
         if array_dims[dimension] == 0:
@@ -759,6 +763,61 @@ class TestNetworkMsg(tinyos.message.Message.Message):
                 break
             carr += self.getElement_txdelay(i)
         return carr
+    
+    #
+    # Accessor methods for field: job_idx
+    #   Field type: int
+    #   Offset (bits): 128
+    #   Size (bits): 16
+    #
+
+    #
+    # Return whether the field 'job_idx' is signed (False).
+    #
+    def isSigned_job_idx(self):
+        return False
+    
+    #
+    # Return whether the field 'job_idx' is an array (False).
+    #
+    def isArray_job_idx(self):
+        return False
+    
+    #
+    # Return the offset (in bytes) of the field 'job_idx'
+    #
+    def offset_job_idx(self):
+        return (128 / 8)
+    
+    #
+    # Return the offset (in bits) of the field 'job_idx'
+    #
+    def offsetBits_job_idx(self):
+        return 128
+    
+    #
+    # Return the value (as a int) of the field 'job_idx'
+    #
+    def get_job_idx(self):
+        return self.getUIntElement(self.offsetBits_job_idx(), 16, 1)
+    
+    #
+    # Set the value of the field 'job_idx'
+    #
+    def set_job_idx(self, value):
+        self.setUIntElement(self.offsetBits_job_idx(), 16, value, 1)
+    
+    #
+    # Return the size, in bytes, of the field 'job_idx'
+    #
+    def size_job_idx(self):
+        return (16 / 8)
+    
+    #
+    # Return the size, in bits, of the field 'job_idx'
+    #
+    def sizeBits_job_idx(self):
+        return 16
     
     #
     # Accessor methods for field: data1

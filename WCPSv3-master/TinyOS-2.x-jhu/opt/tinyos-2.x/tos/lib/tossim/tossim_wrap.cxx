@@ -6922,6 +6922,73 @@ fail:
   return NULL;
 }
 
+SWIGINTERN PyObject *_wrap_Tossim_sendTaskPeriods(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Tossim *arg1 = (Tossim *) 0 ;
+  int arg2 ;
+  int arg3 ;
+  int arg4 ;
+  int arg5 ;
+
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  int val4 ;
+  int ecode4 = 0 ;
+  int val5 ;
+  int ecode5 = 0 ;
+
+
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+
+  if (!PyArg_ParseTuple(args,(char *)"OOOOO:Tossim_sendTaskPeriods",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Tossim, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Tossim_sendTaskPeriods" "', argument " "1"" of type '" "Tossim *""'");
+  }
+  arg1 = reinterpret_cast< Tossim * >(argp1);
+
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Tossim_sendTaskPeriods" "', argument " "2"" of type '" "int""'");
+  }
+  arg2 = static_cast< int >(val2);
+
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Tossim_sendTaskPeriods" "', argument " "3"" of type '" "int""'");
+  }
+  arg3 = static_cast< int >(val3);
+
+  ecode4 = SWIG_AsVal_int(obj3, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "Tossim_sendTaskPeriods" "', argument " "4"" of type '" "int""'");
+  }
+  arg4 = static_cast< int >(val4);
+
+  ecode5 = SWIG_AsVal_int(obj4, &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "Tossim_sendTaskPeriods" "', argument " "5"" of type '" "int""'");
+  }
+  arg5 = static_cast< int >(val5);
+
+  (arg1)->sendTaskPeriods(arg2,arg3,arg4,arg5);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
 static PyMethodDef SwigMethods[] = {
 	 { (char *)"SWIG_PyInstanceMethod_New", (PyCFunction)SWIG_PyInstanceMethod_New, METH_O, NULL},
 	 { (char *)"new_MAC", _wrap_new_MAC, METH_VARARGS, NULL},
@@ -7043,6 +7110,7 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"Tossim_swigregister", Tossim_swigregister, METH_VARARGS, NULL},
    //added by sihoon
    { (char *)"Tossim_sendVirtualSchedule", _wrap_Tossim_sendVirtualSchedule, METH_VARARGS, NULL},
+   { (char *)"Tossim_sendTaskPeriods", _wrap_Tossim_sendTaskPeriods, METH_VARARGS, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 

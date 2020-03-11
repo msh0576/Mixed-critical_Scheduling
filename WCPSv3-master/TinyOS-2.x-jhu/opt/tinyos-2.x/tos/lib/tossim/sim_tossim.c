@@ -248,3 +248,35 @@ int* sim_get_VirtualSchedule() __attribute__ ((C, spontaneous)) {
 
   return simScheduleBuf;
 }
+
+int simTaskPeriodBuf[NETWORK_FLOW];
+void sim_send_TaskPeriods(int Task1_T, int Task2_T, int Task3_T, int Task4_T) __attribute__ ((C, spontaneous)) {
+  uint8_t i;
+
+  for(i=0; i<NETWORK_FLOW; i++){
+
+    switch(i){
+      case 0 :
+        simTaskPeriodBuf[i] = Task1_T;
+        break;
+      case 1 :
+        simTaskPeriodBuf[i] = Task2_T;
+        break;
+      case 2 :
+        simTaskPeriodBuf[i] = Task3_T;
+        break;
+      case 3 :
+        simTaskPeriodBuf[i] = Task4_T;
+        break;
+      default :
+        simTaskPeriodBuf[i] = 0;
+    }
+
+  }
+
+}
+
+int* sim_get_TaskPeriods() __attribute__ ((C, spontaneous)) {
+
+  return simTaskPeriodBuf;
+}
