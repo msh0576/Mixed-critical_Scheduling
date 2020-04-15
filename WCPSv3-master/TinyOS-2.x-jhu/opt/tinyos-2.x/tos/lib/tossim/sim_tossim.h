@@ -71,6 +71,8 @@ void sim_send_VirtualSchedule(int nodeid, int TxOffset, int dummy1, int dummy2 )
 int* sim_get_VirtualSchedule();
 void sim_send_TaskPeriods(int Task1_T, int Task2_T, int Task3_T, int Task4_T);
 int* sim_get_TaskPeriods();
+void sim_send_NumTx(int Task1_Tx, int Task2_Tx, int Task3_Tx, int Task4_Tx);
+int* sim_get_TaskTx();
 
 #ifdef __cplusplus
 }

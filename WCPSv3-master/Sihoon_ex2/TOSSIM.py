@@ -288,5 +288,6 @@ class Tossim(_object):
     # Python to MAC
     def sendVirtualSchedule(self, *args): return _TOSSIM.Tossim_sendVirtualSchedule(self, *args)
     def sendTaskPeriods(self, *args): return _TOSSIM.Tossim_sendTaskPeriods(self, *args)
+    def sendNumTx(self, *args): return _TOSSIM.Tossim_sendNumTx(self, *args)
 Tossim_swigregister = _TOSSIM.Tossim_swigregister
 Tossim_swigregister(Tossim)

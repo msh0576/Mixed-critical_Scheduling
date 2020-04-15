@@ -9,8 +9,8 @@ implementation {
 
   uint8_t Primarypath[NETWORK_FLOW][NETWORK_NODE] ={
     {0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 3, 0, 4, 51, 0, 0, 0},
-    {0, 0, 3, 4, 52, 0, 0, 0}
+    {0, 3, 0, 4, 5, 6, 51, 0},
+    {0, 0, 3, 4, 5, 6, 52, 0}
   };
 
   uint8_t Backuppath[NETWORK_FLOW][NETWORK_NODE] ={

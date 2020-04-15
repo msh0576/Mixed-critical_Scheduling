@@ -305,6 +305,13 @@ void Tossim::sendVirtualSchedule(int nodeid, int TxOffset, int dummy1, int dummy
 
 void Tossim::sendTaskPeriods(int Task1_T, int Task2_T, int Task3_T, int Task4_T) {
   sim_send_TaskPeriods(Task1_T, Task2_T, Task3_T, Task4_T);
+  //printf("Here tossim.c\n");
+  //printf("%d %d %d %d\n", Task1_T, Task2_T, Task3_T, Task4_T);
+}
+
+void Tossim::sendNumTx(int Task1_Tx, int Task2_Tx, int Task3_Tx, int Task4_Tx) {
+  sim_send_NumTx(Task1_Tx, Task2_Tx, Task3_Tx, Task4_Tx);
+
 }
 
 /////////////////////////////

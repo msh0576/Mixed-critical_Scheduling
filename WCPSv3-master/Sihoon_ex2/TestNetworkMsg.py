@@ -7,14 +7,14 @@
 import tinyos.message.Message
 
 # The default size of this message type in bytes.
-DEFAULT_MESSAGE_SIZE = 42
+DEFAULT_MESSAGE_SIZE = 46
 
 # The Active Message type associated with this message.
 AM_TYPE = 5
 
 class TestNetworkMsg(tinyos.message.Message.Message):
-    # Create a new TestNetworkMsg of size 42.
-    def __init__(self, data="", addr=None, gid=None, base_offset=0, data_length=42):
+    # Create a new TestNetworkMsg of size 46.
+    def __init__(self, data="", addr=None, gid=None, base_offset=0, data_length=46):
         tinyos.message.Message.Message.__init__(self, data, addr, gid, base_offset, data_length)
         self.amTypeSet(AM_TYPE)
     
@@ -56,14 +56,14 @@ class TestNetworkMsg(tinyos.message.Message.Message):
             pass
         try:
             s += "  [txopper=";
-            for i in range(0, 3):
+            for i in range(0, 5):
                 s += "0x%x " % (self.getElement_txopper(i) & 0xff)
             s += "]\n";
         except:
             pass
         try:
             s += "  [txdelay=";
-            for i in range(0, 3):
+            for i in range(0, 5):
                 s += "0x%x " % (self.getElement_txdelay(i) & 0xff)
             s += "]\n";
         except:
@@ -518,7 +518,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     def offset_txopper(self, index1):
         offset = 80
-        if index1 < 0 or index1 >= 3:
+        if index1 < 0 or index1 >= 5:
             raise IndexError
         offset += 0 + index1 * 8
         return (offset / 8)
@@ -528,7 +528,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     def offsetBits_txopper(self, index1):
         offset = 80
-        if index1 < 0 or index1 >= 3:
+        if index1 < 0 or index1 >= 5:
             raise IndexError
         offset += 0 + index1 * 8
         return offset
@@ -537,7 +537,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the entire array 'txopper' as a short[]
     #
     def get_txopper(self):
-        tmp = [None]*3
+        tmp = [None]*5
         for index0 in range (0, self.numElements_txopper(0)):
                 tmp[index0] = self.getElement_txopper(index0)
         return tmp
@@ -565,13 +565,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the total size, in bytes, of the array 'txopper'
     #
     def totalSize_txopper(self):
-        return (24 / 8)
+        return (40 / 8)
     
     #
     # Return the total size, in bits, of the array 'txopper'
     #
     def totalSizeBits_txopper(self):
-        return 24
+        return 40
     
     #
     # Return the size, in bytes, of each element of the array 'txopper'
@@ -595,14 +595,14 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the number of elements in the array 'txopper'
     #
     def numElements_txopper():
-        return 3
+        return 5
     
     #
     # Return the number of elements in the array 'txopper'
     # for the given dimension.
     #
     def numElements_txopper(self, dimension):
-        array_dims = [ 3,  ]
+        array_dims = [ 5,  ]
         if dimension < 0 or dimension >= 1:
             raise IndexException
         if array_dims[dimension] == 0:
@@ -632,7 +632,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: txdelay
     #   Field type: short[]
-    #   Offset (bits): 104
+    #   Offset (bits): 120
     #   Size of each element (bits): 8
     #
 
@@ -652,8 +652,8 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'txdelay'
     #
     def offset_txdelay(self, index1):
-        offset = 104
-        if index1 < 0 or index1 >= 3:
+        offset = 120
+        if index1 < 0 or index1 >= 5:
             raise IndexError
         offset += 0 + index1 * 8
         return (offset / 8)
@@ -662,8 +662,8 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bits) of the field 'txdelay'
     #
     def offsetBits_txdelay(self, index1):
-        offset = 104
-        if index1 < 0 or index1 >= 3:
+        offset = 120
+        if index1 < 0 or index1 >= 5:
             raise IndexError
         offset += 0 + index1 * 8
         return offset
@@ -672,7 +672,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the entire array 'txdelay' as a short[]
     #
     def get_txdelay(self):
-        tmp = [None]*3
+        tmp = [None]*5
         for index0 in range (0, self.numElements_txdelay(0)):
                 tmp[index0] = self.getElement_txdelay(index0)
         return tmp
@@ -700,13 +700,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the total size, in bytes, of the array 'txdelay'
     #
     def totalSize_txdelay(self):
-        return (24 / 8)
+        return (40 / 8)
     
     #
     # Return the total size, in bits, of the array 'txdelay'
     #
     def totalSizeBits_txdelay(self):
-        return 24
+        return 40
     
     #
     # Return the size, in bytes, of each element of the array 'txdelay'
@@ -730,14 +730,14 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the number of elements in the array 'txdelay'
     #
     def numElements_txdelay():
-        return 3
+        return 5
     
     #
     # Return the number of elements in the array 'txdelay'
     # for the given dimension.
     #
     def numElements_txdelay(self, dimension):
-        array_dims = [ 3,  ]
+        array_dims = [ 5,  ]
         if dimension < 0 or dimension >= 1:
             raise IndexException
         if array_dims[dimension] == 0:
@@ -767,7 +767,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: job_idx
     #   Field type: int
-    #   Offset (bits): 128
+    #   Offset (bits): 160
     #   Size (bits): 16
     #
 
@@ -787,13 +787,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'job_idx'
     #
     def offset_job_idx(self):
-        return (128 / 8)
+        return (160 / 8)
     
     #
     # Return the offset (in bits) of the field 'job_idx'
     #
     def offsetBits_job_idx(self):
-        return 128
+        return 160
     
     #
     # Return the value (as a int) of the field 'job_idx'
@@ -822,7 +822,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: data1
     #   Field type: short
-    #   Offset (bits): 144
+    #   Offset (bits): 176
     #   Size (bits): 8
     #
 
@@ -842,13 +842,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'data1'
     #
     def offset_data1(self):
-        return (144 / 8)
+        return (176 / 8)
     
     #
     # Return the offset (in bits) of the field 'data1'
     #
     def offsetBits_data1(self):
-        return 144
+        return 176
     
     #
     # Return the value (as a short) of the field 'data1'
@@ -877,7 +877,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: data2
     #   Field type: short
-    #   Offset (bits): 152
+    #   Offset (bits): 184
     #   Size (bits): 8
     #
 
@@ -897,13 +897,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'data2'
     #
     def offset_data2(self):
-        return (152 / 8)
+        return (184 / 8)
     
     #
     # Return the offset (in bits) of the field 'data2'
     #
     def offsetBits_data2(self):
-        return 152
+        return 184
     
     #
     # Return the value (as a short) of the field 'data2'
@@ -932,7 +932,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: data3
     #   Field type: short
-    #   Offset (bits): 160
+    #   Offset (bits): 192
     #   Size (bits): 8
     #
 
@@ -952,13 +952,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'data3'
     #
     def offset_data3(self):
-        return (160 / 8)
+        return (192 / 8)
     
     #
     # Return the offset (in bits) of the field 'data3'
     #
     def offsetBits_data3(self):
-        return 160
+        return 192
     
     #
     # Return the value (as a short) of the field 'data3'
@@ -987,7 +987,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: data4
     #   Field type: short
-    #   Offset (bits): 168
+    #   Offset (bits): 200
     #   Size (bits): 8
     #
 
@@ -1007,13 +1007,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'data4'
     #
     def offset_data4(self):
-        return (168 / 8)
+        return (200 / 8)
     
     #
     # Return the offset (in bits) of the field 'data4'
     #
     def offsetBits_data4(self):
-        return 168
+        return 200
     
     #
     # Return the value (as a short) of the field 'data4'
@@ -1042,7 +1042,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: data5
     #   Field type: short
-    #   Offset (bits): 176
+    #   Offset (bits): 208
     #   Size (bits): 8
     #
 
@@ -1062,13 +1062,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'data5'
     #
     def offset_data5(self):
-        return (176 / 8)
+        return (208 / 8)
     
     #
     # Return the offset (in bits) of the field 'data5'
     #
     def offsetBits_data5(self):
-        return 176
+        return 208
     
     #
     # Return the value (as a short) of the field 'data5'
@@ -1097,7 +1097,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: data6
     #   Field type: short
-    #   Offset (bits): 184
+    #   Offset (bits): 216
     #   Size (bits): 8
     #
 
@@ -1117,13 +1117,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'data6'
     #
     def offset_data6(self):
-        return (184 / 8)
+        return (216 / 8)
     
     #
     # Return the offset (in bits) of the field 'data6'
     #
     def offsetBits_data6(self):
-        return 184
+        return 216
     
     #
     # Return the value (as a short) of the field 'data6'
@@ -1152,7 +1152,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: data7
     #   Field type: short
-    #   Offset (bits): 192
+    #   Offset (bits): 224
     #   Size (bits): 8
     #
 
@@ -1172,13 +1172,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'data7'
     #
     def offset_data7(self):
-        return (192 / 8)
+        return (224 / 8)
     
     #
     # Return the offset (in bits) of the field 'data7'
     #
     def offsetBits_data7(self):
-        return 192
+        return 224
     
     #
     # Return the value (as a short) of the field 'data7'
@@ -1207,7 +1207,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: data8
     #   Field type: short
-    #   Offset (bits): 200
+    #   Offset (bits): 232
     #   Size (bits): 8
     #
 
@@ -1227,13 +1227,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'data8'
     #
     def offset_data8(self):
-        return (200 / 8)
+        return (232 / 8)
     
     #
     # Return the offset (in bits) of the field 'data8'
     #
     def offsetBits_data8(self):
-        return 200
+        return 232
     
     #
     # Return the value (as a short) of the field 'data8'
@@ -1262,7 +1262,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: data9
     #   Field type: short
-    #   Offset (bits): 208
+    #   Offset (bits): 240
     #   Size (bits): 8
     #
 
@@ -1282,13 +1282,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'data9'
     #
     def offset_data9(self):
-        return (208 / 8)
+        return (240 / 8)
     
     #
     # Return the offset (in bits) of the field 'data9'
     #
     def offsetBits_data9(self):
-        return 208
+        return 240
     
     #
     # Return the value (as a short) of the field 'data9'
@@ -1317,7 +1317,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: data10
     #   Field type: short
-    #   Offset (bits): 216
+    #   Offset (bits): 248
     #   Size (bits): 8
     #
 
@@ -1337,13 +1337,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'data10'
     #
     def offset_data10(self):
-        return (216 / 8)
+        return (248 / 8)
     
     #
     # Return the offset (in bits) of the field 'data10'
     #
     def offsetBits_data10(self):
-        return 216
+        return 248
     
     #
     # Return the value (as a short) of the field 'data10'
@@ -1372,7 +1372,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: data11
     #   Field type: short
-    #   Offset (bits): 224
+    #   Offset (bits): 256
     #   Size (bits): 8
     #
 
@@ -1392,13 +1392,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'data11'
     #
     def offset_data11(self):
-        return (224 / 8)
+        return (256 / 8)
     
     #
     # Return the offset (in bits) of the field 'data11'
     #
     def offsetBits_data11(self):
-        return 224
+        return 256
     
     #
     # Return the value (as a short) of the field 'data11'
@@ -1427,7 +1427,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: data12
     #   Field type: short
-    #   Offset (bits): 232
+    #   Offset (bits): 264
     #   Size (bits): 8
     #
 
@@ -1447,13 +1447,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'data12'
     #
     def offset_data12(self):
-        return (232 / 8)
+        return (264 / 8)
     
     #
     # Return the offset (in bits) of the field 'data12'
     #
     def offsetBits_data12(self):
-        return 232
+        return 264
     
     #
     # Return the value (as a short) of the field 'data12'
@@ -1482,7 +1482,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: data13
     #   Field type: short
-    #   Offset (bits): 240
+    #   Offset (bits): 272
     #   Size (bits): 8
     #
 
@@ -1502,13 +1502,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'data13'
     #
     def offset_data13(self):
-        return (240 / 8)
+        return (272 / 8)
     
     #
     # Return the offset (in bits) of the field 'data13'
     #
     def offsetBits_data13(self):
-        return 240
+        return 272
     
     #
     # Return the value (as a short) of the field 'data13'
@@ -1537,7 +1537,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: data14
     #   Field type: short
-    #   Offset (bits): 248
+    #   Offset (bits): 280
     #   Size (bits): 8
     #
 
@@ -1557,13 +1557,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'data14'
     #
     def offset_data14(self):
-        return (248 / 8)
+        return (280 / 8)
     
     #
     # Return the offset (in bits) of the field 'data14'
     #
     def offsetBits_data14(self):
-        return 248
+        return 280
     
     #
     # Return the value (as a short) of the field 'data14'
@@ -1592,7 +1592,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: data15
     #   Field type: short
-    #   Offset (bits): 256
+    #   Offset (bits): 288
     #   Size (bits): 8
     #
 
@@ -1612,13 +1612,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'data15'
     #
     def offset_data15(self):
-        return (256 / 8)
+        return (288 / 8)
     
     #
     # Return the offset (in bits) of the field 'data15'
     #
     def offsetBits_data15(self):
-        return 256
+        return 288
     
     #
     # Return the value (as a short) of the field 'data15'
@@ -1647,7 +1647,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: data16
     #   Field type: short
-    #   Offset (bits): 264
+    #   Offset (bits): 296
     #   Size (bits): 8
     #
 
@@ -1667,13 +1667,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'data16'
     #
     def offset_data16(self):
-        return (264 / 8)
+        return (296 / 8)
     
     #
     # Return the offset (in bits) of the field 'data16'
     #
     def offsetBits_data16(self):
-        return 264
+        return 296
     
     #
     # Return the value (as a short) of the field 'data16'
@@ -1702,7 +1702,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: data17
     #   Field type: short
-    #   Offset (bits): 272
+    #   Offset (bits): 304
     #   Size (bits): 8
     #
 
@@ -1722,13 +1722,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'data17'
     #
     def offset_data17(self):
-        return (272 / 8)
+        return (304 / 8)
     
     #
     # Return the offset (in bits) of the field 'data17'
     #
     def offsetBits_data17(self):
-        return 272
+        return 304
     
     #
     # Return the value (as a short) of the field 'data17'
@@ -1757,7 +1757,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: data18
     #   Field type: short
-    #   Offset (bits): 280
+    #   Offset (bits): 312
     #   Size (bits): 8
     #
 
@@ -1777,13 +1777,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'data18'
     #
     def offset_data18(self):
-        return (280 / 8)
+        return (312 / 8)
     
     #
     # Return the offset (in bits) of the field 'data18'
     #
     def offsetBits_data18(self):
-        return 280
+        return 312
     
     #
     # Return the value (as a short) of the field 'data18'
@@ -1812,7 +1812,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: data19
     #   Field type: short
-    #   Offset (bits): 288
+    #   Offset (bits): 320
     #   Size (bits): 8
     #
 
@@ -1832,13 +1832,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'data19'
     #
     def offset_data19(self):
-        return (288 / 8)
+        return (320 / 8)
     
     #
     # Return the offset (in bits) of the field 'data19'
     #
     def offsetBits_data19(self):
-        return 288
+        return 320
     
     #
     # Return the value (as a short) of the field 'data19'
@@ -1867,7 +1867,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: data20
     #   Field type: short
-    #   Offset (bits): 296
+    #   Offset (bits): 328
     #   Size (bits): 8
     #
 
@@ -1887,13 +1887,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'data20'
     #
     def offset_data20(self):
-        return (296 / 8)
+        return (328 / 8)
     
     #
     # Return the offset (in bits) of the field 'data20'
     #
     def offsetBits_data20(self):
-        return 296
+        return 328
     
     #
     # Return the value (as a short) of the field 'data20'
@@ -1922,7 +1922,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: sendCount
     #   Field type: int
-    #   Offset (bits): 304
+    #   Offset (bits): 336
     #   Size (bits): 16
     #
 
@@ -1942,13 +1942,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'sendCount'
     #
     def offset_sendCount(self):
-        return (304 / 8)
+        return (336 / 8)
     
     #
     # Return the offset (in bits) of the field 'sendCount'
     #
     def offsetBits_sendCount(self):
-        return 304
+        return 336
     
     #
     # Return the value (as a int) of the field 'sendCount'
@@ -1977,7 +1977,7 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     #
     # Accessor methods for field: sendSuccessCount
     #   Field type: int
-    #   Offset (bits): 320
+    #   Offset (bits): 352
     #   Size (bits): 16
     #
 
@@ -1997,13 +1997,13 @@ class TestNetworkMsg(tinyos.message.Message.Message):
     # Return the offset (in bytes) of the field 'sendSuccessCount'
     #
     def offset_sendSuccessCount(self):
-        return (320 / 8)
+        return (352 / 8)
     
     #
     # Return the offset (in bits) of the field 'sendSuccessCount'
     #
     def offsetBits_sendSuccessCount(self):
-        return 320
+        return 352
     
     #
     # Return the value (as a int) of the field 'sendSuccessCount'

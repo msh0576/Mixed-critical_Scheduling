@@ -41,7 +41,7 @@ module PureTDMASchedulerP {
 		interface Queue<TestNetworkMsg *> as HIforwardQ;
 		interface Queue<TestNetworkMsg *> as LOforwardQ;
 		interface GainRadioModel2 as CCAevent;
-
+		interface Read<uint16_t> as ReadRssi;
 	}
 }
 implementation {
@@ -87,6 +87,7 @@ implementation {
 	uint32_t SuperframeLength(uint32_t Task_set[][3]);
 	uint32_t getGCD(uint32_t num1, uint32_t num2);
 	uint32_t getLCD(uint32_t num1, uint32_t num2);
+	void printfFloat(float toBePrinted);
 
 	//added by Sihoon
 	void transmission(uint8_t Txing_flowid);
@@ -99,19 +100,20 @@ implementation {
 		{0, 2}		// Task 2 :
 
 		};
-	uint32_t superframe_length = 30; //5Hz at most
+	uint32_t superframe_length = 19; //5Hz at most
 
 	/* Task character */
 	//index: Task id
 	//0 Task Period
 	//1 Task deadline
 	//2 Task maximum Tx oppertunity
+	uint8_t NUM_TASK = 2;	// # of existing tasks
 	uint8_t HI_TASK = 1;
 	uint8_t LO_TASK = 2;
 	uint32_t Task_character[NETWORK_FLOW][3]={
 		{0, 0, 0},
-		{30, 30, 3},
-		{30, 30, 3}
+		{30, 30, 2},
+		{30, 30, 2}
 	};
 	uint8_t TASK_PERIOD = 0;
 	uint8_t TASK_DEAD = 1;
@@ -159,8 +161,13 @@ implementation {
 	uint16_t Loss_count[NETWORK_FLOW];
 	uint16_t Miss_count[NETWORK_FLOW];
 
+	uint8_t PDR_window = 20;
+	//float AcutationPDR[PDR_window];
+
 	// for check wireless interference (temporaly)
 	uint32_t temp_interf;
+	uint32_t temp_dist;
+
 
 
 	event void Boot.booted(){}
@@ -171,6 +178,7 @@ implementation {
 		uint8_t i, j;
 		uint32_t (*VCS_buffer)[VCS_COL_SIZE];
 		uint32_t *Task_T_buffer;
+		uint32_t *Task_Tx_buffer;
 
 		slotSize = 10 * 32;     //10ms
 		bi = 40000; //# of slots in the supersuperframe with only one slot 0 doing sync
@@ -182,12 +190,6 @@ implementation {
 		isFlowdest = FALSE;
 		Task_rels = 0;
 		taskid = 0;
-		//backup_schedule[BACKUPNODE] = call ScheduleConfig.backupNode(TOS_NODE_ID);
-		//dbg("transmission","backup_schedule[0]:%d\n", backup_schedule[0]);
-
-		/* Superframe Length set*/
-		// For E2E_delay_Log_data
-		//superframe_length = SuperframeLength(Task_character);
 
 		/* Task Periods from Python */
 		// For Util_Log_data
@@ -196,10 +198,17 @@ implementation {
 		Task_character[1][TASK_DEAD] = Task_T_buffer[0];
 		Task_character[2][TASK_PERIOD] = Task_T_buffer[1];
 		Task_character[2][TASK_DEAD] = Task_T_buffer[1];
-		superframe_length = SuperframeLength(Task_character);
+		//superframe_length = SuperframeLength(Task_character);	Test for AbsoluteError application
+
+
+		/* Task Retransmissions from Python */
+		Task_Tx_buffer = sim_get_TaskTx();
+		Task_character[1][TASK_MAXTX] = Task_Tx_buffer[0];
+		Task_character[2][TASK_MAXTX] = Task_Tx_buffer[1];
 
 		// For check Interference
-		temp_interf = Task_T_buffer[2];
+		temp_interf = Task_Tx_buffer[3];
+		temp_dist = Task_T_buffer[3];
 
 		//Store primary and backup path for each flow id
 		for(i=0; i<NETWORK_FLOW; i++){
@@ -227,11 +236,12 @@ implementation {
 			prev_job_idx[i] = 0;
 
 			//For E2E_delay_Log_data
+
 			for(j=0; j<superframe_length; j++){
 				e2e_delay_buffer[i][j] = 0;
 			}
-		}
 
+		}
 		// Set whether each node is flow root or not
 		if(call ScheduleConfig.flowsource(TOS_NODE_ID) == TRUE){
 			isFlowroot = TRUE;
@@ -262,6 +272,7 @@ implementation {
 
 
 		dbg("Task_T_Test","Task_T_buffer[]:%d, %d, %d, %d\n", Task_T_buffer[0], Task_T_buffer[1], Task_T_buffer[2], Task_T_buffer[3]);
+		dbg("Task_T_Test","Task_maxTx_buffer[]:%d, %d, %d, %d\n", Task_Tx_buffer[0], Task_Tx_buffer[1], Task_Tx_buffer[2], Task_Tx_buffer[3]);
 		dbg("Task_T_Test","Superframe:%lu\n", superframe_length);
 		return SUCCESS;
 	}
@@ -317,21 +328,40 @@ implementation {
  		message_t *tmpToSend;
  		uint8_t tmpToSendLen;
  		uint8_t i;
-		uint32_t *CheckInterf;
+		uint32_t *Dist_Check;
+		uint32_t *Interf_Check;
 
 		atomic slot_ = slot;
 
 		/* for Src node to check interference */
-		if (isFlowroot == TRUE){
-			CheckInterf = sim_get_TaskPeriods();
+		//if (isFlowroot == TRUE){
+
+			Dist_Check = sim_get_TaskPeriods();
+			Interf_Check = sim_get_TaskTx();
 			// Num_ReTx change
-			if(CheckInterf[2] != temp_interf){
-				temp_interf = CheckInterf[2];
+			if(Interf_Check[3] != temp_interf){
+				temp_interf = Interf_Check[3];
 				dbg_clear("Util_Log_data","-----Interference-----\n");
-				Task_character[taskid][TASK_MAXTX] = 7;
-				My_max_txopper[taskid] = Task_character[taskid][TASK_MAXTX];
+				Task_character[1][TASK_MAXTX] = Interf_Check[0];
+				My_max_txopper[1] = Task_character[1][TASK_MAXTX];
+				Task_character[2][TASK_MAXTX] = Interf_Check[1];
+				My_max_txopper[2] = Task_character[2][TASK_MAXTX];
+				dbg_clear("Util_Log_data","Task1_maxTx:%d\n",My_max_txopper[1]);
+
 			}
-		}
+			// Task Period change
+			if(Dist_Check[3] != temp_dist){
+				temp_dist = Dist_Check[3];
+				dbg_clear("Util_Log_data","-----Disturbance-----\n");
+				Task_character[1][TASK_PERIOD] = Dist_Check[0];
+				Task_character[1][TASK_DEAD] = Dist_Check[0];
+				Task_character[2][TASK_PERIOD] = Dist_Check[1];
+				Task_character[2][TASK_DEAD] = Dist_Check[1];
+				superframe_length = SuperframeLength(Task_character);
+				//dbg("Task_T_Test","T1:%d, T2:%d\n", Dist_Check[0], Dist_Check[1]);
+				//dbg("Task_T_Test","Superframe:%lu\n", superframe_length);
+			}
+		//}
 		////////////////////////////////////////
 
  		if (slot == 0 ) {
@@ -357,6 +387,9 @@ implementation {
  		}
 
 		/* Receiver Setting */
+		// It should be modified, becuase it assumes that every nodes recognize Task periods, which is not reasonable
+		// We will modify it to that a node transmit a packet with task period (T) and residual (R), which is the deadline_slot-current_slot
+		// The node received the packet initilize receive_lock, Q, and so on after residual slots
 		if(( (slot%superframe_length) % Task_character[HI_TASK][TASK_PERIOD] == 0)){
 
 			// for schedule ratio check
@@ -387,6 +420,7 @@ implementation {
 			/// Queue Initilize
 			// Tx prevent
 			if(!call HIforwardQ.empty()){
+				//dbg("transmission","HIQ Reset\n");
 				HIqueueSize = call HIforwardQ.size();
 				for(i=0; i<HIqueueSize; i++){
 					call HIforwardQ.dequeue();
@@ -416,6 +450,7 @@ implementation {
 
 			/// Queue Initilize
 			if(!call LOforwardQ.empty()){
+				//dbg("transmission","LOQ Reset\n");
 				LOqueueSize = call LOforwardQ.size();
 				for(i=0; i<LOqueueSize; i++){
 					call LOforwardQ.dequeue();
@@ -504,12 +539,15 @@ implementation {
 			//receive_lock[Transmitting_flowid] = FALSE;		// it should be revitalized after the Task_character[TASK_MAXTX]-1 slots, except for destination nodes
 
 			/* Q Reset */
+			//dbg("transmission","ACK receive\n");
 			if(Transmitting_flowid == HI_TASK){
+				//dbg("transmission","HIQ Reset\n");
 				HIqueueSize = call HIforwardQ.size();
 				for(i=0; i<HIqueueSize; i++){
 					call HIforwardQ.dequeue();
 				}
 			}else if (Transmitting_flowid == LO_TASK){
+				//dbg("transmission","LOQ Reset\n");
 				LOqueueSize = call LOforwardQ.size();
 				for(i=0; i<LOqueueSize; i++){
 					call LOforwardQ.dequeue();
@@ -547,6 +585,7 @@ implementation {
 		uint8_t flow_id_rcv;
 		uint32_t current_slot;
 		uint8_t curr_hopcount;
+		uint16_t rssi;
 		TestNetworkMsg* tmp_payload;
 		TestNetworkMsg* HIdataBuffer;
 		TestNetworkMsg* LOdataBuffer;
@@ -559,6 +598,7 @@ implementation {
 		flow_id_rcv = tmp_payload->flowid; //changed by sihoon
 		set_current_hop_status(call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID);
 
+		//dbg("transmission","MAC receive\n");
 		//check flowid, destination,
 		if(TOS_NODE_ID == 3 ||  TOS_NODE_ID == 51 || TOS_NODE_ID == 4 || TOS_NODE_ID == 5 ||TOS_NODE_ID == 6 ||TOS_NODE_ID == 52){
 			if(flow_id_rcv != 0 && receive_lock[flow_id_rcv] == FALSE) {
@@ -583,9 +623,13 @@ implementation {
 
 
 					dbg("receive","flow_id:%u, SLOT: %u, src:%u, myID:%u, channel:%u   rcv_count[%d]:%d\n\n", flow_id_rcv, rcv_slot[flow_id_rcv], src, TOS_NODE_ID, call CC2420Config.getChannel(), flow_id_rcv, rcv_count[flow_id_rcv]);
-
 					//below is the tcp approach based on a global variable on each sensor, tcp_msg, defined in SimMoteP.nc added by Bo
-					call SimMote.setTcpMsg(flow_id_rcv, call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID, call CC2420Config.getChannel());
+					if(isFlowdest == TRUE){
+						//call ReadRssi.read();		// return noise
+
+						call SimMote.setTcpMsg(flow_id_rcv, call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID, call CC2420Config.getChannel());
+
+					}
 
 					// Queue //
 					if(flow_id_rcv == HI_TASK){
@@ -619,13 +663,16 @@ implementation {
 					//Log results
 					//check e2e delay
 					if(isFlowdest == TRUE){
+
 						e2e_delay_buffer[flow_id_rcv][current_slot] = e2e_delay_buffer[flow_id_rcv][current_slot] + 1;
 						//Node id,	flow id,	rcv_count, rcv_count_at_slot0,1,2,...
-						dbg_clear("E2E_delay_Log_data","%d %d %d ", TOS_NODE_ID, flow_id_rcv, rcv_count[flow_id_rcv]);
+						//dbg_clear("E2E_delay_Log_data","%d %d %d ", TOS_NODE_ID, flow_id_rcv, rcv_count[flow_id_rcv]);
+						dbg_clear("E2E_delay_Log_data","%d %d %d %d ", TOS_NODE_ID, flow_id_rcv, rcv_count[flow_id_rcv], Total_frame_count[flow_id_rcv]);
 						for(i=0; i<superframe_length; i++){
 							dbg_clear("E2E_delay_Log_data","%d ", e2e_delay_buffer[flow_id_rcv][i]);
 						}
 						dbg_clear("E2E_delay_Log_data","\n");
+
 
 						// Check link qualtiy
 						dbg_clear("check_link_quality","RxCount: %d\n", rcv_count[1]);
@@ -646,6 +693,12 @@ implementation {
 			//dbg("transmission","Rcv mode change to OFF\n");
 			atomic Rcv_check_mode = FALSE;
 		}
+  }
+
+	/* For Read RSSI */
+	event void ReadRssi.readDone(error_t result, uint16_t val)
+  {
+    dbg("RSSI_TEST", "ReadRssi.readDone: %d\n", (int16_t)val-45);
   }
 
 	/**
@@ -883,12 +936,12 @@ implementation {
 
 		uint32_t SuperframeLength(uint32_t Task_set[][3]){
 			uint8_t i;
-			uint16_t prv_task_period;
+			uint32_t prv_task_period;
 
 			prv_task_period = 1;
 
-			for(i=1; i<NETWORK_FLOW; i++){
-				prv_task_period = getLCD(Task_set[i][0], prv_task_period);
+			for(i=1; i<NUM_TASK+1; i++){
+				prv_task_period = getLCD(Task_set[i][TASK_PERIOD], prv_task_period);
 			}
 
 			return prv_task_period;
@@ -918,6 +971,28 @@ implementation {
 			}
 
 			return (num1*num2)/getGCD(num1, num2);
+		}
+
+		void printfFloat(float toBePrinted) {
+			uint32_t fi, f0, f1, f2;
+			char c;
+			float f = toBePrinted;
+
+			if (f<0){
+				c = '-'; f = -f;
+			} else {
+				c = ' ';
+			}
+
+			// integer portion.
+			fi = (uint32_t) f;
+
+			// decimal portion...get index for up to 3 decimal places.
+			f = f - ((float) fi);
+			f0 = f*10;   f0 %= 10;
+			f1 = f*100;  f1 %= 10;
+			f2 = f*1000; f2 %= 10;
+			printf("%c%ld.%d%d%d", c, fi, (uint8_t) f0, (uint8_t) f1, (uint8_t) f2);
 		}
 
 

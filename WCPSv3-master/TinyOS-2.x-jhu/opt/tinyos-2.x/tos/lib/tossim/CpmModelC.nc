@@ -57,9 +57,12 @@
 module CpmModelC {
   provides interface GainRadioModel as Model;
   provides interface Read<uint16_t> as ReadRssi;
+
+  //uses interface ScheduleConfig;
 }
 
 implementation {
+
   message_t* outgoing; // If I'm sending, this is my outgoing packet
   bool requestAck;
   bool receiving = 0;  // Whether or not I think I'm receiving a packet
@@ -92,6 +95,7 @@ implementation {
   bool checkReceive(receive_message_t* msg);
   double packetNoise(receive_message_t* msg);
   double checkPrr(receive_message_t* msg);
+  //double checkPrr(double SNR, uint8_t source);
 
   double timeInMs()   {
     sim_time_t ftime = sim_time();
@@ -233,6 +237,7 @@ implementation {
     ackEvent->handle = sim_gain_ack_handle;
     ackEvent->cleanup = sim_queue_cleanup_event;
     ackEvent->data = r;
+    dbg("PHY_layer_check","+++ ackEvent->data:%d\n",ackEvent->data);
 
     sim_queue_insert(ackEvent);
   }
@@ -258,7 +263,7 @@ implementation {
     double coin = RandomUniform();
     uint16_t node_id = sim_node();
 
-      //printf("**********From Sensor: %u, and the SNR is: %f\n", TOS_NODE_ID, SNR);
+      //dbg("CpmModelC__","**********From Sensor: %u, and the SNR is: %f, and PRR:%f \n", TOS_NODE_ID, SNR, prr);
 
 
     if ( (prr != 0) && (prr != 1) ) {
@@ -267,7 +272,7 @@ implementation {
       else
 	prr = 0.0;
     }
-    dbg("CpmModelC", "Sensor: %u, channel is %u, returned PRR	 in shouldReceive is %lf\n", node_id, sim_mote_get_radio_channel(node_id), prr);
+    //dbg("CpmModelC__", "Sensor: %u, channel is %u, returned PRR	 in shouldReceive is %lf\n", node_id, sim_mote_get_radio_channel(node_id), prr);
     return prr;
   }
 
@@ -330,10 +335,25 @@ implementation {
     return noise;
   }
 
+
   double checkPrr(receive_message_t* msg) {
     return prr_estimate_from_snr(msg->power / packetNoise(msg));
   }
 
+  //modified by sihoon
+  /*
+  double checkPrr(double SNR, uint8_t source) {
+    double prr = prr_estimate_from_snr(SNR);
+    double coin = RandomUniform();
+    uint16_t node_id = sim_node();
+
+    if(node_id == 52 && source == 6){
+      dbg_clear("PDR_trace", "%d %f\n", node_id, prr);// added by sihoon
+    }
+
+    return prr;
+  }
+  */
 
   /* Handle a packet reception. If the packet is being acked,
      pass the corresponding receive_message_t* to the ack handler,
@@ -343,6 +363,10 @@ implementation {
     receive_message_t* predecessor = NULL;
     receive_message_t* list = outstandingReceptionHead;
 
+    dbg("PHY_layer_check"," PHY reception---\n");
+
+
+
     dbg("CpmModelC", "Handling reception event @ %s.\n", sim_time_string());
     while (list != NULL) {
       if (list->next == mine) {
@@ -350,6 +374,7 @@ implementation {
       }
       list = list->next;
     }
+
     if (predecessor) {
       predecessor->next = mine->next;
     }
@@ -359,17 +384,29 @@ implementation {
     else {
       dbgerror("CpmModelC", "Incoming packet list structure is corrupted: entry is not the head and no entry points to it.\n");
     }
+
     dbg("CpmModelC,SNRLoss", "Packet from %i to %i\n", (int)mine->source, (int)sim_node());
+    dbg("PHY_layer_check", "Packet from %i to %i ;;; mine->lost:%d\n", (int)mine->source, (int)sim_node(), mine->lost);
+
+    // I think checkReceive() is used for multi-channel simulation, which is from wustl
+    /*
     if (!checkReceive(mine)) {
       dbg("CpmModelC,SNRLoss", " - lost packet from %i as SNR was too low.\n", (int)mine->source);
+      dbg("PHY_layer_check", " - lost packet from %i as SNR was too low.\n", (int)mine->source);
       mine->lost = 1;
-    }
+    }else{//modified by sihoon
+      //mine->lost = 0;
+    }*/
     // Ml: Checks for channel
     if (mine->channel != sim_mote_get_radio_channel(sim_node())) {
+      dbg("PHY_layer_check", "check channel false\n ");
       free_receive_message(mine);
       receiving = 0;
       return;
     }
+    // Check destination
+
+
     if (!mine->lost) {
       // Copy this receiver's packet signal strength to the metadata region
       // of the packet. Note that this packet is actually shared across all
@@ -378,10 +415,14 @@ implementation {
       meta->strength = mine->strength;
       meta->lqi = mine->lqi;
 
+      //// sihoon
+
       dbg("CpmModelC", "  -signaling reception\n");
+      dbg("PHY_layer_check","-signaling reception\n");
       signal Model.receive(mine->msg);
       if (mine->ack) {
         dbg_clear("CpmModelC", " acknowledgment requested, ");
+        //dbg("PHY_layer_check","PHY receive & Ack requested\n");
       }
       else {
         dbg_clear("CpmModelC", " no acknowledgment requested.\n");
@@ -389,27 +430,28 @@ implementation {
       // If we scheduled an ack, receiving = 0 when it completes
       if (mine->ack && signal Model.shouldAck(mine->msg)) {
         dbg_clear("CpmModelC", " scheduling ack.\n");
-	sim_gain_schedule_ack(mine->source, sim_time() + 1, mine);
+        //dbg("PHY_layer_check","Scheduling ACK\n");
+	       sim_gain_schedule_ack(mine->source, sim_time() + 1, mine);
       }
       else { // Otherwise free the receive_message_t*
-	free_receive_message(mine);
+	       free_receive_message(mine);
       }
       // We're searching for new packets again
       receiving = 0;
     } // If the packet was lost, then we're searching for new packets again
     else {
-      if (RandomUniform() < 0.001) {
-	dbg("CpmModelC,SNRLoss", "Packet was technically lost, but TOSSIM introduces an ack false positive rate.\n");
-	if (mine->ack && signal Model.shouldAck(mine->msg)) {
-	  dbg_clear("CpmModelC", " scheduling ack.\n");
-	  sim_gain_schedule_ack(mine->source, sim_time() + 1, mine);
-	}
-	else { // Otherwise free the receive_message_t*
-	  free_receive_message(mine);
-	}
+      if (RandomUniform() < 0.00001) {
+	       dbg("CpmModelC,SNRLoss", "Packet was technically lost, but TOSSIM introduces an ack false positive rate.\n");
+	        if (mine->ack && signal Model.shouldAck(mine->msg)) {
+	           dbg_clear("CpmModelC", " scheduling ack.\n");
+	            sim_gain_schedule_ack(mine->source, sim_time() + 1, mine);
+	        }
+        	else { // Otherwise free the receive_message_t*
+        	  free_receive_message(mine);
+        	}
       }
       else {
-	free_receive_message(mine);
+	       free_receive_message(mine);
       }
       receiving = 0;
       dbg_clear("CpmModelC,SNRLoss", "  -packet was lost.\n");
@@ -422,6 +464,7 @@ implementation {
     sim_event_t* evt;
     receive_message_t* list;
     receive_message_t* rcv = allocate_receive_message();
+    double tmp_snr = 0.0;
     double noiseStr = packetNoise(rcv);
     rcv->source = source;
     rcv->start = sim_time();
@@ -435,6 +478,8 @@ implementation {
     // the beginning of the packet. This is true for the CC2420, but is not true for all
     // radios. But generalizing seems like complexity for minimal gain at this point.
     rcv->strength = (int8_t)(floor(10.0 * log(pow(10.0, power/10.0) + pow(10.0, noiseStr/10.0)) / log(10.0)));
+    dbg("CpmModelC", "src: %i, node: %i ,rcv->strength:%i\n", source, sim_node(), rcv->strength);
+    //dbg("PHY_layer_check","src: %i, node: %i ,rcv->strength:%i\n", source, sim_node(), rcv->strength);
     rcv->msg = msg;
     rcv->lost = 0;
     rcv->ack = receive;
@@ -450,6 +495,8 @@ implementation {
     }
     else if (!shouldReceive(power - noiseStr)) {
       dbg("CpmModelC,SNRLoss", "Lost packet from %i to %i due to SNR being too low (%i)\n", source, sim_node(), (int)(power - noiseStr));
+      dbg("PHY_layer_check", "Lost packet from %i to %i due to SNR being too low (%i)\n", source, sim_node(), (int)(power - noiseStr));
+
       rcv->lost = 1;
     }
     else if (sim_mote_get_radio_channel(sim_node()) != sim_mote_get_radio_channel(source)) {   // Ml
@@ -463,6 +510,19 @@ implementation {
       receiving = 1;
     }
 
+
+    /*
+    if(sim_node() == 52){
+      tmp_snr = rcv->power / noiseStr;
+      if(rcv->power / noiseStr > 1.0){
+        tmp_snr = 1.0;
+      }
+      //dbg_clear("PDR_trace", "Node: %d power: %f noise: %f time: %lf\n", sim_node(), power, noiseStr, (double) sim_time() / sim_ticks_per_sec());// added by sihoon
+      dbg_clear("PDR_trace", "Node: %d SNR: %f time: %lf\n", sim_node(), prr_estimate_from_snr(rcv->power - noiseStr), (double) sim_time() / sim_ticks_per_sec());// added by sihoon
+    }*/
+    //checkPrr(power - noiseStr, source); //sihoon
+    //call ScheduleConfig.flowdestination(1);
+
     list = outstandingReceptionHead;
     while (list != NULL) {
       if (list->channel != sim_mote_get_radio_channel(source)) {   // Ml
@@ -470,8 +530,8 @@ implementation {
         continue;
       }
       if (!shouldReceive(list->power - rcv->power)) {
-	dbg("Gain,SNRLoss", "Going to lose packet from %i with signal %lf as am receiving a packet from %i with signal %lf\n", list->source, list->power, source, rcv->power);
-	list->lost = 1;
+	       dbg("Gain,SNRLoss", "Going to lose packet from %i with signal %lf as am receiving a packet from %i with signal %lf\n", list->source, list->power, source, rcv->power);
+	        list->lost = 1;
       }
       list = list->next;
     }
@@ -501,6 +561,7 @@ implementation {
       int other = neighborEntry->mote;
 
       dbg("CpmModelC", "Node %i with neighborEntry:%d.\n", sim_node(), neighborEntry->mote);
+      //dbg("PHY_layer_check", "Node %i with neighborEntry:%d /// receive:%d /// dest:%d.\n", sim_node(), neighborEntry->mote, ack && (other == dest || dest == AM_BROADCAST_ADDR), dest);
 
       sim_gain_put(other, msg, endTime, ack && (other == dest || dest == AM_BROADCAST_ADDR), power + sim_gain_value(sim_node(), other, channel_id), reversePower + sim_gain_value(other, sim_node(), channel_id), channel_id); // changed after changing sim_gain.c
       neighborEntry = sim_gain_next(neighborEntry);
@@ -535,7 +596,7 @@ implementation {
  {
    double noise = packetNoise(NULL);
    rssi = FALSE;
-   dbg("CpmModelC", "ReadRssi: noise %f\n", noise);
+   //dbg("CpmModelC__", "ReadRssi: noise %f\n", noise); // sihoon
    // The CC2420's RSSI has an offset of 45dBm. Reference: section 23
    // from the CC2420 Datasheet.
    signal ReadRssi.readDone(SUCCESS, noise + 45);

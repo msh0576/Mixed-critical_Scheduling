@@ -49,7 +49,8 @@ average_file_path = "/home/sihoon/WCPSv3-master/Sihoon_ex2/Result_file/"
 
 ### Task Period Setting ###
 # it should be harmonic of all task periods
-Each_task_T = [16, 16]
+Each_task_T = [30, 30]
+Task_ReTx = [8, 0]
 
 ### Initilization ###
 # Index
@@ -80,8 +81,7 @@ TOSSIM_simulation_times = 100;
 for N in range(TOSSIM_simulation_times):
     exe_file_name = "Test"+str(N)+".txt"
     deleteContent(file_path + exe_file_name)
-    fail, output = commands.getstatusoutput("python tossim-event-server.py" +" "+str(Each_task_T[0])+" "+str(Each_task_T[1]) + " >>"+str(file_path)+str(exe_file_name))
-    #fail, output = commands.getstatusoutput("python tossim-event-server.py>>"+str(file_path)+str(exe_file_name))
+    fail, output = commands.getstatusoutput("python tossim-event-server.py" +" "+str(Each_task_T[0])+" "+str(Task_ReTx[0])+" "+str(Each_task_T[1])+" "+str(Task_ReTx[1]) + " >>"+str(file_path)+str(exe_file_name))
     faile_check(fail)
     #print output
 

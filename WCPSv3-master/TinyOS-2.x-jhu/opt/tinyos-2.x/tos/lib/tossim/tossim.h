@@ -133,7 +133,7 @@ class Tossim {
   //added by sihoon
   void sendVirtualSchedule(int nodeid, int TxOffset, int dummy1, int dummy2 );
   void sendTaskPeriods(int Task1_T, int Task2_T, int Task3_T, int Task4_T);
-
+  void sendNumTx(int Task1_Tx, int Task2_Tx, int Task3_Tx, int Task4_Tx);
   //bool runNextEvent();
   //commented out and added a version below by Bo
 

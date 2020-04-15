@@ -166,7 +166,7 @@ int sim_run_next_event() __attribute__ ((C, spontaneous)) {
       //printf("Mote: %u is on.\n", event->mote);
       event->handle(event);
 
-      if (event->mote == 161 || event->mote == 169 || event->mote == 157 || event->mote == 180 || event->mote == 108 || event->mote == 175)
+      if (event->mote == 51 || event->mote == 52 )  // added by sihoon
       {
       	tcpMsg_result = sim_mote_getTcpMsg(event->mote);
       	//printf("SENSOR: %u, GOT TCP_MSG: %i, %i, %i, %i, %i\n", event->mote, tcpMsg_result[0], tcpMsg_result[1], tcpMsg_result[2], tcpMsg_result[3], tcpMsg_result[4]);
@@ -279,4 +279,36 @@ void sim_send_TaskPeriods(int Task1_T, int Task2_T, int Task3_T, int Task4_T) __
 int* sim_get_TaskPeriods() __attribute__ ((C, spontaneous)) {
 
   return simTaskPeriodBuf;
+}
+
+int simTaskTx[4];
+void sim_send_NumTx(int Task1_Tx, int Task2_Tx, int Task3_Tx, int Task4_Tx) __attribute__ ((C, spontaneous)) {
+  uint8_t i;
+
+  for(i=0; i<4; i++){
+
+    switch(i){
+      case 0 :
+        simTaskTx[i] = Task1_Tx;
+        break;
+      case 1 :
+        simTaskTx[i] = Task2_Tx;
+        break;
+      case 2 :
+        simTaskTx[i] = Task3_Tx;
+        break;
+      case 3 :
+        simTaskTx[i] = Task4_Tx;
+        break;
+      default :
+        simTaskTx[i] = 0;
+    }
+
+  }
+
+}
+
+int* sim_get_TaskTx() __attribute__ ((C, spontaneous)) {
+
+  return simTaskTx;
 }

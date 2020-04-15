@@ -2,9 +2,9 @@
 #define TEST_NETWORK_H
 
 //added by sihoon
-#define NETWORK_NODE 7
-#define NETWORK_FLOW 3
-#define MAX_LINK_HOP 3
+#define NETWORK_NODE 9
+#define NETWORK_FLOW 4
+#define MAX_LINK_HOP 5
 #define VCS_COL_SIZE 1
 #define MAX_LINK_RETX 2
 
