@@ -29,6 +29,7 @@ else:
 	#noise_offset = 10 #PDR:75%
 
 	### Revised version -- CpmModelC.nc -- eliminating checkReceive() function ###
+	### Default channel: -91dBm ###
 	### Topology -60dBm (power) ###
 	#noise_offset = 1 #PDR:95%
 	#noise_offset = 22 #PDR:77%

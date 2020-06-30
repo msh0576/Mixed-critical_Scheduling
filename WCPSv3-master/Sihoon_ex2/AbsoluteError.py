@@ -73,10 +73,10 @@ Buff_resp99 = []
 
 ### Simulation Changing Task periods
 T1_min = 13
-T1_max = 20
+T1_max = 17
 for T1 in range(T1_min,T1_max+1):
     ### Select task periods
-    Each_task_T = [T1, 19]
+    Each_task_T = [T1, 29]
     Task_ReTx = [8, 8]
 
     SUPERFRAME_LEN = Each_task_T[1]

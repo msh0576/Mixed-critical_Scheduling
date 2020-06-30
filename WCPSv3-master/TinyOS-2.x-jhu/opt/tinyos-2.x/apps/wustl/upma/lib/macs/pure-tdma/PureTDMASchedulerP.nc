@@ -100,7 +100,7 @@ implementation {
 		{0, 2}		// Task 2 :
 
 		};
-	uint32_t superframe_length = 19; //5Hz at most
+	uint32_t superframe_length = 30; //5Hz at most
 
 	/* Task character */
 	//index: Task id
@@ -198,7 +198,7 @@ implementation {
 		Task_character[1][TASK_DEAD] = Task_T_buffer[0];
 		Task_character[2][TASK_PERIOD] = Task_T_buffer[1];
 		Task_character[2][TASK_DEAD] = Task_T_buffer[1];
-		//superframe_length = SuperframeLength(Task_character);	Test for AbsoluteError application
+		//superframe_length = SuperframeLength(Task_character);	//Test for AbsoluteError application
 
 
 		/* Task Retransmissions from Python */

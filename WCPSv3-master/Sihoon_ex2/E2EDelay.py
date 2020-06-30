@@ -59,8 +59,8 @@ average_file_path = "/home/sihoon/WCPSv3-master/Sihoon_ex2/Result_file/"
 
 ### Task Period Setting ###
 # it should be harmonic of all task periods
-Each_task_T = [14, 21]
-Task_ReTx = [7, 7]
+Each_task_T = [30, 30]
+Task_ReTx = [8, 8]
 
 ### Initilization ###
 # Index
@@ -168,4 +168,4 @@ print("Task2_e2e_delay_percentage: "),
 for idx in range(SUPERFRAME_LEN):
     print("%s "%(Task2_e2e_delay_percentage[idx])),
 print("")
-print(Response_99(Task2_e2e_delay_percentage))
+print("Response_99:%s"%(Response_99(Task2_e2e_delay_percentage)))
