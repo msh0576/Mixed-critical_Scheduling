@@ -100,7 +100,7 @@ implementation {
   	//10 Hop count in the flow
 		//11 Retransmissions
 
-	uint8_t schedule[50][12]={//Source Routing, 16 sensor topology, 2 prime trans, retrans twice, baseline.
+	uint8_t schedule[51][12]={//Source Routing, 16 sensor topology, 2 prime trans, retrans twice, baseline.
 		//Flow sender schedule
 		/*
 		{1, 1, 3, 22, 0, 1, 1, 1, 0, 0, 1, 0},
@@ -141,8 +141,9 @@ implementation {
 		{16, 6, 51, 22, 0, 1, 1, 1, 0, 0, 5, 2}
 		*/
 
-		//5hop -2ReTx - T:[24, 24] (1Hz)  -Super_len = 24
+		//3hop -2ReTx - T:[24, 24] (1Hz)  -Super_len = 24
 		/*
+		{0, 88, 0, 22, 0, 1, 1, 1, 0, 0, 1, 0},	// Flooding slot
 		{1, 88, 0, 22, 0, 1, 1, 1, 0, 0, 1, 0},	// Flooding slot
 
 		{2, 1, 3, 22, 0, 1, 1, 1, 0, 0, 1, 0},
@@ -151,72 +152,85 @@ implementation {
 		{4, 3, 4, 22, 0, 1, 1, 1, 0, 0, 2, 0},
 		{5, 3, 4, 22, 0, 1, 1, 1, 0, 0, 2, 1},
 
-		{6, 4, 5, 22, 0, 1, 1, 1, 0, 0, 3, 0},
-		{7, 4, 5, 22, 0, 1, 1, 1, 0, 0, 3, 1},
+		{6, 4, 51, 22, 0, 1, 1, 1, 0, 0, 3, 0},
+		{7, 4, 51, 22, 0, 1, 1, 1, 0, 0, 3, 1},
 
-		{8, 5, 6, 22, 0, 1, 1, 1, 0, 0, 4, 0},
-		{9, 5, 6, 22, 0, 1, 1, 1, 0, 0, 4, 1},
+		{8, 2, 3, 22, 0, 1, 2, 2, 0, 0, 1, 0},
+		{9, 2, 3, 22, 0, 1, 2, 2, 0, 0, 1, 1},
 
-		{10, 6, 51, 22, 0, 1, 1, 1, 0, 0, 5, 0},
-		{11, 6, 51, 22, 0, 1, 1, 1, 0, 0, 5, 1}
+		{10, 3, 4, 22, 0, 1, 2, 2, 0, 0, 2, 0},
+		{11, 3, 4, 22, 0, 1, 2, 2, 0, 0, 2, 1},
+
+		{12, 4, 52, 22, 0, 1, 2, 2, 0, 0, 3, 0},
+		{13, 4, 52, 22, 0, 1, 2, 2, 0, 0, 3, 1}
 		*/
-		//5hop -2ReTx - T:[16, 24] (1.5Hz) -Super_len = 72
-		{0, 88, 0, 22, 0, 1, 1, 1, 0, 0, 1, 0},	// Flooding slot
+		//4hop -2ReTx - T:[30, 30] (1.5Hz) -Super_len = 30
 
-		{1, 1, 3, 22, 0, 1, 1, 1, 0, 0, 1, 0},
-		{2, 1, 3, 22, 0, 1, 1, 1, 0, 0, 1, 1},
+		{1, 88, 0, 22, 0, 1, 1, 1, 0, 0, 1, 0},	// Flooding slot
+		{2, 88, 0, 22, 0, 1, 1, 1, 0, 0, 1, 0},	// Flooding slot
 
-		{3, 3, 4, 22, 0, 1, 1, 1, 0, 0, 2, 0},
-		{4, 3, 4, 22, 0, 1, 1, 1, 0, 0, 2, 1},
+		{3, 1, 3, 22, 0, 1, 1, 1, 0, 0, 1, 0},
+		{4, 1, 3, 22, 0, 1, 1, 1, 0, 0, 1, 1},
 
-		{5, 4, 5, 22, 0, 1, 1, 1, 0, 0, 3, 0},
-		{6, 4, 5, 22, 0, 1, 1, 1, 0, 0, 3, 1},
+		{5, 3, 4, 22, 0, 1, 1, 1, 0, 0, 2, 0},
+		{6, 3, 4, 22, 0, 1, 1, 1, 0, 0, 2, 1},
 
-		{7, 5, 6, 22, 0, 1, 1, 1, 0, 0, 4, 0},
-		{8, 5, 6, 22, 0, 1, 1, 1, 0, 0, 4, 1},
+		{7, 4, 5, 22, 0, 1, 1, 1, 0, 0, 3, 0},
+		{8, 4, 5, 22, 0, 1, 1, 1, 0, 0, 3, 1},
 
-		{9, 6, 51, 22, 0, 1, 1, 1, 0, 0, 5, 0},
-		{10, 6, 51, 22, 0, 1, 1, 1, 0, 0, 5, 1},
+		{9, 5, 51, 22, 0, 1, 1, 1, 0, 0, 4, 0},
+		{10, 5, 51, 22, 0, 1, 1, 1, 0, 0, 4, 1},
 
-		{11, 2, 3, 22, 0, 1, 2, 2, 0, 0, 1, 0},
-		{12, 2, 3, 22, 0, 1, 2, 2, 0, 0, 1, 1},
+		{26, 88, 0, 22, 0, 1, 1, 1, 0, 0, 1, 0},	// Flooding slot
+		{27, 88, 0, 22, 0, 1, 1, 1, 0, 0, 1, 0},	// Flooding slot
 
-		{13, 3, 4, 22, 0, 1, 2, 2, 0, 0, 2, 0},
-		{14, 3, 4, 22, 0, 1, 2, 2, 0, 0, 2, 1},
+		{28, 1, 3, 22, 0, 1, 1, 1, 0, 0, 1, 0},
+		{29, 1, 3, 22, 0, 1, 1, 1, 0, 0, 1, 1},
 
-		{15, 4, 5, 22, 0, 1, 2, 2, 0, 0, 3, 0},
-		{16, 4, 5, 22, 0, 1, 2, 2, 0, 0, 3, 1},
+		{30, 3, 4, 22, 0, 1, 1, 1, 0, 0, 2, 0},
+		{31, 3, 4, 22, 0, 1, 1, 1, 0, 0, 2, 1},
 
-		{17, 5, 6, 22, 0, 1, 2, 2, 0, 0, 4, 0},
-		{18, 5, 6, 22, 0, 1, 2, 2, 0, 0, 4, 1},
+		{32, 4, 5, 22, 0, 1, 1, 1, 0, 0, 3, 0},
+		{33, 4, 5, 22, 0, 1, 1, 1, 0, 0, 3, 1},
 
-		{19, 6, 52, 22, 0, 1, 2, 2, 0, 0, 5, 0},
-		{20, 6, 52, 22, 0, 1, 2, 2, 0, 0, 5, 1}
-
-		};
-	uint8_t sub_schedule1[50][12]={//Source Routing, 16 sensor topology, 2 prime trans, retrans twice, baseline.
-		//5hop -2ReTx - T:[16, 24] (1.5Hz) -Super_len = lcm(16,24)= 72
-
-		{0, 88, 0, 22, 0, 1, 1, 1, 0, 0, 1, 0},	// Flooding slot
-
-		{1, 1, 3, 22, 0, 1, 1, 1, 0, 0, 1, 0},
-		{2, 1, 3, 22, 0, 1, 1, 1, 0, 0, 1, 1},
-
-		{3, 3, 4, 22, 0, 1, 1, 1, 0, 0, 2, 0},
-		{4, 3, 4, 22, 0, 1, 1, 1, 0, 0, 2, 1},
-
-		{5, 4, 5, 22, 0, 1, 1, 1, 0, 0, 3, 0},
-		{6, 4, 5, 22, 0, 1, 1, 1, 0, 0, 3, 1},
-
-		{7, 5, 6, 22, 0, 1, 1, 1, 0, 0, 4, 0},
-		{8, 5, 6, 22, 0, 1, 1, 1, 0, 0, 4, 1},
-
-		{9, 6, 51, 22, 0, 1, 1, 1, 0, 0, 5, 0},
-		{10, 6, 51, 22, 0, 1, 1, 1, 0, 0, 5, 1}
+		{34, 5, 51, 22, 0, 1, 1, 1, 0, 0, 4, 0},
+		{35, 5, 51, 22, 0, 1, 1, 1, 0, 0, 4, 1},
 
 		};
-	uint8_t schedule_len=30;
-	uint32_t superframe_length = 25; //5Hz at most
+	uint8_t sub_schedule1[51][12]={//Source Routing, 16 sensor topology, 2 prime trans, retrans twice, baseline.
+		//4hop -2ReTx - T:[15, 15] (1.5Hz) -Super_len = 15
+
+		{1, 88, 0, 22, 0, 1, 1, 1, 0, 0, 1, 0},	// Flooding slot
+		{2, 88, 0, 22, 0, 1, 1, 1, 0, 0, 1, 0},	// Flooding slot
+
+		{3, 1, 3, 22, 0, 1, 1, 1, 0, 0, 1, 0},
+		{4, 1, 3, 22, 0, 1, 1, 1, 0, 0, 1, 1},
+
+		{5, 3, 4, 22, 0, 1, 1, 1, 0, 0, 2, 0},
+		{6, 3, 4, 22, 0, 1, 1, 1, 0, 0, 2, 1},
+
+		{7, 4, 5, 22, 0, 1, 1, 1, 0, 0, 3, 0},
+		{8, 4, 5, 22, 0, 1, 1, 1, 0, 0, 3, 1},
+
+		{9, 5, 51, 22, 0, 1, 1, 1, 0, 0, 4, 0},
+		{10, 5, 51, 22, 0, 1, 1, 1, 0, 0, 4, 1}
+
+		/*
+		{0, 88, 0, 22, 0, 1, 1, 1, 0, 0, 1, 0},	// Flooding slot
+		{1, 88, 0, 22, 0, 1, 1, 1, 0, 0, 1, 0},	// Flooding slot
+
+		{2, 1, 3, 22, 0, 1, 1, 1, 0, 0, 1, 0},
+		{3, 1, 3, 22, 0, 1, 1, 1, 0, 0, 1, 1},
+
+		{4, 3, 4, 22, 0, 1, 1, 1, 0, 0, 2, 0},
+		{5, 3, 4, 22, 0, 1, 1, 1, 0, 0, 2, 1},
+
+		{6, 4, 51, 22, 0, 1, 1, 1, 0, 0, 3, 0},
+		{7, 4, 51, 22, 0, 1, 1, 1, 0, 0, 3, 1}
+		*/
+		};
+	uint8_t schedule_len=51;
+	uint32_t superframe_length = 50; //5Hz at most
 
 			//0 backup node
 			//1 criticality:		0:Lo-criti flow,	1:Hi-criti flow
@@ -254,7 +268,7 @@ implementation {
 
 
 	/* End-to-end delay indicator */
-	uint32_t e2e_delay_buffer[15] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};	// index: receive slot, value: count
+	uint32_t e2e_delay_buffer[NETWORK_FLOW][1000];	// index: receive slot, value: count
 	/* Chcek interference & disturbance */
 	uint32_t temp_interf;
 	uint32_t temp_dist;
@@ -353,6 +367,12 @@ implementation {
 		dbg("VCStest","My TxOffset:%d\n", TxOffset);
 		*/
 
+		// For debug e2e delay, set e2e_delay_beffer
+		for(i=0; i<NETWORK_FLOW; i++){
+			for(j=0; j<superframe_length; j++){
+				e2e_delay_buffer[i][j] = 0;
+			}
+		}
 
 		return SUCCESS;
 	}
@@ -440,7 +460,7 @@ implementation {
 						schedule[i][j] = sub_schedule1[i][j];
 					}
 				}
-				superframe_length = 25;
+				superframe_length = 12;
 			}
 
 
@@ -601,15 +621,21 @@ implementation {
 
 						dbg("receive","flow_id:%u, SLOT: %u, src:%u, myID:%u, channel:%u   rcv_count[%d]:%d\n\n", flow_id_rcv, rcv_slot[flow_id_rcv], src, TOS_NODE_ID, call CC2420Config.getChannel(), flow_id_rcv, rcv_count[flow_id_rcv]);
 
-						//Log results
-						//Node id,	flow id,	rcv_count, rcv_count_at_slot1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
-						dbg_clear("Log_data","%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d\n", TOS_NODE_ID, flow_id_rcv, rcv_count[flow_id_rcv], e2e_delay_buffer[1], e2e_delay_buffer[2], e2e_delay_buffer[3], e2e_delay_buffer[4], e2e_delay_buffer[5], e2e_delay_buffer[6], e2e_delay_buffer[7], e2e_delay_buffer[8], e2e_delay_buffer[9], e2e_delay_buffer[10], e2e_delay_buffer[11], e2e_delay_buffer[12]);
-
 
 						if(isFlowdest == TRUE && Newframe==TRUE){
 							Newframe = FALSE;
-
 							call SimMote.setTcpMsg(flow_id_rcv, call SlotterControl.getSlot() % superframe_length, src, TOS_NODE_ID, call CC2420Config.getChannel());
+
+							// check e2e delay
+							e2e_delay_buffer[flow_id_rcv][current_slot] = e2e_delay_buffer[flow_id_rcv][current_slot] + 1;
+							//Node id,	flow id,	rcv_count, rcv_count_at_slot0,1,2,...
+							//dbg_clear("E2E_delay_Log_data","%d %d %d ", TOS_NODE_ID, flow_id_rcv, rcv_count[flow_id_rcv]);
+							dbg_clear("E2E_delay_Log_data","%d %d %d ", TOS_NODE_ID, flow_id_rcv, rcv_count[flow_id_rcv]);
+							for(i=0; i<superframe_length; i++){
+								dbg_clear("E2E_delay_Log_data","%d ", e2e_delay_buffer[flow_id_rcv][i]);
+							}
+							dbg_clear("E2E_delay_Log_data","\n");
+
 						}
 					}
 					// Queue //

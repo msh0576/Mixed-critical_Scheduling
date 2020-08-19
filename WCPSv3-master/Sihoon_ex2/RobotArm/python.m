@@ -53,7 +53,7 @@ for i = 1:nargin
   if i==4
       cmd_code_ta=thisArg;
   end
-  % Add argument to command string
+%   Add argument to command string
   cmdString = [cmdString, ' ', thisArg];
 end
 errTxtNoPerl = 'Unable to find Python executable.';

@@ -177,7 +177,8 @@ for node in Allnodes:
 	m.bootAtTime(0)
 	#print "Booting ", node, " at time ", str(0)
 
-
+'''
+### Only for TOSSIM ###
 run_count = 6000
 Interference_time = 3000000
 Interference_finish = 4000000
@@ -378,4 +379,3 @@ while True:
 				break
 	finally:
 		connection.close()
-'''

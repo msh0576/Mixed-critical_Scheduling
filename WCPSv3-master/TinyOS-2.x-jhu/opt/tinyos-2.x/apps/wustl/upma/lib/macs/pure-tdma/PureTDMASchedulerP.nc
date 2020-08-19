@@ -100,7 +100,7 @@ implementation {
 		{0, 2}		// Task 2 :
 
 		};
-	uint32_t superframe_length = 30; //5Hz at most
+	uint32_t superframe_length = 50; //5Hz at most
 
 	/* Task character */
 	//index: Task id
@@ -112,8 +112,8 @@ implementation {
 	uint8_t LO_TASK = 2;
 	uint32_t Task_character[NETWORK_FLOW][3]={
 		{0, 0, 0},
-		{30, 30, 2},
-		{30, 30, 2}
+		{25, 25, 2},
+		{25, 25, 2}
 	};
 	uint8_t TASK_PERIOD = 0;
 	uint8_t TASK_DEAD = 1;
@@ -198,7 +198,8 @@ implementation {
 		Task_character[1][TASK_DEAD] = Task_T_buffer[0];
 		Task_character[2][TASK_PERIOD] = Task_T_buffer[1];
 		Task_character[2][TASK_DEAD] = Task_T_buffer[1];
-		//superframe_length = SuperframeLength(Task_character);	//Test for AbsoluteError application
+		superframe_length = SuperframeLength(Task_character);	//Test for AbsoluteError application
+		//superframe_length = 50;
 
 
 		/* Task Retransmissions from Python */
@@ -358,8 +359,8 @@ implementation {
 				Task_character[2][TASK_PERIOD] = Dist_Check[1];
 				Task_character[2][TASK_DEAD] = Dist_Check[1];
 				superframe_length = SuperframeLength(Task_character);
-				//dbg("Task_T_Test","T1:%d, T2:%d\n", Dist_Check[0], Dist_Check[1]);
-				//dbg("Task_T_Test","Superframe:%lu\n", superframe_length);
+				dbg("Task_T_Test","T1:%d, T2:%d\n", Dist_Check[0], Dist_Check[1]);
+				dbg("Task_T_Test","Superframe:%lu\n", superframe_length);
 			}
 		//}
 		////////////////////////////////////////
@@ -943,7 +944,6 @@ implementation {
 			for(i=1; i<NUM_TASK+1; i++){
 				prv_task_period = getLCD(Task_set[i][TASK_PERIOD], prv_task_period);
 			}
-
 			return prv_task_period;
 		}
 

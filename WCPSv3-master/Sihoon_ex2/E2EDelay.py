@@ -78,7 +78,7 @@ Task2_destination = 52        # topology: 2->3->4->52
 Hi_task_id = 1
 Lo_task_id = 2
 
-TOSSIM_simulation_times = 100;
+TOSSIM_simulation_times = 1;
 
 
 ### Execute TOSSIM and store the result ###
