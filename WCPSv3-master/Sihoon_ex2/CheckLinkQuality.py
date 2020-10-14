@@ -49,10 +49,11 @@ average_file_path = "/home/sihoon/WCPSv3-master/Sihoon_ex2/Result_file/"
 
 ### Task Period Setting ###
 # it should be harmonic of all task periods
-Each_task_T = [30, 30]
-Task_ReTx = [8, 0]
+Each_task_T = [25,25]
+Task_ReTx = [1, 0]
 
 ### Initilization ###
+TOSSIM_simulation_times = 100;
 # Index
 NODEID = 0
 FLOWID = 1
@@ -77,10 +78,11 @@ result_f.close()
 print("Each Task Period:%s"%(Each_task_T))
 print("SUPERFRAME_LEN:%s"%(SUPERFRAME_LEN))
 
-TOSSIM_simulation_times = 100;
+
 for N in range(TOSSIM_simulation_times):
     exe_file_name = "Test"+str(N)+".txt"
     deleteContent(file_path + exe_file_name)
+    print(exe_file_name)
     fail, output = commands.getstatusoutput("python tossim-event-server.py" +" "+str(Each_task_T[0])+" "+str(Task_ReTx[0])+" "+str(Each_task_T[1])+" "+str(Task_ReTx[1]) + " >>"+str(file_path)+str(exe_file_name))
     faile_check(fail)
     #print output
@@ -102,7 +104,9 @@ for fname in file_name:
         exit(1)
 
     # total result variable
+    tmp_Tx_count = 0
     Tx_count = 0
+    tmp_Rx_count = 0
     Rx_count = 0
 
     lines = f.readlines()
@@ -113,9 +117,12 @@ for fname in file_name:
         if line_list:
             # cheack node id
             if line_list[0] == "Nodeid:":
-                Tx_count = line_list[3]
+                tmp_Tx_count = line_list[3]
             elif line_list[0] == "RxCount:":
-                Rx_count = line_list[1]
+                tmp_Rx_count = line_list[1]
+            elif line_list[0] == "---Task_period_End---":
+                Tx_count = tmp_Tx_count
+                Rx_count = tmp_Rx_count
 
     # File Close
     f.close()

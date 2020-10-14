@@ -1,4 +1,4 @@
-Each Task Period:[30, 30]
+Each Task Period:[15, 15]
 
-Task_ReTx:[8, 8]
+Task_ReTx:[3, 3]
 

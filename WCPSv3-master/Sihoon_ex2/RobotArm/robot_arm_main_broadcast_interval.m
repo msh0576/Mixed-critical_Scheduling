@@ -1,3 +1,4 @@
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Deliver the diturbance recognition instant (dist_inst) to TOSSIM
 % 
@@ -17,17 +18,17 @@ global delta simul_time Task_periods Dis_instant_P1 broad_interv_P1
 delta = 0.001;       % Simulink operate every 1ms
 delta_t = 10;
 simul_time = 6;    % Simulation time
-Task_periods = [0.25; 0.25];
+Task_periods = [0.30; 0.30];
 
 
 %% Button %%
 Plot_butt = 0;
 Sim_butt = 1;
-Protocol_butt = 0; % 0 if proposed protocol, 1 if WirelessHART
+Protocol_butt = 1; % 0 if proposed protocol, 1 if WirelessHART
 
 %% Save File %%
-file_name0 = 'Simul_results_Ours_broadcast_interval_4hop_500hp.mat';     % store results for a simulation
-file_name1 = 'Simul_results_WH_broadcast_interval_4hop_500hp.mat';
+file_name0 = 'Simul_results_Ours_broadcast_interval_5hop_300hp_v2.mat';     % store results for a simulation
+file_name1 = 'Simul_results_WH_broadcast_interval_5hop_300hp_v3.mat';
 field_name_P1 = 'Log_broad_interv_P1';  
 log_name_P1 = 'broad_interv_P1.mat';
 
@@ -152,3 +153,4 @@ Log_broad_interv_P1 = [Load_broad_interv_P1 curr_broad_interv_P1]
 
 save(save_file_name, field_name_P1);
 
+% Final results are presented in the file "Plot_broadcast_interval.m"

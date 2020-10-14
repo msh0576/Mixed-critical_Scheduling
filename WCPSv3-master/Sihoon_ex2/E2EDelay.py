@@ -59,8 +59,8 @@ average_file_path = "/home/sihoon/WCPSv3-master/Sihoon_ex2/Result_file/"
 
 ### Task Period Setting ###
 # it should be harmonic of all task periods
-Each_task_T = [30, 30]
-Task_ReTx = [8, 8]
+Each_task_T = [15, 15]
+Task_ReTx = [3, 3]
 
 ### Initilization ###
 # Index
@@ -78,7 +78,7 @@ Task2_destination = 52        # topology: 2->3->4->52
 Hi_task_id = 1
 Lo_task_id = 2
 
-TOSSIM_simulation_times = 1;
+TOSSIM_simulation_times = 100;
 
 
 ### Execute TOSSIM and store the result ###
@@ -96,6 +96,7 @@ print("SUPERFRAME_LEN:%s"%(SUPERFRAME_LEN))
 for N in range(TOSSIM_simulation_times):
     exe_file_name = "Test"+str(N)+".txt"
     deleteContent(file_path + exe_file_name)
+    print(exe_file_name)
     fail, output = commands.getstatusoutput("python tossim-event-server.py" +" "+str(Each_task_T[0])+" "+str(Task_ReTx[0])+" "+str(Each_task_T[1])+" "+str(Task_ReTx[1]) + " >>"+str(file_path)+str(exe_file_name))
     #fail, output = commands.getstatusoutput("python tossim-event-server.py>>"+str(file_path)+str(exe_file_name))
     faile_check(fail)
@@ -130,7 +131,6 @@ for fname in file_name:
     Task2_e2e_tx_count = 0
     Task1_e2e_delay = [0 for _ in range(SUPERFRAME_LEN)]        # e2e delay boundary : slot0 ~ slot19
     Task2_e2e_delay = [0 for _ in range(SUPERFRAME_LEN)]        # e2e delay boundary : slot0 ~ slot19
-
     lines = f.readlines()
     # Store last line Data in a file
     for line in lines:

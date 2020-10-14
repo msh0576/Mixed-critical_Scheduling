@@ -32,8 +32,9 @@ else:
 	### Default channel: -91dBm ###
 	### Topology -60dBm (power) ###
 	#noise_offset = 1 #PDR:95%
+	noise_offset = 15 #PDR:90%
 	#noise_offset = 22 #PDR:77%
-	noise_offset = 23 #PDR:68%
+	#noise_offset = 23 #PDR:67%
 	#noise_offset = 24 #PDR:52%
 	#noise_offset = 25 #PDR:32%
 
@@ -97,8 +98,8 @@ for seq in send_to_MAClayer:
 Task_periods = Task_periods_orig
 Task_maxTx = Task_maxTx_orig
 
-Task_periods_dist = [25, 25]
-Task_maxTx_interf = [4, 4]
+Task_periods_dist = [30, 30]
+Task_maxTx_interf = [9, 9]
 
 
 r = t.radio()
@@ -177,7 +178,7 @@ for node in Allnodes:
 	m.bootAtTime(0)
 	#print "Booting ", node, " at time ", str(0)
 
-'''
+
 ### Only for TOSSIM ###
 run_count = 6000
 Interference_time = 3000000
@@ -189,7 +190,7 @@ dist_flag = 0
 while (t.time() <= 97656250*run_count):
 	rcved = t.runNextEvent()
 
-	# Wireless Interference
+	### Wireless Interference
 	if t.time() > 97656250*Interference_time and t.time() < 97656250*Interference_finish and interf_flag == 0:
 		noise_offset = 22
 		for node in Allnodes:
@@ -211,7 +212,7 @@ while (t.time() <= 97656250*run_count):
 		#Task_maxTx = Task_maxTx_interf
 		# Send a Interference signal to MAC Layer
 		#t.sendNumTx(Task_maxTx[0], Task_maxTx[1], 0, interf_flag)
-	# Wireless Interference Finish
+	### Wireless Interference Finish
 	elif t.time() > 97656250*Interference_finish and interf_flag == 1:
 		noise_offset = 3
 		for node in Allnodes:
@@ -234,13 +235,13 @@ while (t.time() <= 97656250*run_count):
 		# Send a Interference signal to MAC Layer
 		#t.sendNumTx(Task_maxTx[0], Task_maxTx[1], 0, interf_flag)
 
-	# Disturbances
+	### Disturbances
 	if t.time() > 97656250*Disturbance_time and t.time() < 97656250*Disturbance_finish and dist_flag == 0:
 		dist_flag = 1
 		Task_periods = Task_periods_dist
 		# Send a Disturbancd signal to MAC Layer
 		t.sendTaskPeriods(Task_periods[0], Task_periods[1], 0, dist_flag)
-	# Disturbnace finish
+	### Disturbnace finish
 	elif t.time() > 97656250*Disturbance_finish and dist_flag == 1:
 		dist_flag = 0
 		Task_periods = Task_periods_orig
@@ -379,3 +380,4 @@ while True:
 				break
 	finally:
 		connection.close()
+'''

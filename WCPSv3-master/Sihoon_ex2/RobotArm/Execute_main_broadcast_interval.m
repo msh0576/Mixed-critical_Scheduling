@@ -11,11 +11,11 @@ clc;
 Init_butt = 1;
 RunSimul_butt = 1;
 PlotResult_butt = 0;
-Protocol_butt = 0; % 0 if proposed protocol, 1 if WirelessHART
+Protocol_butt = 1; % 0 if proposed protocol, 1 if WirelessHART
 
 % save file
-file_name0 = 'Simul_results_Ours_broadcast_interval_4hop_500hp.mat';     % store results for a simulation
-file_name1 = 'Simul_results_WH_broadcast_interval_4hop_500hp.mat';
+file_name0 = 'Simul_results_Ours_broadcast_interval_5hop_300hp_v2.mat';     % store results for a simulation
+file_name1 = 'Simul_results_WH_broadcast_interval_5hop_300hp_v3.mat';
 field_name_P1 = 'Log_broad_interv_P1';  
 Log_broad_interv_P1 = [];
 

@@ -100,7 +100,7 @@ implementation {
 		{0, 2}		// Task 2 :
 
 		};
-	uint32_t superframe_length = 30; //5Hz at most
+	uint32_t superframe_length = 50; //5Hz at most
 
 	/* Task character */
 	//index: Task id
@@ -199,6 +199,7 @@ implementation {
 		Task_character[2][TASK_PERIOD] = Task_T_buffer[1];
 		Task_character[2][TASK_DEAD] = Task_T_buffer[1];
 		superframe_length = SuperframeLength(Task_character);	//Test for AbsoluteError application
+		//superframe_length = 50;
 
 
 		/* Task Retransmissions from Python */
@@ -347,7 +348,7 @@ implementation {
 				Task_character[2][TASK_MAXTX] = Interf_Check[1];
 				My_max_txopper[2] = Task_character[2][TASK_MAXTX];
 				dbg_clear("Util_Log_data","Task1_maxTx:%d\n",My_max_txopper[1]);
-
+				dbg_clear("Task_T_Test","maxReTx - T1:%d / T2:%d\r\n", My_max_txopper[1], My_max_txopper[2]);
 			}
 			// Task Period change
 			if(Dist_Check[3] != temp_dist){
@@ -401,8 +402,15 @@ implementation {
 				if(Receiving_flag[HI_TASK] == FALSE){
 					Loss_count[HI_TASK] = Loss_count[HI_TASK] + 1;
 				}
+				//dbg("Task_T_Test", "T1 period\r\n");
 				dbg_clear("Util_Log_data","%d %d %d %d\n", TOS_NODE_ID, HI_TASK, Loss_count[HI_TASK], Total_frame_count[HI_TASK]);
 				Receiving_flag[Receiving_flow_id] = FALSE;
+
+
+			}
+			if(isFlowroot == TRUE && TOS_NODE_ID == 1){
+				// For check link quality
+				dbg_clear("check_link_quality", "---Task_period_End---\r\n");
 			}
 			/*
 			if(TOS_NODE_ID == 3 || TOS_NODE_ID == 4){
@@ -665,6 +673,7 @@ implementation {
 					if(isFlowdest == TRUE){
 
 						e2e_delay_buffer[flow_id_rcv][current_slot] = e2e_delay_buffer[flow_id_rcv][current_slot] + 1;
+						//dbg("E2E_delay_Log_data", "---");
 						//Node id,	flow id,	rcv_count, rcv_count_at_slot0,1,2,...
 						//dbg_clear("E2E_delay_Log_data","%d %d %d ", TOS_NODE_ID, flow_id_rcv, rcv_count[flow_id_rcv]);
 						dbg_clear("E2E_delay_Log_data","%d %d %d %d ", TOS_NODE_ID, flow_id_rcv, rcv_count[flow_id_rcv], Total_frame_count[flow_id_rcv]);
@@ -675,7 +684,10 @@ implementation {
 
 
 						// Check link qualtiy
-						dbg_clear("check_link_quality","RxCount: %d\n", rcv_count[1]);
+						if(TOS_NODE_ID == 51){
+							dbg_clear("check_link_quality","RxCount: %d\n", rcv_count[1]);
+
+						}
 					}
 				}
 			}

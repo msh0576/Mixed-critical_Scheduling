@@ -14,18 +14,24 @@ global delta simul_time Task_periods
 delta = 0.001;       % Simulink operate every 1ms
 delta_t = 10;
 simul_time = 20;    % Simulation time
-Task_periods = [25; 25];
+Task_periods = [11; 11];
 
 %% Button %%
 Plot_butt = 0;
 Sim_butt = 1;
+Protocol_butt = 0; % 0 if proposed protocol, 1 if WirelessHART
 
 %% Save File %%
-save_file_name = 'Simul_results_DMAC_maxUtil.mat';     % store results for a simulation
+file_name0 = 'MaxUtil_ours_v3.mat';
+file_name1 = 'MaxUtil_WH_v3.mat';
 field_name_P1 = 'MAE_P1';  
 field_name_P2 = 'MAE_P2';  
 
-
+if Protocol_butt == 0
+    save_file_name = file_name0;
+else
+    save_file_name = file_name1;
+end
 
 %% Initialize %%
 
@@ -52,14 +58,14 @@ l = place(A',C',obpoles);
 L = l';
 
 % Plant 2
-T_ = 12;
+T_ = 15;
 A_=[0 1/T_; 0 0];
 B_=[0;1];
 C_=[1 0];
 D_=0;
 
 pole_ = [-3.02 -1.08];
-%pole_ = [-8 -3];
+%pole_ = [-3.82 -1.48];
 K_ = place(A_,B_,pole_);
 sys_ = ss(A_-B_*K_, B_, C_, D_);
 DC_gain_ = dcgain(sys_);
@@ -107,149 +113,51 @@ end
 
 % Log Data %
 % Ideal: P1
-Ideal_P1_output = load('Ideal_Output_log_P1.mat');
+Ideal_P1_output = load('Optimal_P1_output_util.mat');
 Ideal_P1_output = struct2array(Ideal_P1_output);
 Ideal_P1_time = Ideal_P1_output.Time;
 Ideal_P1_state = Ideal_P1_output.Data;
 
 % Ideal: P2
-Ideal_P2_output = load('Ideal_Output_log_P2.mat');
+Ideal_P2_output = load('Optimal_P2_output_util.mat');
 Ideal_P2_output = struct2array(Ideal_P2_output);
 Ideal_P2_time = Ideal_P2_output.Time;
 Ideal_P2_state = Ideal_P2_output.Data;
 
-% DMAC: P1
-DMAC_P1_output = load('Wireless_Output_log_DMAC_P1.mat');
-DMAC_P1_output = struct2array(DMAC_P1_output);
-DMAC_P1_time = DMAC_P1_output.Time;
-DMAC_P1_state = DMAC_P1_output.Data;
-% DMAC: P2
-DMAC_P2_output = load('Wireless_Output_log_DMAC_P2.mat');
-DMAC_P2_output = struct2array(DMAC_P2_output);
-DMAC_P2_time = DMAC_P2_output.Time;
-DMAC_P2_state = DMAC_P2_output.Data;
-
-
-P1_actu_interval = load('P1_actu_interval.mat');
-P1_actu_interval = struct2array(P1_actu_interval);
-
-T1_period = load('Task1_period.mat');
-T1_period = struct2array(T1_period);
-
-T1_noise = load('Task1_noise.mat');
-T1_noise = struct2array(T1_noise);
-
-T1_maxTx = load('Task1_maxTx.mat');
-T1_maxTx = struct2array(T1_maxTx);
-
-P1_PDR = load('P1_PDR.mat');
-P1_PDR = struct2array(P1_PDR);
-
-P1_dist = load('P1_dist.mat');
-P1_dist = struct2array(P1_dist);
-
-%% Plot %%
-if Plot_butt == 1
-    fig_width     = 4; % inch
-    fig_height    = 3;
-    margin_vert_u = 0.3;
-    margin_vert_d = 0.45;
-    margin_horz_l = 0.55;
-    margin_horz_r = 0.25;
-
-    fontname = 'times new roman';
-    set(0, 'defaultaxesfontname', fontname);
-    set(0, 'defaulttextfontname', fontname);
-
-    fontsize = 9; %pt
-    set(0, 'defaultaxesfontsize', fontsize);
-    set(0, 'defaulttextfontsize', fontsize);
-    set(0, 'fixedwidthfontname', 'times');
-
-    hFig = figure;
-    set(hFig, 'renderer', 'painters');
-    set(hFig, 'units', 'inches');
-    set(hFig, 'position', [3 6 fig_width fig_height]);
-    set(hFig, 'PaperUnits', 'inches');
-    set(hFig, 'PaperSize', [fig_width fig_height]);
-    set(hFig, 'PaperPositionMode', 'manual');
-    set(hFig, 'PaperPosition', [0 0 fig_width fig_height]);
-
-    hAxe = axes;
-
-    set(hAxe, 'activepositionproperty', 'outerposition');
-    set(hAxe, 'units', 'inches');
-    ax_pos = get(hAxe, 'position');
-    ax_pos(4) = fig_height-margin_vert_u-margin_vert_d;
-    ax_pos(2) = fig_height-(margin_vert_u+ax_pos(4));
-    ax_pos(3) = fig_width-margin_horz_l-margin_horz_r;
-    ax_pos(1) = margin_horz_l;
-    set(hAxe, 'position', ax_pos);
-
-    box(hAxe,'on');
-
-    hold on;
-
-    
-    
-    subplot(7,1,1);
-    plot(Ideal_P1_time, Ideal_P1_state, 'k --')
-    hold on;
-    plot(DMAC_P1_time, DMAC_P1_state, 'r-')
-    ylim([-3, 5]);
-    legend('Ideal','D-MAC');
-    ylabel({'(a)', 'Output', 'y(t)'});
-    grid on;
-
-    subplot(7,1,2);
-    plot(P1_dist.Time, P1_dist.Data, 'b-');
-    grid on;
-    ylabel({'(b)', 'Physical', 'disturbance'});
-    
-    subplot(7,1,3);
-    plot(T1_noise.Time, T1_noise.Data, 'b-');
-    grid on;
-    ylabel({'(c)', 'Wireless','noise'});
-    ylim([-85 -65]);
-   
-    
-    subplot(7,1,4);
-    plot(T1_period.Time, T1_period.Data, 'g-');
-    grid on;
-    %ylim([0 0.2]);
-    ylabel({'(d)', 'Task1', 'period'});
-    
-    subplot(7,1,5);
-    plot(T1_maxTx.Time, T1_maxTx.Data, 'g-');
-    grid on;
-    ylabel({'(e)', 'Task1','max #Tx'});
-    ylim([0.5 4.5]);
-    
-
-    subplot(7,1,6);
-    plot(P1_actu_interval.Time, P1_actu_interval.Data, 'r-');
-    grid on;
-    ylim([0 0.8]);
-    ylabel({'(f)', 'Actuation','interval'});
-    
-    subplot(7,1,7);
-    plot(P1_PDR.Time, P1_PDR.Data, 'r-');
-    grid on;
-    ylabel({'(g)', 'Actuation','PDR'});
-    ylim([0 1.1]);
-    
-    xlabel('Time(s)');
+if Protocol_butt == 0
+    % DMAC: P1
+    Ours_P1_output = load('Ours_P1_output_util.mat');
+    Ours_P1_output = struct2array(Ours_P1_output);
+    Ours_P1_time = Ours_P1_output.Time;
+    Ours_P1_state = Ours_P1_output.Data;
+    % DMAC: P2
+    Ours_P2_output = load('Ours_P2_output_util.mat');
+    Ours_P2_output = struct2array(Ours_P2_output);
+    Ours_P2_time = Ours_P2_output.Time;
+    Ours_P2_state = Ours_P2_output.Data;
+else
+    % WH: P1
+    Ours_P1_output = load('WH_P1_output_util.mat');
+    Ours_P1_output = struct2array(Ours_P1_output);
+    Ours_P1_time = Ours_P1_output.Time;
+    Ours_P1_state = Ours_P1_output.Data;
+    % WH: P2
+    Ours_P2_output = load('WH_P2_output_util.mat');
+    Ours_P2_output = struct2array(Ours_P2_output);
+    Ours_P2_time = Ours_P2_output.Time;
+    Ours_P2_state = Ours_P2_output.Data;
 end
+
 
 
 %% Save Results %%
 
 % accumulated Error
 % For P1
-MAE_P1 = mean(abs(Ideal_P1_state - DMAC_P1_state));
+MAE_P1 = mean(abs(Ideal_P1_state - Ours_P1_state));
 
 % For P2
-MAE_P2 = mean(abs(Ideal_P2_state - DMAC_P2_state));
+MAE_P2 = mean(abs(Ideal_P2_state - Ours_P2_state));
 
 
 % Append the results

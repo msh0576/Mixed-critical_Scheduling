@@ -17,7 +17,17 @@ def extract_info(string):
 	args = string.split()
 	return int(args[0]), int(args[1])
 
-def is_actuation_interval_changed(flow_info, disturbance_time):
+def init_disturbance_second(disturbance_time):
+	'''
+	initialize 'dist_sec' variable with first disturbacne instant from matlab
+	'''
+	global dist_sec, dist_sec_flag
+
+	if dist_sec_flag == False:
+		dist_sec = disturbance_time
+		dist_sec_flag = True
+
+def is_actuation_interval_changed(flow_info, disturbance_sec):
 	'''
 	if actuation interval is changed due to disturbance,
 	then the value is stored in global variable 'broad_intv'
@@ -26,24 +36,29 @@ def is_actuation_interval_changed(flow_info, disturbance_time):
 	time = t.timeStr()
 	[Hour, Min, Sec] = time.split(':')
 	Sec = round(float(Sec),2)
+	#print("disturbance_sec: ", disturbance_sec)
+	#print("Sec: ", Sec)
 
 	# compute actuation_interval
 	actu_intv = Sec - prev_pkt_arriv_inst
 
 	# confirm actuation interval follows the changed network parameter
 	task_period = Task_periods[flow_info['flowid']-1] * 0.01
-	disturbance_time = disturbance_time/100	# simulation time -> second
-	if Sec >= disturbance_time:
+	#disturbance_time = disturbance_time/100	# simulation time -> second
+	if Sec >= disturbance_sec:
 		if  (task_period + 0.02) >= actu_intv and flow1_info['flag'] == False:
-			broad_intv = Sec - disturbance_time
+			broad_intv = round((Sec - disturbance_sec),2)
 			flow1_info['flag'] = True
 	prev_pkt_arriv_inst = Sec
 	#print("broad_intv:", broad_intv)
 
+### global variable ###
 broad_intv = 0
 prev_pkt_arriv_inst = 0
 flow1_info = {'flowid':1, 'flag': False}
-
+dist_sec_flag = False
+dist_sec = 0
+#######################
 
 enable_main=0;
 if enable_main:
@@ -69,7 +84,7 @@ else:
 	### Default channel: -91dBm ###
 	### Topology -60dBm (power) ###
 	#noise_offset = 1 #PDR:95%
-	noise_offset = 3 #PDR:
+	noise_offset = 15 #PDR:90%
 	#noise_offset = 22 #PDR:77%
 	#noise_offset = 23 #PDR:68%
 	#noise_offset = 24 #PDR:52%
@@ -135,8 +150,8 @@ for seq in send_to_MAClayer:
 Task_periods = Task_periods_orig
 Task_maxTx = Task_maxTx_orig
 
-Task_periods_dist = [12, 12]
-Task_maxTx_interf = [2, 2]
+Task_periods_dist = [18, 18]
+Task_maxTx_interf = [3, 3]
 
 
 r = t.radio()
@@ -307,6 +322,7 @@ Disturbance_finish = 15000000
 interf_flag = 0
 interf_handle_flag = 0
 dist_flag = 0
+dist_time = t.timeStr() # for checking broadcast_interval
 while True:
 	connection, client_address = sock.accept()
 	try:
@@ -316,10 +332,11 @@ while True:
 			if data:
 				# extract received info
 				finish_flag, Disturbance_time = extract_info(data)
-				Disturbance_time = Disturbance_time * 100 # Disturbance_time (second)
+				init_disturbance_second(float(Disturbance_time))	# for checking broadcast_interval
+				Disturbance_time = Disturbance_time * 100 # Disturbance_time (second) (simulation time)
 				# Wireless Interference
 				if t.time() > 97656250*Interference_time and t.time() < 97656250*Interference_finish and interf_flag == 0:
-					noise_offset = 20
+					noise_offset = 24
 					for node in Allnodes:
 						m = t.getNode(node);
 						for channel in [22, 23, 24, 25, 26]:
@@ -367,6 +384,9 @@ while True:
 
 				# Disturbances
 				if t.time() > 97656250*Disturbance_time and t.time() < 97656250*Disturbance_finish and dist_flag == 0:
+					dist_time = t.timeStr()	# for checking broadcast_interval
+					[dist_hour, dist_min, dist_sec] = dist_time.split(':')
+					dist_sec = round(float(dist_sec),2)
 					dist_flag = 1
 					Task_periods = Task_periods_dist
 					# Send a Disturbancd signal to MAC Layer
@@ -389,7 +409,7 @@ while True:
 					#print("rcved:",rcved)
 					if rcved == 2:		# 0000 0010 - flowid:1
 						rcvedlist[0] = 1; # flow 1 has been received through the WSN
-						is_actuation_interval_changed(flow1_info, Disturbance_time)
+						is_actuation_interval_changed(flow1_info, dist_sec)
 					elif rcved == 4:	# 0000 0100 - flowid:2
 						rcvedlist[1] = 1; # flow 2 has been received through the WSN
 					elif rcved == 8:
@@ -410,7 +430,6 @@ while True:
 				rcvedlist[7] = Task_periods[0]	# temparaly, T1 Period
 				#print("rcvedList:",rcvedlist)
 				run_count = run_count + 1;
-
 				reception = str(rcvedlist[0]) + ',' + str(rcvedlist[1]) + ',' + str(rcvedlist[2]) + ',' + str(rcvedlist[3]) + \
 				',' + str(rcvedlist[4]) + ',' + str(rcvedlist[5]) + ',' + str(rcvedlist[6]) + ',' + str(rcvedlist[7]);
 				#print reception

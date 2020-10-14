@@ -9,28 +9,28 @@ clc;
 
 
 %% Log file
-file_name_Ours_4hop = 'Simul_results_Ours_broadcast_interval_4hop.mat';     % store results for a simulation
-file_name_WH_4hop = 'Simul_results_WH_broadcast_interval_4hop.mat';
+file_name_Ours_5hop = 'Simul_results_Ours_broadcast_interval_5hop_300hp_v1.mat';     % store results for a simulation
+file_name_WH_5hop = 'Simul_results_WH_broadcast_interval_5hop_300hp_v2.mat';
 field_name_P1 = 'Log_broad_interv_P1';  
-Ours_Log_broad_interv_P1_4hop = [];
-WH_Log_broad_interv_P1_4hop = [];
+Ours_Log_broad_interv_P1_5hop = [];
+WH_Log_broad_interv_P1_5hop = [];
 
-file_name_Ours_4hop_500hp = 'Simul_results_Ours_broadcast_interval_4hop_500hp.mat';
-file_name_WH_4hop_500hp = 'Simul_results_WH_broadcast_interval_4hop_500hp.mat';
-Ours_Log_broad_interv_P1_4hop_500hp = [];
-WH_Log_broad_interv_P1_4hop_500hp = [];
+file_name_Ours_5hop_600hp = 'Simul_results_Ours_broadcast_interval_5hop_600hp_v1.mat';
+file_name_WH_5hop_600hp = 'Simul_results_WH_broadcast_interval_5hop_600hp_v2.mat';
+Ours_Log_broad_interv_P1_5hop_600hp = [];
+WH_Log_broad_interv_P1_5hop_600hp = [];
 
 
 %% Get log data
-Ours_results_4hop = load(file_name_Ours_4hop);
-Ours_Log_broad_interv_P1_4hop = getfield(Ours_results_4hop, field_name_P1);
-WH_results_4hop = load(file_name_WH_4hop);
-WH_Log_broad_interv_P1_4hop = getfield(WH_results_4hop, field_name_P1);
+Ours_results_5hop = load(file_name_Ours_5hop);
+Ours_Log_broad_interv_P1_5hop = getfield(Ours_results_5hop, field_name_P1);
+WH_results_5hop = load(file_name_WH_5hop);
+WH_Log_broad_interv_P1_5hop = getfield(WH_results_5hop, field_name_P1);
 
-Ours_results_4hop_500hp = load(file_name_Ours_4hop_500hp);
-Ours_Log_broad_interv_P1_4hop_500hp = getfield(Ours_results_4hop_500hp, field_name_P1);
-WH_results_4hop_500hp = load(file_name_WH_4hop_500hp);
-WH_Log_broad_interv_P1_4hop_500hp = getfield(WH_results_4hop_500hp, field_name_P1);
+Ours_results_5hop_600hp = load(file_name_Ours_5hop_600hp);
+Ours_Log_broad_interv_P1_5hop_600hp = getfield(Ours_results_5hop_600hp, field_name_P1);
+WH_results_5hop_600hp = load(file_name_WH_5hop_600hp);
+WH_Log_broad_interv_P1_5hop_600hp = getfield(WH_results_5hop_600hp, field_name_P1);
 
 
 %% Plot with CDF graph
@@ -74,23 +74,24 @@ box(hAxe,'on');
 
 hold on;
 
-X1 = cdfplot(Ours_Log_broad_interv_P1_4hop);
-X4 = cdfplot(Ours_Log_broad_interv_P1_4hop_500hp);
+X1 = cdfplot(Ours_Log_broad_interv_P1_5hop);
+X4 = cdfplot(Ours_Log_broad_interv_P1_5hop_600hp);
 
-X2 = cdfplot(WH_Log_broad_interv_P1_4hop);
-X3 = cdfplot(WH_Log_broad_interv_P1_4hop_500hp);
+X2 = cdfplot(WH_Log_broad_interv_P1_5hop);
+X3 = cdfplot(WH_Log_broad_interv_P1_5hop_600hp);
 
 
-set(X1, 'LineWidth', 3, 'Color', [.1 .1 .8]);
-set(X2, 'LineWidth', 3, 'Color', [.8 .1 .1]);
-set(X3, 'LineStyle', ':', 'LineWidth', 3, 'Color', [.8 .1 .5]);
-set(X4, 'LineStyle', ':', 'LineWidth', 3, 'Color', [.1 .5 .8]);
+set(X1, 'LineWidth', 3, 'Color', 'r');
+set(X2, 'LineWidth', 3, 'Color', 'b');
+set(X3, 'LineStyle', ':', 'LineWidth', 3, 'Color', 'b');
+set(X4, 'LineStyle', ':', 'LineWidth', 3, 'Color', 'r');
 
 title('');
-xlabel('Broadcast interval (s)','fontweight', 'bold');
+xlabel('Broadcasting interval (s)','fontweight', 'bold');
 ylabel('CDF','fontweight', 'bold');
-xlim([0 1]);
+xlim([0 1.2]);
 ylim([0 1]);
-legend('ERA-250hp', 'ERA-500hp', 'WH-250hp', 'WH-500hp');
+legend('AH-300sf', 'AH-600sf', 'WH-300sf', 'WH-600sf');
+xticks([0:0.2:1.2]);
 a = get(gca, 'XTickLabel');
 set(gca, 'XTickLabel', a, 'FontWeight', 'bold');
